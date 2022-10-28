@@ -6,7 +6,8 @@
 	"scripts": {
 		"scss-watch": "sass --watch scss/app.scss public/css/main.css",
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "pm2 start app.js --watch",
+		"start": "nodemon start app.js --watch",
+		"server": "pm2 start app.js --name CarsBE",
 		"format": "npx prettier --write .",
 		"postinstall": "husky install"
 	},

@@ -71,7 +71,8 @@ module.exports = {
 			let perPage = parseInt(limit) || 10;
 			let paginate = pagination(currentPage, perPage, count);
 
-			const cars = await CarModel.find()
+			const cars = await CarModel.find({})
+				.select('car_name price car_code _id images year_manufacture')
 				.limit(paginate.per_page)
 				.skip((paginate.current_page - 1) * paginate.per_page);
 

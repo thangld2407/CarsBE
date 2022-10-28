@@ -6,4 +6,6 @@ routerApi.get('/', (req, res) => {
 	});
 });
 
+routerApi.use('/cars', require('./module/cars'));
+
 module.exports = routerApi;

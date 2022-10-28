@@ -1,3 +1,4 @@
+const { pagination } = require('../../helper/pagination');
 const CarModel = require('../../model/CarModel');
 
 module.exports = {
@@ -61,13 +62,24 @@ module.exports = {
 		}
 	},
 	async getListCars(req, res) {
+		const { page, limit } = req.query;
+
 		try {
-			const cars = await CarModel.find();
+			const count = await CarModel.countDocuments();
+			let currentPage = parseInt(page) || 1;
+
+			let perPage = parseInt(limit) || 10;
+			let paginate = pagination(currentPage, perPage, count);
+
+			const cars = await CarModel.find()
+				.limit(paginate.per_page)
+				.skip((paginate.current_page - 1) * paginate.per_page);
+
 			return res.status(200).json({
 				message: 'Get list cars success',
 				data: cars,
-				total: cars.length,
-				status: 200
+				status: 200,
+				pagination: { ...paginate, total: count }
 			});
 		} catch (error) {
 			res.status(500).json({ message: error.message });

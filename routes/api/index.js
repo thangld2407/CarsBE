@@ -5,7 +5,8 @@ routerApi.get('/', (req, res) => {
 		message: req.__('API_WORKING')
 	});
 });
-
 routerApi.use('/cars', require('./module/cars'));
+routerApi.use('/images', require('./module/images'));
+routerApi.use('/staff', require('./module/staff'));
 
 module.exports = routerApi;

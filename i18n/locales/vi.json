@@ -4,5 +4,13 @@
 	"PAGE.NOTFOUND.STATUS": "404",
 	"PAGE.NOTFOUND.ACTIONS_LOGOUT": "Đăng xuất",
 	"PAGE.NOTFOUND": "Không tìm thấy trang",
-	"PAGE.NOTFOUND.ACTIONS": "Trở lại trang chủ"
+	"PAGE.NOTFOUND.ACTIONS": "Trở lại trang chủ",
+	"Upload image successfully": "Upload image successfully",
+	"Invalid type file": "Invalid type file",
+	"Create staff successfully": "Create staff successfully",
+	"Get staff list successfully": "Get staff list successfully",
+	"Staff already exists": "Staff already exists",
+	"Get staff detail successfully": "Get staff detail successfully",
+	"Update staff successfully": "Update staff successfully",
+	"Staff email already exists": "Staff email already exists"
 }

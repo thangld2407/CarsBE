@@ -1,5 +1,6 @@
 const { pagination } = require('../../helper/pagination');
 const CarModel = require('../../model/CarModel');
+const CarTypeModel = require('../../model/CarTypeModel');
 
 module.exports = {
 	async saveCarCrawl(req, res) {
@@ -13,7 +14,11 @@ module.exports = {
 			const hasCarDb = await CarModel.find({
 				car_code: data.basic_infor.car_code
 			});
-			if (hasCarDb.length === 0) {
+			const hasCategory = await CarTypeModel.findOne({
+				car_type_name: data.basic_infor.category
+			});
+
+			if (hasCarDb.length === 0 && hasCategory) {
 				const car = new CarModel({
 					images: data.basic_infor.list_image,
 					car_name: data.basic_infor.car_name,
@@ -31,6 +36,7 @@ module.exports = {
 					mortgage: data.basic_infor.mortgage,
 					presentation_number: data.basic_infor.presentation_number,
 					storage_location: data.basic_infor.storage_location,
+					category: hasCategory._id,
 
 					seller_name: data.seller.seller_name,
 					phone_contact: data.seller.phone_contact,

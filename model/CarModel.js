@@ -67,6 +67,10 @@ const CarSchema = new mongoose.Schema(
 			type: Array,
 			default: []
 		},
+		category: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'CarType'
+		},
 		// Detail Vehicle
 
 		exterior: {

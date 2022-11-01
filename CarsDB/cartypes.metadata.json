@@ -2,7 +2,7 @@
 	"indexes": [
 		{ "v": { "$numberInt": "2" }, "key": { "_id": { "$numberInt": "1" } }, "name": "_id_" }
 	],
-	"uuid": "058bd587ab46439c8a15b74705e894da",
+	"uuid": "1d2ded823e8e4b8aa505279e2c80f85a",
 	"collectionName": "cartypes",
 	"type": "collection"
 }

@@ -2,7 +2,7 @@ const { pagination } = require('../../helper/pagination');
 const CarModel = require('../../model/CarModel');
 const CarTypeModel = require('../../model/CarTypeModel');
 
-module.exports = {
+class CarsController {
 	async saveCarCrawl(req, res) {
 		try {
 			const { data } = req.body;
@@ -66,7 +66,8 @@ module.exports = {
 		} catch (error) {
 			res.status(500).json({ message: error.message });
 		}
-	},
+	}
+
 	async getListCars(req, res) {
 		const { page, limit, filter, sort, search } = req.body;
 		let query_filter = {};
@@ -151,4 +152,6 @@ module.exports = {
 			res.status(500).json({ message: error.message });
 		}
 	}
-};
+}
+
+module.exports = new CarsController();

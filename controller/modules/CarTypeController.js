@@ -32,6 +32,19 @@ class CarTypeController {
 			res.status(500).json({ message: error.message });
 		}
 	}
+
+	async getListCategory(req, res) {
+		try {
+			const list_category = await CarTypeModel.find();
+			res.status(200).json({
+				status: true,
+				status_code: 200,
+				data: list_category
+			});
+		} catch (error) {
+			res.status(500).json({ message: error.message });
+		}
+	}
 }
 
 module.exports = new CarTypeController();

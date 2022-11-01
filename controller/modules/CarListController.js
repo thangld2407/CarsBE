@@ -68,17 +68,76 @@ module.exports = {
 		}
 	},
 	async getListCars(req, res) {
-		const { page, limit } = req.query;
+		const { page, limit, filter, sort, search } = req.body;
+		let query_filter = {};
+		if (!!filter) {
+			if (filter.is_hotsale) {
+				query_filter = {
+					...query_filter,
+					is_hotsale: filter.is_hotsale
+				};
+			}
+			if (filter.from_year && filter.to_year) {
+				query_filter = {
+					...query_filter,
+					year_manufacture: {
+						$gte: filter.from_year,
+						$lte: filter.to_year
+					}
+				};
+			}
+
+			if (filter.category) {
+				query_filter = {
+					...query_filter,
+					category: filter.category
+				};
+			}
+		}
+
+		if (!!search) {
+			query_filter = {
+				...query_filter,
+				car_name: {
+					$regex: search,
+					$options: 'i'
+				}
+			};
+		}
+
+		let query_sort = {};
+		if (!!sort) {
+			if (sort.price) {
+				query_sort = {
+					price: sort.price
+				};
+			}
+
+			if (sort.year_manufacture) {
+				query_sort = {
+					year_manufacture: sort.year_manufacture
+				};
+			}
+
+			if (sort.car_name) {
+				query_sort = {
+					car_name: sort.car_name
+				};
+			}
+		}
 
 		try {
-			const count = await CarModel.countDocuments();
+			const count = await CarModel.countDocuments(query_filter);
 			let currentPage = parseInt(page) || 1;
 
 			let perPage = parseInt(limit) || 10;
 			let paginate = pagination(currentPage, perPage, count);
 
-			const cars = await CarModel.find({})
-				.select('car_name price car_code _id images year_manufacture')
+			const cars = await CarModel.find(query_filter, null, {
+				sort: query_sort
+			})
+				.select('car_name price car_code _id images year_manufacture is_hotsale')
+				.populate('category')
 				.limit(paginate.per_page)
 				.skip((paginate.current_page - 1) * paginate.per_page);
 

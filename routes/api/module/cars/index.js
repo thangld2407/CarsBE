@@ -5,6 +5,8 @@ const routerCars = require('express').Router();
 
 routerCars.post('/save', saveCarCrawl);
 routerCars.post('/save-type', CarTypeController.saveCarTypeCrawl);
-routerCars.get('/list', getListCars);
+routerCars.post('/list', getListCars);
+
+routerCars.get('/category', CarTypeController.getListCategory);
 
 module.exports = routerCars;

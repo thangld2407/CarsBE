@@ -120,6 +120,11 @@ const CarSchema = new mongoose.Schema(
 		performance_check: {
 			type: String,
 			trim: true
+		},
+
+		is_hotsale: {
+			type: Boolean,
+			default: false
 		}
 	},
 	{

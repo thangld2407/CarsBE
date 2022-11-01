@@ -12,5 +12,6 @@
 	"Staff already exists": "Staff already exists",
 	"Get staff detail successfully": "Get staff detail successfully",
 	"Update staff successfully": "Update staff successfully",
-	"Staff email already exists": "Staff email already exists"
+	"Staff email already exists": "Staff email already exists",
+	"Car type already exists": "Car type already exists"
 }

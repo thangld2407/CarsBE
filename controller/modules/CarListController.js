@@ -55,7 +55,7 @@ class CarsController {
 				await car.save();
 				res.status(200).json({
 					message: 'Save car crawl success',
-					status: 200
+					status_code: 200
 				});
 			} else {
 				res.status(200).json({
@@ -145,7 +145,7 @@ class CarsController {
 			return res.status(200).json({
 				message: 'Get list cars success',
 				data: cars,
-				status: 200,
+				status_code: 200,
 				pagination: { ...paginate, total: count }
 			});
 		} catch (error) {

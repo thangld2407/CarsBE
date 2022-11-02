@@ -63,6 +63,11 @@ const CarSchema = new mongoose.Schema(
 			type: String,
 			trim: true
 		},
+		primary_image: {
+			type: String,
+			trim: true,
+			default: `${process.env.APP_URL}/assets/images/noimage.png`
+		},
 		images: {
 			type: Array,
 			default: []

@@ -137,7 +137,7 @@ class CarsController {
 			const cars = await CarModel.find(query_filter, null, {
 				sort: query_sort
 			})
-				.select('car_name price car_code _id images year_manufacture is_hotsale')
+				.select('car_name price car_code _id primary_image year_manufacture is_hotsale')
 				.populate('category')
 				.limit(paginate.per_page)
 				.skip((paginate.current_page - 1) * paginate.per_page);

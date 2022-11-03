@@ -68,13 +68,17 @@ const CarSchema = new mongoose.Schema(
 			trim: true,
 			default: `${process.env.APP_URL}/assets/images/noimage.png`
 		},
+		is_hotsale: {
+			type: Boolean,
+			default: false
+		},
 		images: {
 			type: Array,
 			default: []
 		},
 		category: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'CarType'
+			ref: 'Category'
 		},
 		// Detail Vehicle
 
@@ -125,11 +129,6 @@ const CarSchema = new mongoose.Schema(
 		performance_check: {
 			type: String,
 			trim: true
-		},
-
-		is_hotsale: {
-			type: Boolean,
-			default: false
 		}
 	},
 	{

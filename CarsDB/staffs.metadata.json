@@ -2,7 +2,7 @@
 	"indexes": [
 		{ "v": { "$numberInt": "2" }, "key": { "_id": { "$numberInt": "1" } }, "name": "_id_" }
 	],
-	"uuid": "4fc7a6d6acac42b2bef3671bf71f7ffe",
+	"uuid": "2aabae5e0be84a069c2a1735875199e7",
 	"collectionName": "staffs",
 	"type": "collection"
 }

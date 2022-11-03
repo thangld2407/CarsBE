@@ -1,6 +1,6 @@
 const { pagination } = require('../../helper/pagination');
 const CarModel = require('../../model/CarModel');
-const CarTypeModel = require('../../model/CarTypeModel');
+const CarTypeModel = require('../../model/Category');
 
 class CarsController {
 	async saveCarCrawl(req, res) {
@@ -37,6 +37,7 @@ class CarsController {
 					presentation_number: data.basic_infor.presentation_number,
 					storage_location: data.basic_infor.storage_location,
 					category: hasCategory._id,
+					primary_image: data.basic_infor.primary_image,
 
 					seller_name: data.seller.seller_name,
 					phone_contact: data.seller.phone_contact,
@@ -125,6 +126,12 @@ class CarsController {
 					car_name: sort.car_name
 				};
 			}
+
+			if (sort.created_at) {
+				query_sort = {
+					created_at: sort.created_at
+				};
+			}
 		}
 
 		try {
@@ -150,6 +157,50 @@ class CarsController {
 			});
 		} catch (error) {
 			res.status(500).json({ message: error.message });
+		}
+	}
+
+	async getListHotsale(req, res) {
+		try {
+			const cars = await CarModel.find({ is_hotsale: true })
+				.select(
+					'car_name price car_code _id primary_image year_manufacture is_hotsale created_at updated_at'
+				)
+				.populate('category');
+			res.status(200).json({
+				message: 'Get list hotsale success',
+				data: cars,
+				status_code: 200
+			});
+		} catch (error) {
+			res.status(500).json({ message: error.message });
+		}
+	}
+
+	async getCarDetail(req, res) {
+		const { car_id } = req.body;
+		try {
+			if (!car_id) {
+				return res.status(200).json({
+					message: 'car_id is required',
+					error_code: 101
+				});
+			}
+			const car = await CarModel.findOne({ _id: car_id }).populate('category').lean();
+			if (!car) {
+				return res.status(200).json({
+					message: 'Car not found',
+					error_code: 105
+				});
+			}
+
+			res.status(200).json({
+				message: 'Get car detail success',
+				data: car,
+				status_code: 200
+			});
+		} catch (error) {
+			res.status(500).json({ message: error.message, error_code: 500 });
 		}
 	}
 }

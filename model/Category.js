@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
 
-const CarTypeSchema = new mongoose.Schema(
+const CategoryModel = new mongoose.Schema(
 	{
-		car_type_name: {
+		category_name: {
 			type: String,
-
 			required: true
 		}
 	},
@@ -16,4 +15,4 @@ const CarTypeSchema = new mongoose.Schema(
 	}
 );
 
-module.exports = mongoose.model('CarType', CarTypeSchema);
+module.exports = mongoose.model('Category', CategoryModel);

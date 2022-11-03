@@ -22,5 +22,7 @@
 	"Get detail review successfully": "Get detail review successfully",
 	"Delete review successfully": "Delete review successfully",
 	"Review id must be required": "Review id must be required",
-	"Review not found": "Review not found"
+	"Review not found": "Review not found",
+	"Logged in successfully": "Logged in successfully",
+	"Unauthorization": "Unauthorization"
 }

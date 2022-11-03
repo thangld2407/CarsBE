@@ -10,5 +10,6 @@ routerApi.use('/images', require('./module/images'));
 routerApi.use('/staff', require('./module/staff'));
 routerApi.use('/category', require('./module/category'));
 routerApi.use('/review', require('./module/review'));
+routerApi.use('/auth', require('./module/auth'));
 
 module.exports = routerApi;

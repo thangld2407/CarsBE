@@ -1,4 +1,4 @@
-const CarListController = require('../../../../controller/modules/CarListController');
+const CarListController = require('../../../../controller/CarListController');
 
 const routerCars = require('express').Router();
 

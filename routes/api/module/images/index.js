@@ -1,4 +1,4 @@
-const { uploadImage } = require('../../../../controller/modules/ImageController');
+const { uploadImage } = require('../../../../controller/ImageController');
 const uploadFile = require('../../../../utils/multer');
 
 const routerImage = require('express').Router();

@@ -1,6 +1,6 @@
-const { pagination } = require('../../helper/pagination');
-const CarModel = require('../../model/CarModel');
-const CarTypeModel = require('../../model/Category');
+const { pagination } = require('../helper/pagination');
+const CarModel = require('../model/CarModel');
+const CarTypeModel = require('../model/Category');
 
 class CarsController {
 	async saveCarCrawl(req, res) {
@@ -144,7 +144,9 @@ class CarsController {
 			const cars = await CarModel.find(query_filter, null, {
 				sort: query_sort
 			})
-				.select('car_name price car_code _id primary_image year_manufacture is_hotsale')
+				.select(
+					'car_name price car_code _id primary_image year_manufacture is_hotsale created_at updated_at'
+				)
 				.populate('category')
 				.limit(paginate.per_page)
 				.skip((paginate.current_page - 1) * paginate.per_page);

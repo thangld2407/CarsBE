@@ -1,5 +1,5 @@
-const { pagination } = require('../../helper/pagination');
-const StaffModel = require('../../model/StaffModel');
+const { pagination } = require('../helper/pagination');
+const StaffModel = require('../model/StaffModel');
 
 class StaffController {
 	async create(req, res) {
@@ -186,16 +186,12 @@ class StaffController {
 
 	async list(req, res) {
 		try {
-			const {
-				page = 1,
-				limit = 10,
-				search = '',
-				is_deleted = false,
-				order_name,
-				order_created
-			} = req.query;
+			const { page = 1, limit = 10, search = '', is_deleted = false, sort } = req.body;
 
 			const count = await StaffModel.countDocuments({});
+			if (!sort) {
+				sort = { created_at: 1 };
+			}
 
 			let currentPage = parseInt(page) || 1;
 
@@ -207,10 +203,7 @@ class StaffController {
 				$or: [{ staff_email: { $regex: search, $options: 'i' } }],
 				$and: [{ is_deleted: is_deleted }]
 			})
-				.sort({
-					staff_name: order_name === 'asc' ? 1 : -1,
-					created_at: order_created === 'asc' ? 1 : -1
-				})
+				.sort(sort)
 				.select('-is_deleted')
 				.limit(paginate.per_page)
 				.skip((paginate.current_page - 1) * paginate.per_page);

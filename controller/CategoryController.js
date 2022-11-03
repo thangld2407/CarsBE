@@ -1,4 +1,4 @@
-const CategoryModel = require('../../model/Category');
+const CategoryModel = require('../model/Category');
 
 class CarTypeController {
 	async saveCategory(req, res) {

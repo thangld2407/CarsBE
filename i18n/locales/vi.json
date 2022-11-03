@@ -13,5 +13,14 @@
 	"Get staff detail successfully": "Get staff detail successfully",
 	"Update staff successfully": "Update staff successfully",
 	"Staff email already exists": "Staff email already exists",
-	"Car type already exists": "Car type already exists"
+	"Car type already exists": "Car type already exists",
+	"Get list review successfully": "Get list review successfully",
+	"Title must be required": "Title must be required",
+	"Create review successfully": "Create review successfully",
+	"Update review successfully": "Update review successfully",
+	"Content must be required": "Content must be required",
+	"Get detail review successfully": "Get detail review successfully",
+	"Delete review successfully": "Delete review successfully",
+	"Review id must be required": "Review id must be required",
+	"Review not found": "Review not found"
 }

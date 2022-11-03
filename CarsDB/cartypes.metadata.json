@@ -1,8 +1,1 @@
-{
-	"indexes": [
-		{ "v": { "$numberInt": "2" }, "key": { "_id": { "$numberInt": "1" } }, "name": "_id_" }
-	],
-	"uuid": "526a40954edb46cfb65ebeb239f867a5",
-	"collectionName": "cartypes",
-	"type": "collection"
-}
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"9b45d66145204339bbcd38127586be2b","collectionName":"cartypes","type":"collection"}

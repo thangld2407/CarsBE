@@ -1,8 +1,1 @@
-{
-	"indexes": [
-		{ "v": { "$numberInt": "2" }, "key": { "_id": { "$numberInt": "1" } }, "name": "_id_" }
-	],
-	"uuid": "2f59e8603e2049a38d661fd335e202a3",
-	"collectionName": "staffs",
-	"type": "collection"
-}
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"ae0752175f2b47a1bec19f8325e85733","collectionName":"staffs","type":"collection"}

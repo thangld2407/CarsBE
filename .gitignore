@@ -19,3 +19,7 @@ public/css/main.css
 # remove public file upload 
 /public/image/*
 
+/public/uploads/*.jpeg
+/public/uploads/*.pdf
+/public/uploads/*.png
+

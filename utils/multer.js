@@ -28,5 +28,5 @@ const filter = (req, file, cb) => {
 	cb('Please upload only image', false);
 };
 
-const uploadFile = multer({ storage: storage, limits: { fileSize: 1000000 } });
+const uploadFile = multer({ storage: storage });
 module.exports = uploadFile;

@@ -6,7 +6,7 @@ routerApi.get('/', (req, res) => {
 	});
 });
 routerApi.use('/cars', require('./module/cars'));
-routerApi.use('/images', require('./module/images'));
+routerApi.use('/upload', require('./module/uploads'));
 routerApi.use('/staff', require('./module/staff'));
 routerApi.use('/category', require('./module/category'));
 routerApi.use('/review', require('./module/review'));

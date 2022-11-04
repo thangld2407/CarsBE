@@ -24,5 +24,6 @@
 	"Review id must be required": "Review id must be required",
 	"Review not found": "Review not found",
 	"Logged in successfully": "Logged in successfully",
-	"Unauthorization": "Unauthorization"
+	"Unauthorization": "Unauthorization",
+	"Upload File successfully": "Upload File successfully"
 }

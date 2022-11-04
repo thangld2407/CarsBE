@@ -1,1 +1,8 @@
-{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"73794d9e8c8340faa29a6af9079ef1ac","collectionName":"reviews","type":"collection"}
+{
+	"indexes": [
+		{ "v": { "$numberInt": "2" }, "key": { "_id": { "$numberInt": "1" } }, "name": "_id_" }
+	],
+	"uuid": "4a15958b9fcd44698f8c4221d0c1a53d",
+	"collectionName": "reviews",
+	"type": "collection"
+}

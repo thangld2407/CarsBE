@@ -1,1 +1,15 @@
-{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"},{"v":{"$numberInt":"2"},"key":{"email":{"$numberInt":"1"}},"name":"email_1","background":true,"unique":true}],"uuid":"3d1cc8742f72470db7c30b7264770257","collectionName":"users","type":"collection"}
+{
+	"indexes": [
+		{ "v": { "$numberInt": "2" }, "key": { "_id": { "$numberInt": "1" } }, "name": "_id_" },
+		{
+			"v": { "$numberInt": "2" },
+			"key": { "email": { "$numberInt": "1" } },
+			"name": "email_1",
+			"background": true,
+			"unique": true
+		}
+	],
+	"uuid": "284b81fb463c4982a910eff8c201d518",
+	"collectionName": "users",
+	"type": "collection"
+}

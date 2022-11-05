@@ -1,3 +1,4 @@
+const convertImageToLinkServer = require('../helper/dowloadImage');
 const { pagination } = require('../helper/pagination');
 const CarModel = require('../model/CarModel');
 const CarTypeModel = require('../model/Category');
@@ -19,8 +20,18 @@ class CarsController {
 			});
 
 			if (hasCarDb.length === 0 && hasCategory) {
+				let list_image_converted = [];
+				if (data.basic_infor.list_image.length > 0) {
+					for (let i = 0; i < data.basic_infor.list_image.length; i++) {
+						let link = convertImageToLinkServer(data.basic_infor.list_image[i]);
+						list_image_converted.push(link);
+					}
+				}
+				let primary_image_convert = convertImageToLinkServer(
+					data.basic_infor.primary_image
+				);
 				const car = new CarModel({
-					images: data.basic_infor.list_image,
+					images: list_image_converted,
 					car_name: data.basic_infor.car_name,
 					price: data.basic_infor.price,
 					car_code: data.basic_infor.car_code,
@@ -37,7 +48,7 @@ class CarsController {
 					presentation_number: data.basic_infor.presentation_number,
 					storage_location: data.basic_infor.storage_location,
 					category: hasCategory._id,
-					primary_image: data.basic_infor.primary_image,
+					primary_image: primary_image_convert,
 
 					seller_name: data.seller.seller_name,
 					phone_contact: data.seller.phone_contact,

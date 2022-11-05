@@ -22,4 +22,17 @@ public/css/main.css
 /public/uploads/*.jpeg
 /public/uploads/*.pdf
 /public/uploads/*.png
+/public/uploads/*.jpg
+/public/uploads/*.gif
+/public/uploads/*.svg
+/public/uploads/*.ico
+/public/uploads/*.webp
+/public/uploads/*.webmanifest
+/public/uploads/*.xml
+/public/uploads/*.json
+/public/uploads/*.txt
+/public/uploads/*.html
+/public/uploads/*.js
+/public/uploads/*.css
+/public/uploads/*.map
 

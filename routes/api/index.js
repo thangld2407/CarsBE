@@ -11,5 +11,6 @@ routerApi.use('/staff', require('./module/staff'));
 routerApi.use('/category', require('./module/category'));
 routerApi.use('/review', require('./module/review'));
 routerApi.use('/auth', require('./module/auth'));
+routerApi.use('/support', require('./module/support'));
 
 module.exports = routerApi;

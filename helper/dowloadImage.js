@@ -8,7 +8,7 @@ function convertImageToLinkServer(url) {
 	const protocol = new URL(url).protocol;
 	let client = protocol.includes('https') ? https : http;
 	const file = fs.createWriteStream(
-		path.join(__dirname, `../public/uploads/upload-${Date.now()}${ext}`)
+		path.join(__dirname, `../public/uploads/upload-${Date.now()}-${Math.random() * 100}${ext}`)
 	);
 	client.get(url, function (response) {
 		response.pipe(file);

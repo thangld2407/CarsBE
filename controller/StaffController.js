@@ -186,23 +186,28 @@ class StaffController {
 
 	async list(req, res) {
 		try {
-			const { page = 1, limit = 10, search = '', is_deleted = false, sort } = req.body;
+			let { page = 1, limit = 10, search = '', is_deleted = false, sort } = req.body;
 
-			const count = await StaffModel.countDocuments({});
+			let query = {};
+
 			if (!sort) {
 				sort = { created_at: 1 };
 			}
 
-			let currentPage = parseInt(page) || 1;
+			if (search) {
+				query.staff_name = { $regex: search, $options: 'i' };
+			}
 
+			if (is_deleted) {
+				query.is_deleted = is_deleted;
+			}
+
+			const count = await StaffModel.countDocuments(query);
+
+			let currentPage = parseInt(page) || 1;
 			let perPage = parseInt(limit) || 10;
 			let paginate = pagination(currentPage, perPage, count);
-			const staffs = await StaffModel.find({
-				is_deleted: is_deleted,
-				$or: [{ staff_name: { $regex: search, $options: 'i' } }],
-				$or: [{ staff_email: { $regex: search, $options: 'i' } }],
-				$and: [{ is_deleted: is_deleted }]
-			})
+			const staffs = await StaffModel.find(query)
 				.sort(sort)
 				.select('-is_deleted')
 				.limit(paginate.per_page)

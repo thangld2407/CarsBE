@@ -1,0 +1,8 @@
+{
+	"indexes": [
+		{ "v": { "$numberInt": "2" }, "key": { "_id": { "$numberInt": "1" } }, "name": "_id_" }
+	],
+	"uuid": "ea806ecb2e474f26975e385f2c7a27ec",
+	"collectionName": "supports",
+	"type": "collection"
+}

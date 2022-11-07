@@ -83,7 +83,8 @@ class AuthController {
 				access_token: newToken,
 				access_token_expires_in: `${config.jwt_conf.tokenLife / 60}m`,
 				refesh_token: newRefreshToken,
-				status: true
+				status: true,
+				status_code: 200
 			});
 		} catch (error) {
 			res.status(500).json({

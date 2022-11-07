@@ -30,5 +30,6 @@
 	"Create support successfully": "Create support successfully",
 	"User not found": "User not found",
 	"Refresh token is invalid": "Refresh token is invalid",
-	"Relogin in successfully": "Relogin in successfully"
+	"Relogin in successfully": "Relogin in successfully",
+	"Remove staff successfully": "Remove staff successfully"
 }

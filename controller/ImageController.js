@@ -21,7 +21,7 @@ module.exports = {
 				status_code: 200,
 				message: req.__('Upload image successfully'),
 				data: {
-					image: `${process.env.APP_URL}/image/${req.file.filename}`
+					image: `/uploads/${req.file.filename}`
 				}
 			});
 		} catch (err) {
@@ -46,7 +46,7 @@ module.exports = {
 					status_code: 200,
 					message: req.__('Upload File successfully'),
 					data: {
-						image: `${process.env.APP_URL}/uploads/${req.file.filename}`
+						image: `/uploads/${req.file.filename}`
 					}
 				});
 			}
@@ -75,7 +75,7 @@ module.exports = {
 						error_message: req.__('Invalid type file')
 					});
 				}
-				images.push(`${process.env.APP_URL}/uploads/${req.files[i].filename}`);
+				images.push(`/uploads/${req.files[i].filename}`);
 			}
 			res.status(200).json({
 				status: true,

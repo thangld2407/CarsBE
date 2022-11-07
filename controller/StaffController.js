@@ -203,22 +203,26 @@ class StaffController {
 			}
 
 			if (search) {
-				filter.staff_name = { $regex: search, $options: 'i' };
+				query.staff_name = { $regex: search, $options: 'i' };
 			}
 
 			if (!filter) {
-				filter = {
-					...filter,
+				query = {
+					...query,
 					is_deleted: false
 				};
 			}
+			query = {
+				...query,
+				...filter
+			};
 
-			const count = await StaffModel.countDocuments(filter);
+			const count = await StaffModel.countDocuments(query);
 
 			let currentPage = parseInt(page) || 1;
 			let perPage = parseInt(limit) || 10;
 			let paginate = pagination(currentPage, perPage, count);
-			const staffs = await StaffModel.find(filter)
+			const staffs = await StaffModel.find(query)
 				.sort(sort)
 				.limit(paginate.per_page)
 				.skip((paginate.current_page - 1) * paginate.per_page);

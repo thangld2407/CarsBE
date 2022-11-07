@@ -6,7 +6,8 @@
 	"scripts": {
 		"scss-watch": "sass --watch scss/app.scss public/css/main.css",
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "pm2 start app.js --watch",
+		"start": "nodemon start app.js --watch",
+		"server": "pm2 start app.js --name CarsBE",
 		"format": "npx prettier --write .",
 		"postinstall": "husky install"
 	},
@@ -14,7 +15,9 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
+		"bcryptjs": "^2.4.3",
 		"body-parser": "^1.20.0",
+		"cors": "^2.8.5",
 		"dotenv": "^16.0.2",
 		"ejs": "^3.1.8",
 		"express": "^4.18.1",
@@ -22,6 +25,8 @@
 		"jsonwebtoken": "^8.5.1",
 		"mongoose": "^6.6.1",
 		"morgan": "^1.10.0",
+		"multer": "^1.4.5-lts.1",
+		"nodemailer": "^6.8.0",
 		"sass": "^1.54.9"
 	},
 	"lint-staged": {

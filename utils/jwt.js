@@ -12,8 +12,8 @@ const generateRefreshToken = payload => {
 	});
 };
 
-const verifyToken = (token, secretKey) => {
-	return jwt.verify(token, secretKey);
+const verifyToken = (token) => {
+	return jwt.verify(token, jwt_conf.secret);
 };
 
 module.exports = { generateAccessToken, generateRefreshToken, verifyToken };

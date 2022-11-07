@@ -1,4 +1,4 @@
-module.exports = async function (req, res) {
+module.exports = async function (req, res, next) {
 	try {
 		await next();
 	} catch (error) {

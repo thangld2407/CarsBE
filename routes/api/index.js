@@ -5,5 +5,12 @@ routerApi.get('/', (req, res) => {
 		message: req.__('API_WORKING')
 	});
 });
+routerApi.use('/cars', require('./module/cars'));
+routerApi.use('/upload', require('./module/uploads'));
+routerApi.use('/staff', require('./module/staff'));
+routerApi.use('/category', require('./module/category'));
+routerApi.use('/review', require('./module/review'));
+routerApi.use('/auth', require('./module/auth'));
+routerApi.use('/support', require('./module/support'));
 
 module.exports = routerApi;

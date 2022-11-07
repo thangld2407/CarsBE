@@ -17,4 +17,5 @@ public/css/main.css.map
 public/css/main.css
 
 # remove public file upload 
-/public/uploads/*
+
+public/uploads/*.*

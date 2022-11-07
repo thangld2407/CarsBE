@@ -27,5 +27,8 @@
 	"Unauthorization": "Unauthorization",
 	"Upload File successfully": "Upload File successfully",
 	"File is required": "File is required",
-	"Create support successfully": "Create support successfully"
+	"Create support successfully": "Create support successfully",
+	"User not found": "User not found",
+	"Refresh token is invalid": "Refresh token is invalid",
+	"Relogin in successfully": "Relogin in successfully"
 }

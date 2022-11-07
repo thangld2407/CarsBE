@@ -1,3 +1,4 @@
+const { jwt_conf } = require('../config');
 const UserModel = require('../model/UserModel');
 const { verifyToken } = require('../utils/jwt');
 
@@ -17,7 +18,7 @@ module.exports = async (req, res, next) => {
 
 		let decoded;
 		try {
-			decoded = verifyToken(token);
+			decoded = verifyToken(token, jwt_conf.secret);
 		} catch (err) {
 			res.status(500).json({
 				message: err.message,

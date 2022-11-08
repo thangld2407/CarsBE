@@ -162,23 +162,31 @@ class StaffController {
 
 	async remove(req, res) {
 		try {
-			const { id } = req.body;
-			if (!id) {
+			const { ids } = req.body;
+			if (!ids && ids.length === 0) {
 				return res.status(200).json({
 					error_code: 101,
 					error_message: req.__('Staff id must be required')
 				});
 			}
 
-			const staff = await StaffModel.findOne({ _id: id });
-			if (!staff) {
-				return res.status(200).json({
-					error_code: 105,
-					error_message: req.__('Staff not found')
-				});
+			for (let i = 0; i < ids.length; i++) {
+				const staff = await StaffModel.findOne({ _id: ids[i] });
+				if (!staff) {
+					return res.status(200).json({
+						error_code: 105,
+						error_message: req.__('Staff not found')
+					});
+				}
 			}
 
-			await StaffModel.updateOne({ _id: id }, { is_deleted: true });
+			await StaffModel.updateMany({ _id: { $in: ids } }, { is_deleted: true });
+
+			res.status(200).json({
+				status: true,
+				status_code: 200,
+				message: req.__('Remove staff successfully')
+			});
 		} catch (error) {
 			res.status(500).json({ error: error.message });
 		}
@@ -186,7 +194,7 @@ class StaffController {
 
 	async list(req, res) {
 		try {
-			let { page = 1, limit = 10, search = '', is_deleted = false, sort } = req.body;
+			let { page = 1, limit = 10, search = '', is_deleted, sort, filter } = req.body;
 
 			let query = {};
 
@@ -195,12 +203,22 @@ class StaffController {
 			}
 
 			if (search) {
-				query.staff_name = { $regex: search, $options: 'i' };
+			      query= {
+                                ...query,
+				staff_name: { $regex: search, $options: 'i' }
+                }
 			}
 
-			if (is_deleted) {
-				query.is_deleted = is_deleted;
+			if (!filter) {
+				query = {
+					...query,
+					is_deleted: false
+				};
 			}
+			query = {
+				...query,
+				...filter
+			};
 
 			const count = await StaffModel.countDocuments(query);
 
@@ -209,7 +227,6 @@ class StaffController {
 			let paginate = pagination(currentPage, perPage, count);
 			const staffs = await StaffModel.find(query)
 				.sort(sort)
-				.select('-is_deleted')
 				.limit(paginate.per_page)
 				.skip((paginate.current_page - 1) * paginate.per_page);
 

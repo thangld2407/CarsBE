@@ -31,5 +31,9 @@
 	"User not found": "User not found",
 	"Refresh token is invalid": "Refresh token is invalid",
 	"Relogin in successfully": "Relogin in successfully",
-	"Remove staff successfully": "Remove staff successfully"
+	"Remove staff successfully": "Remove staff successfully",
+	"Server error": "Server error",
+	"Get supports successfully": "Get supports successfully",
+	"Get support successfully": "Get support successfully",
+	"Edit support successfully": "Edit support successfully"
 }

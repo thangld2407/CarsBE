@@ -19,8 +19,8 @@ const SupportSchema = new mongoose.Schema(
 		},
 		is_process: {
 			type: String,
-			enum: ['in_progress', 'completed', 'pending', 'cancel'],
-			default: 'pending'
+			enum: ['in_progress', 'done'],
+			default: 'in_progress'
 		}
 	},
 	{

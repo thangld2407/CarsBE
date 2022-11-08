@@ -203,10 +203,10 @@ class StaffController {
 			}
 
 			if (search) {
-			      query= {
-                                ...query,
-				staff_name: { $regex: search, $options: 'i' }
-                }
+				query = {
+					...query,
+					staff_name: { $regex: search, $options: 'i' }
+				};
 			}
 
 			if (!filter) {

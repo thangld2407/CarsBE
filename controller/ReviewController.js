@@ -44,10 +44,11 @@ class ReviewController {
 
 	async list(req, res) {
 		try {
-			const { page, limit, sort, search, filter } = req.body;
+			let { page, limit, sort, search, filter } = req.body;
 			let query = {};
 			if (!filter) {
 				query = {
+					...query,
 					is_deleted: false
 				};
 			}
@@ -65,7 +66,12 @@ class ReviewController {
 					created_at: -1
 				};
 			}
-			const count = await ReviewModel.countDocuments();
+
+			query = {
+				...query,
+				...filter
+			};
+			const count = await ReviewModel.countDocuments(query);
 			let currentPage = parseInt(page) || 1;
 
 			let perPage = parseInt(limit) || 10;

@@ -69,13 +69,16 @@ class AuthController {
 					status: false
 				});
 			}
+
+			console.log(token);
+
 			const newToken = generateAccessToken({ user: isVerifyToken.user });
 			const newRefreshToken = generateRefreshToken({ user: isVerifyToken.user });
 
 			const newRefreshTokenSave = new TokenModel({
 				token: newRefreshToken
 			});
-
+			await TokenModel.findOneAndRemove({ token: token.token });
 			await newRefreshTokenSave.save();
 
 			res.status(200).json({

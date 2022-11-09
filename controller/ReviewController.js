@@ -176,22 +176,25 @@ class ReviewController {
 
 	async remove(req, res) {
 		try {
-			const { review_id } = req.body;
-			if (!review_id) {
+			const { ids } = req.body;
+			if (!ids) {
 				return res.status(200).json({
 					error_code: 101,
 					error_message: req.__('Review id must be required')
 				});
 			}
 
-			const is_exist = await ReviewModel.findOne({ _id: review_id });
-			if (!is_exist) {
-				return res.status(200).json({
-					error_code: 105,
-					error_message: req.__('Review not found')
-				});
+			for (let i = 0; i < ids.length; i++) {
+				const is_exist = await ReviewModel.findOne({ _id: ids[0] });
+				if (!is_exist) {
+					return res.status(200).json({
+						error_code: 105,
+						error_message: req.__('Review not found')
+					});
+				}
 			}
-			await ReviewModel.findOneAndUpdate({ _id: review_id }, { is_deleted: true });
+
+			await ReviewModel.updateMany({ _id: { $in: ids } }, { is_deleted: true });
 			res.status(200).json({
 				status: true,
 				status_code: 200,

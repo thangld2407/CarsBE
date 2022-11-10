@@ -83,7 +83,7 @@ class AuthController {
 				message: req.__('Relogin in successfully'),
 				access_token: newToken,
 				access_token_expires_in: `${config.jwt_conf.tokenLife / 60}m`,
-				refesh_token: newRefreshToken,
+				refresh_token: newRefreshToken,
 				status: true,
 				status_code: 200
 			});

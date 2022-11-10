@@ -70,8 +70,6 @@ class AuthController {
 				});
 			}
 
-			console.log(token);
-
 			const newToken = generateAccessToken({ user: isVerifyToken.user });
 			const newRefreshToken = generateRefreshToken({ user: isVerifyToken.user });
 

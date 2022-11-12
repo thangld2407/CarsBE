@@ -85,80 +85,69 @@ class CarsController {
 	}
 
 	async getListCars(req, res) {
-		const { page, limit, filter, sort, search } = req.body;
-		let query_filter = {};
-		if (!!filter) {
-			if (filter.is_hotsale) {
-				query_filter = {
-					...query_filter,
-					is_hotsale: filter.is_hotsale
-				};
-			}
-			if (filter.from_year && filter.to_year) {
-				query_filter = {
-					...query_filter,
-					year_manufacture: {
-						$gte: filter.from_year,
-						$lte: filter.to_year
-					}
+		let { page, limit, filter, sort, search } = req.body;
+
+		let query = {};
+		let query_sort = {};
+
+		if (filter) {
+			const { from_year, to_year } = filter;
+
+			if (from_year && to_year) {
+				query.year_manufacture = {
+					$gte: from_year,
+					$lte: to_year
 				};
 			}
 
-			if (filter.category) {
-				query_filter = {
-					...query_filter,
-					category: filter.category
+			const { from_price, to_price } = filter;
+
+			if (from_price && to_price) {
+				query.price = {
+					$gte: from_price,
+					$lte: to_price
 				};
+			}
+
+			const { from_distance, to_distance } = filter;
+
+			if (from_distance && to_distance) {
+				query.distance_driven = {
+					$gte: from_distance,
+					$lte: to_distance
+				};
+			}
+
+			const { fuel_type } = filter;
+
+			if (fuel_type) {
+				query.fuel_type = fuel_type;
+			}
+
+			const { gearbox } = filter;
+
+			if (gearbox) {
+				query.gearbox = gearbox;
 			}
 		}
 
-		if (!!search) {
-			query_filter = {
-				...query_filter,
-				car_name: {
-					$regex: search,
-					$options: 'i'
-				}
+		if (search) {
+			query.car_name = {
+				$regex: search,
+				$options: 'i'
 			};
 		}
 
-		let query_sort = {};
-		if (!!sort) {
-			if (sort.price) {
-				query_sort = {
-					price: sort.price
-				};
-			}
-
-			if (sort.year_manufacture) {
-				query_sort = {
-					year_manufacture: sort.year_manufacture
-				};
-			}
-
-			if (sort.car_name) {
-				query_sort = {
-					car_name: sort.car_name
-				};
-			}
-
-			if (sort.created_at) {
-				query_sort = {
-					created_at: sort.created_at
-				};
-			}
-		}
-
 		try {
-			const count = await CarModel.countDocuments(query_filter);
+			const count = await CarModel.countDocuments(query);
 			let currentPage = parseInt(page) || 1;
 
 			let perPage = parseInt(limit) || 10;
 			let paginate = pagination(currentPage, perPage, count);
 
-			const cars = await CarModel.find(query_filter, null, {
-				sort: query_sort
-			})
+			const cars = await CarModel.find(query)
+				.sort(sort)
+				.collation({ locale: 'en_US', numericOrdering: true })
 				.select(
 					'car_name price car_code _id primary_image year_manufacture is_hotsale  price_display percentage created_at updated_at'
 				)

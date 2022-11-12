@@ -66,7 +66,7 @@ const CarSchema = new mongoose.Schema(
 		primary_image: {
 			type: String,
 			trim: true,
-			default: `${process.env.APP_URL}/assets/images/noimage.png`
+			default: `/assets/images/noimage.png`
 		},
 		is_hotsale: {
 			type: Boolean,

@@ -1,8 +1,10 @@
+const { TYPE_PRICE_DISPLAY } = require('../constants/type');
 const convertImageToLinkServer = require('../helper/dowloadImage');
 const { pagination } = require('../helper/pagination');
 const CarModel = require('../model/CarModel');
 const CarTypeModel = require('../model/Category');
 
+CarModel.createIndexes({ _id: 1 });
 class CarsController {
 	async saveCarCrawl(req, res) {
 		try {
@@ -37,7 +39,9 @@ class CarsController {
 					car_code: data.basic_infor.car_code,
 					license_plate: data.basic_infor.license_plate,
 					year_manufacture: data.basic_infor.year_manufacture,
-					distance_driven: data.basic_infor.distance_driven,
+					distance_driven: data.basic_infor.distance_driven
+						.replace(/,/g, '')
+						.replace('km', ''),
 					fuel_type: data.basic_infor.fuel_type,
 					gearbox: data.basic_infor.gearbox,
 					cylinder_capacity: data.basic_infor.cylinder_capacity,
@@ -156,7 +160,7 @@ class CarsController {
 				sort: query_sort
 			})
 				.select(
-					'car_name price car_code _id primary_image year_manufacture is_hotsale created_at updated_at'
+					'car_name price car_code _id primary_image year_manufacture is_hotsale  price_display percentage created_at updated_at'
 				)
 				.populate('category')
 				.limit(paginate.per_page)
@@ -212,6 +216,124 @@ class CarsController {
 				data: car,
 				status_code: 200
 			});
+		} catch (error) {
+			res.status(500).json({ message: error.message, error_code: 500 });
+		}
+	}
+
+	async updateHotsale(req, res) {
+		try {
+			const { ids, is_hotsale } = req.body;
+
+			if (!ids || ids.length === 0) {
+				return res.status(200).json({
+					message: 'List cars id is required',
+					error_code: 101,
+					status: false
+				});
+			}
+
+			if (typeof is_hotsale !== 'boolean' || typeof is_hotsale === 'undefined') {
+				return res.status(200).json({
+					message: req.__('Yêu cầu trạng thái hotsale'),
+					error_code: 101,
+					status: false
+				});
+			}
+
+			for (let i = 0; i < ids.length; i++) {
+				const has_cars = await CarModel.findById(ids[i]).lean();
+				if (!has_cars) {
+					return res.status(200).json({
+						message: req.__('Cars not found'),
+						error_code: 105,
+						status: false
+					});
+				}
+			}
+
+			await CarModel.updateMany({ _id: { $in: ids } }, { is_hotsale: is_hotsale });
+
+			res.status(200).json({
+				message: req.__('Cập nhật danh sách hotsale thành công'),
+				status_code: 200,
+				status: true
+			});
+		} catch (error) {
+			res.status(500).json({ message: error.message, error_code: 500 });
+		}
+	}
+
+	async updatePrice(req, res) {
+		try {
+			const { type, percentage, price, ids } = req.body;
+
+			if (!ids || ids.length === 0) {
+				return res.status(200).json({
+					message: 'car_id is required',
+					error_code: 101
+				});
+			}
+			for (let i = 0; i < ids.length; i++) {
+				const car = await CarModel.findOne({ _id: ids[i] }).lean();
+				if (!car) {
+					return res.status(200).json({
+						message: 'Car not found',
+						error_code: 105
+					});
+				}
+
+				if (!Number(car.price)) {
+					return res.status(200).json({
+						message: req.__('Vui lòng lựa chọn xe khác với giá tiền là số'),
+						error_code: 100
+					});
+				}
+
+				if (!Object.values(TYPE_PRICE_DISPLAY).includes(type)) {
+					return res
+						.status(200)
+						.json({ message: req.__('Loại dữ liệu không chính xác'), error_code: 100 });
+				}
+
+				if (type === TYPE_PRICE_DISPLAY.PERCENTAGE) {
+					if (!percentage) {
+						return res.status(200).json({
+							error_code: 101,
+							message: req.__('Vui lòng nhập phần % giá tiền')
+						});
+					}
+					await CarModel.findByIdAndUpdate(ids[i], {
+						percentage: percentage,
+						price_display: (car.price * (1 + percentage / 100)).toFixed(2)
+					});
+				}
+
+				if (type === TYPE_PRICE_DISPLAY.PRICE) {
+					if (!price) {
+						return res.status(200).json({
+							error_code: 101,
+							message: req.__('Vui lòng nhập giá tiền')
+						});
+					}
+					await CarModel.findByIdAndUpdate(ids[i], {
+						price_display: Number(car.price) + price,
+						difference_price: price
+					});
+				}
+			}
+			res.status(200).json({
+				message: req.__('Cập nhật thành công'),
+				status: true,
+				status_code: 200
+			});
+		} catch (error) {
+			res.status(500).json({ message: error.message, error_code: 500 });
+		}
+	}
+
+	async create(req, res) {
+		try {
 		} catch (error) {
 			res.status(500).json({ message: error.message, error_code: 500 });
 		}

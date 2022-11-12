@@ -35,5 +35,11 @@
 	"Server error": "Server error",
 	"Get supports successfully": "Get supports successfully",
 	"Get support successfully": "Get support successfully",
-	"Edit support successfully": "Edit support successfully"
+	"Edit support successfully": "Edit support successfully",
+	"Vui lòng lựa chọn xe khác với giá tiền là số": "Vui lòng lựa chọn xe khác với giá tiền là số",
+	"Cập nhật thành công": "Cập nhật thành công",
+	"Loại dữ liệu không chính xác": "Loại dữ liệu không chính xác",
+	"Vui lòng nhập giá tiền": "Vui lòng nhập giá tiền",
+	"Yêu cầu trạng thái hotsale": "Yêu cầu trạng thái hotsale",
+	"Cập nhật danh sách hotsale thành công": "Cập nhật danh sách hotsale thành công"
 }

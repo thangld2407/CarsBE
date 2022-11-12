@@ -134,6 +134,21 @@ const CarSchema = new mongoose.Schema(
 		is_deleted: {
 			type: Boolean,
 			default: false
+		},
+
+		price_display: {
+			type: String,
+			trim: true
+		},
+
+		percentage: {
+			type: Number,
+			trim: true
+		},
+
+		difference_price: {
+			type: Number,
+			trim: true
 		}
 	},
 	{

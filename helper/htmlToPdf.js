@@ -8,7 +8,7 @@ function htmlToPdf(url) {
 			await page.goto(url, { waitUntil: 'networkidle2' });
 			const pdf = await page.pdf({
 				format: 'A4',
-				path: `./public/uploads/${Date.now()}.pdf`
+				path: `./public/uploads/performance-check-${Date.now()}-${Math.random()}.pdf`
 			});
 			await browser.close();
 			resolve(pdf);
@@ -18,10 +18,4 @@ function htmlToPdf(url) {
 	});
 }
 
-htmlToPdf('https://www.djauto.co.kr/car/carViewFrameUsedCarCheck.html?checkFlag=424935')
-	.then(pdf => {
-		console.log('pdf created');
-	})
-	.catch(error => {
-		console.log(error);
-	});
+module.exports = htmlToPdf;

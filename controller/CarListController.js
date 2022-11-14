@@ -1,8 +1,10 @@
 const { TYPE_PRICE_DISPLAY } = require('../constants/type');
 const convertImageToLinkServer = require('../helper/dowloadImage');
+const generateUUID = require('../helper/generateUUID');
 const htmlToPdf = require('../helper/htmlToPdf');
 const isNumberWithValue = require('../helper/isNumber');
 const { pagination } = require('../helper/pagination');
+const { isArray } = require('../helper/validation');
 const CarModel = require('../model/CarModel');
 const CarTypeModel = require('../model/Category');
 
@@ -19,11 +21,8 @@ class CarsController {
 			const hasCarDb = await CarModel.find({
 				car_code: data.basic_infor.car_code
 			});
-			const hasCategory = await CarTypeModel.findOne({
-				car_type_name: data.basic_infor.category
-			});
 
-			if (hasCarDb.length === 0 && hasCategory) {
+			if (hasCarDb.length === 0) {
 				let list_image_converted = [];
 				if (data.basic_infor.list_image.length > 0) {
 					for (let i = 0; i < data.basic_infor.list_image.length; i++) {
@@ -63,7 +62,7 @@ class CarsController {
 					mortgage: data.basic_infor.mortgage,
 					presentation_number: data.basic_infor.presentation_number,
 					storage_location: data.basic_infor.storage_location,
-					category: hasCategory._id,
+					category: data.basic_infor.category,
 					primary_image: primary_image_convert,
 					price_display: price_convert,
 
@@ -340,8 +339,276 @@ class CarsController {
 
 	async create(req, res) {
 		try {
+			let {
+				car_name,
+				price,
+				car_code,
+				license_plate,
+				year_manufacture,
+				distance_driven,
+				fuel_type,
+				cylinder_capacity,
+				color,
+				gearbox,
+				category,
+				performance_check,
+				phone_contact,
+				images,
+				car_type,
+				seizure,
+				mortgage,
+				presentation_number,
+				storage_location,
+				exterior,
+				guts,
+				safety,
+				convenience,
+				seller_name,
+				employee_number,
+				affiliated_company,
+				business_address,
+				parking_location
+			} = req.body;
+
+			if (!car_name) {
+				return res.status(200).json({
+					message: req.__('Vui lòng nhập tên xe'),
+					error_code: 101,
+					status: false
+				});
+			}
+
+			if (!car_type) {
+				return res.status(200).json({
+					message: req.__('Vui lòng chọn loại xe'),
+					error_code: 101,
+					status: false
+				});
+			}
+
+			if (!price) {
+				return res.status(200).json({
+					message: req.__('Vui lòng nhập giá xe'),
+					error_code: 101,
+					status: false
+				});
+			}
+
+			if (!car_code) {
+				car_code = generateUUID();
+			}
+
+			if (!license_plate) {
+				return res.status(200).json({
+					message: req.__('Vui lòng nhập biển số xe'),
+					error_code: 101,
+					status: false
+				});
+			}
+
+			if (!year_manufacture) {
+				return res.status(200).json({
+					message: req.__('Vui lòng nhập năm sản xuất'),
+					error_code: 101,
+					status: false
+				});
+			}
+
+			if (!distance_driven) {
+				return res.status(200).json({
+					message: req.__('Vui lòng nhập số km đã đi'),
+					error_code: 101,
+					status: false
+				});
+			}
+
+			if (!fuel_type) {
+				return res.status(200).json({
+					message: req.__('Vui lòng nhập loại nhiên liệu'),
+					error_code: 101,
+					status: false
+				});
+			}
+
+			if (!gearbox) {
+				return res.status(200).json({
+					message: req.__('Vui lòng nhập hộp số'),
+					error_code: 101,
+					status: false
+				});
+			}
+
+			if (!cylinder_capacity) {
+				return res.status(200).json({
+					message: req.__('Vui lòng nhập dung tích xi lanh'),
+					error_code: 101,
+					status: false
+				});
+			}
+
+			if (!color) {
+				return res.status(200).json({
+					message: req.__('Vui lòng nhập màu xe'),
+					error_code: 101,
+					status: false
+				});
+			}
+
+			if (!category) {
+				return res.status(200).json({
+					message: req.__('Vui lòng nhập danh mục xe'),
+					error_code: 101,
+					status: false
+				});
+			}
+
+			if (!performance_check) {
+				return res.status(200).json({
+					message: req.__('Vui lòng nhập thông số kỹ thuật'),
+					error_code: 101,
+					status: false
+				});
+			}
+
+			if (!phone_contact) {
+				return res.status(200).json({
+					message: req.__('Vui lòng nhập số điện thoại liên hệ'),
+					error_code: 101,
+					status: false
+				});
+			}
+
+			if (!isArray(images)) {
+				return res.status(200).json({
+					message: req.__('Loại dữ liệu ảnh nhập vào không đúng'),
+					error_code: 104,
+					status: false
+				});
+			}
+
+			if (guts && !isArray(guts)) {
+				return res.status(200).json({
+					message: req.__('Loại dữ liệu nội thất nhập vào không đúng'),
+					error_code: 104,
+					status: false
+				});
+			}
+
+			if (exterior && !isArray(exterior)) {
+				return res.status(200).json({
+					message: req.__('Loại dữ liệu ngoại thất nhập vào không đúng'),
+					error_code: 104,
+					status: false
+				});
+			}
+
+			if (safety && !isArray(safety)) {
+				return res.status(200).json({
+					message: req.__('Loại dữ liệu an toàn nhập vào không đúng'),
+					error_code: 104,
+					status: false
+				});
+			}
+
+			if (convenience && !isArray(convenience)) {
+				return res.status(200).json({
+					message: req.__('Loại dữ liệu tiện nghi nhập vào không đúng'),
+					error_code: 104,
+					status: false
+				});
+			}
+
+			if (price && typeof price !== 'number') {
+				return res.status(200).json({
+					message: req.__('Loại dữ liệu giá nhập vào không đúng'),
+					error_code: 104,
+					status: false
+				});
+			}
+
+			if (year_manufacture && typeof year_manufacture !== 'number') {
+				return res.status(200).json({
+					message: req.__('Loại dữ liệu năm sản xuất nhập vào không đúng'),
+					error_code: 104,
+					status: false
+				});
+			}
+
+			if (distance_driven && typeof distance_driven !== 'number') {
+				return res.status(200).json({
+					message: req.__('Loại dữ liệu số km đã đi nhập vào không đúng'),
+					error_code: 104,
+					status: false
+				});
+			}
+
+			const hasCar = await CarModel.findOne({
+				car_code: car_code
+			});
+
+			if (hasCar) {
+				return res.status(200).json({
+					message: req.__('Mã xe đã tồn tại'),
+					error_code: 101,
+					status: false
+				});
+			}
+
+			const newCar = new CarModel({
+				car_name,
+				price,
+				car_code,
+				license_plate,
+				year_manufacture,
+				distance_driven,
+				fuel_type,
+				cylinder_capacity,
+				color,
+				gearbox,
+				category,
+				performance_check,
+				phone_contact,
+				images,
+				car_type,
+				seizure,
+				mortgage,
+				presentation_number,
+				storage_location,
+				exterior,
+				guts,
+				safety,
+				convenience,
+				seller_name,
+				employee_number,
+				affiliated_company,
+				business_address,
+				parking_location
+			});
+
+			await newCar.save();
+
+			return res.status(200).json({
+				message: req.__('Thêm mới thành công'),
+				status: true,
+				status_code: 200
+			});
 		} catch (error) {
-			res.status(500).json({ message: error.message, error_code: 500 });
+			res.status(500).json({
+				message: 'Server error',
+				error: error.message,
+				error_code: 500
+			});
+		}
+	}
+
+	async edit(req, res) {
+		try {
+		} catch (error) {
+			res.status(500).json({
+				message: 'Server error',
+				error: error.message,
+				error_code: 500
+			});
 		}
 	}
 }

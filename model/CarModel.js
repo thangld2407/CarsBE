@@ -77,8 +77,8 @@ const CarSchema = new mongoose.Schema(
 			default: []
 		},
 		category: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Category'
+			type: String,
+			trim: true
 		},
 		// Detail Vehicle
 

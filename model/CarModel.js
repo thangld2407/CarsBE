@@ -8,7 +8,7 @@ const CarSchema = new mongoose.Schema(
 			trim: true
 		},
 		price: {
-			type: String,
+			type: Number,
 			trim: true
 		},
 		car_code: {
@@ -24,7 +24,7 @@ const CarSchema = new mongoose.Schema(
 			trim: true
 		},
 		distance_driven: {
-			type: String,
+			type: Number,
 			trim: true
 		},
 		fuel_type: {
@@ -143,12 +143,14 @@ const CarSchema = new mongoose.Schema(
 
 		percentage: {
 			type: Number,
-			trim: true
+			trim: true,
+			default: 0
 		},
 
 		difference_price: {
 			type: Number,
-			trim: true
+			trim: true,
+			default: 0
 		}
 	},
 	{

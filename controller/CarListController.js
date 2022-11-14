@@ -1,5 +1,7 @@
 const { TYPE_PRICE_DISPLAY } = require('../constants/type');
 const convertImageToLinkServer = require('../helper/dowloadImage');
+const htmlToPdf = require('../helper/htmlToPdf');
+const isNumberWithValue = require('../helper/isNumber');
 const { pagination } = require('../helper/pagination');
 const CarModel = require('../model/CarModel');
 const CarTypeModel = require('../model/Category');
@@ -29,19 +31,29 @@ class CarsController {
 						list_image_converted.push(link);
 					}
 				}
+
 				let primary_image_convert = convertImageToLinkServer(
 					data.basic_infor.primary_image
 				);
+
+				let htmlPdf;
+
+				if (data.vehicle_detail.performance_check) {
+					htmlPdf = await htmlToPdf(data.vehicle_detail.performance_check);
+				}
+
+				let price_convert = isNumberWithValue(data.basic_infor.price);
+
 				const car = new CarModel({
 					images: list_image_converted,
 					car_name: data.basic_infor.car_name,
-					price: data.basic_infor.price,
+					price: price_convert,
 					car_code: data.basic_infor.car_code,
 					license_plate: data.basic_infor.license_plate,
 					year_manufacture: data.basic_infor.year_manufacture,
-					distance_driven: data.basic_infor.distance_driven
-						.replace(/,/g, '')
-						.replace('km', ''),
+					distance_driven: isNumberWithValue(
+						data.basic_infor.distance_driven.replace(/,/g, '').replace('km', '')
+					),
 					fuel_type: data.basic_infor.fuel_type,
 					gearbox: data.basic_infor.gearbox,
 					cylinder_capacity: data.basic_infor.cylinder_capacity,
@@ -53,6 +65,7 @@ class CarsController {
 					storage_location: data.basic_infor.storage_location,
 					category: hasCategory._id,
 					primary_image: primary_image_convert,
+					price_display: price_convert,
 
 					seller_name: data.seller.seller_name,
 					phone_contact: data.seller.phone_contact,
@@ -66,7 +79,7 @@ class CarsController {
 					safety: data.vehicle_detail.safety,
 					convenience: data.vehicle_detail.convenience,
 
-					performance_check: data.vehicle_detail.performance_check
+					performance_check: htmlPdf
 				});
 				await car.save();
 				res.status(200).json({
@@ -80,7 +93,11 @@ class CarsController {
 				});
 			}
 		} catch (error) {
-			res.status(500).json({ message: error.message });
+			res.status(500).json({
+				message: error.message,
+				error_code: 500,
+				error_message: req.__('Server error')
+			});
 		}
 	}
 

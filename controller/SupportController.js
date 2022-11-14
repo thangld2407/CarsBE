@@ -39,8 +39,9 @@ class SupportController {
 				content
 			});
 			await new_opinion.save();
+			const rootUser = await UserModel.findOne({ root_user: true });
 			await sendEmail({
-				email: process.env.ADMIN_EMAIL || 'thangld2407@gmail.com',
+				email: rootUser.email || process.env.ADMIN_EMAIL || 'thangld2407@gmail.com',
 				subject: 'Bạn có một yêu cầu hỗ trợ mới',
 				html: template(name, content)
 			});

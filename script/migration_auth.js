@@ -14,8 +14,8 @@ async function MigrationAuth() {
 	console.log('Migration is running');
 	try {
 		const auth = {
-			email: 'thangld2407@gmail.com',
-			password: 'admin'
+			email: process.env.ADMIN_EMAIL || 'thangld2407@gmail.com',
+			password: '123456'
 		};
 		console.log('Đang tìm kiếm user');
 		const hasUser = await UserModel.findOne({ email: auth.email });
@@ -23,7 +23,9 @@ async function MigrationAuth() {
 			console.log('Khởi tạo người dùng mới');
 			const newData = new UserModel({
 				email: auth.email,
-				password: hashPassword(auth.password)
+				password: hashPassword(auth.password),
+				root_user: true,
+				email_notification: process.env.ADMIN_EMAIL || 'thangld2407@gmail.com'
 			});
 			console.log('Đang lưu thông tin người dùng');
 			await newData.save();

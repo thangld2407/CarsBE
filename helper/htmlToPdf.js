@@ -1,17 +1,20 @@
 const puppeteer = require('puppeteer');
-
+const path = require('path');
 function htmlToPdf(url) {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const browser = await puppeteer.launch();
 			const page = await browser.newPage();
 			await page.goto(url, { waitUntil: 'networkidle2' });
-			const pdf = await page.pdf({
+			const pathName = `/uploads/performance-check-${Date.now()}-${Math.floor(
+				Math.random() * 1000
+			)}.pdf`;
+			await page.pdf({
 				format: 'A4',
-				path: `./public/uploads/performance-check-${Date.now()}-${Math.random()}.pdf`
+				path: `./public${pathName}`
 			});
 			await browser.close();
-			resolve(pdf);
+			resolve(pathName);
 		} catch (error) {
 			reject(error);
 		}

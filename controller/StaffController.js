@@ -241,6 +241,28 @@ class StaffController {
 			res.status(500).json({ error: error.message });
 		}
 	}
+
+	async public(req, res) {
+		try {
+			const result = await StaffModel.find()
+				.sort({
+					created_at: -1
+				})
+				.lean();
+			res.status(200).json({
+				status: true,
+				status_code: 200,
+				message: req.__('Get staff list successfully'),
+				data: result
+			});
+		} catch (error) {
+			res.status(500).json({
+				message: 'Server error',
+				error: error.message,
+				error_code: 500
+			});
+		}
+	}
 }
 
 module.exports = new StaffController();

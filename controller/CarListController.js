@@ -41,7 +41,7 @@ class CarsController {
 					htmlPdf = await htmlToPdf(data.vehicle_detail.performance_check);
 				}
 
-				let price_convert = isNumberWithValue(data.basic_infor.price);
+				let price_convert = isNumberWithValue(data.basic_infor.price.replace(/,/g, ''));
 
 				const car = new CarModel({
 					images: list_image_converted,
@@ -367,7 +367,8 @@ class CarsController {
 				employee_number,
 				affiliated_company,
 				business_address,
-				parking_location
+				parking_location,
+				primary_image
 			} = req.body;
 
 			if (!car_name) {
@@ -582,7 +583,9 @@ class CarsController {
 				employee_number,
 				affiliated_company,
 				business_address,
-				parking_location
+				parking_location,
+				primary_image,
+				price_display: price
 			});
 
 			await newCar.save();

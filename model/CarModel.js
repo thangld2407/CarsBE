@@ -137,7 +137,7 @@ const CarSchema = new mongoose.Schema(
 		},
 
 		price_display: {
-			type: String,
+			type: Number,
 			trim: true
 		},
 

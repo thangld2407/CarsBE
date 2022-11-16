@@ -94,7 +94,7 @@ class CarsController {
 		} catch (error) {
 			res.status(500).json({
 				message: error.message,
-				error_code: 500,
+				status_code: 500,
 				error_message: req.__('Server error')
 			});
 		}
@@ -205,14 +205,14 @@ class CarsController {
 			if (!car_id) {
 				return res.status(200).json({
 					message: 'car_id is required',
-					error_code: 101
+					status_code: 101
 				});
 			}
 			const car = await CarModel.findOne({ _id: car_id }).populate('category').lean();
 			if (!car) {
 				return res.status(200).json({
 					message: 'Car not found',
-					error_code: 105
+					status_code: 105
 				});
 			}
 
@@ -222,7 +222,7 @@ class CarsController {
 				status_code: 200
 			});
 		} catch (error) {
-			res.status(500).json({ message: error.message, error_code: 500 });
+			res.status(500).json({ message: error.message, status_code: 500 });
 		}
 	}
 
@@ -233,7 +233,7 @@ class CarsController {
 			if (!ids || ids.length === 0) {
 				return res.status(200).json({
 					message: 'List cars id is required',
-					error_code: 101,
+					status_code: 101,
 					status: false
 				});
 			}
@@ -241,7 +241,7 @@ class CarsController {
 			if (typeof is_hotsale !== 'boolean' || typeof is_hotsale === 'undefined') {
 				return res.status(200).json({
 					message: req.__('Yêu cầu trạng thái hotsale'),
-					error_code: 101,
+					status_code: 101,
 					status: false
 				});
 			}
@@ -251,7 +251,7 @@ class CarsController {
 				if (!has_cars) {
 					return res.status(200).json({
 						message: req.__('Cars not found'),
-						error_code: 105,
+						status_code: 105,
 						status: false
 					});
 				}
@@ -265,7 +265,7 @@ class CarsController {
 				status: true
 			});
 		} catch (error) {
-			res.status(500).json({ message: error.message, error_code: 500 });
+			res.status(500).json({ message: error.message, status_code: 500 });
 		}
 	}
 
@@ -276,7 +276,7 @@ class CarsController {
 			if (!ids || ids.length === 0) {
 				return res.status(200).json({
 					message: 'car_id is required',
-					error_code: 101
+					status_code: 101
 				});
 			}
 			for (let i = 0; i < ids.length; i++) {
@@ -284,27 +284,30 @@ class CarsController {
 				if (!car) {
 					return res.status(200).json({
 						message: 'Car not found',
-						error_code: 105
+						status_code: 105
 					});
 				}
 
 				if (!Number(car.price)) {
 					return res.status(200).json({
 						message: req.__('Vui lòng lựa chọn xe khác với giá tiền là số'),
-						error_code: 100
+						status_code: 100
 					});
 				}
 
 				if (!Object.values(TYPE_PRICE_DISPLAY).includes(type)) {
 					return res
 						.status(200)
-						.json({ message: req.__('Loại dữ liệu không chính xác'), error_code: 100 });
+						.json({
+							message: req.__('Loại dữ liệu không chính xác'),
+							status_code: 100
+						});
 				}
 
 				if (type === TYPE_PRICE_DISPLAY.PERCENTAGE) {
 					if (!percentage) {
 						return res.status(200).json({
-							error_code: 101,
+							status_code: 101,
 							message: req.__('Vui lòng nhập phần % giá tiền')
 						});
 					}
@@ -317,7 +320,7 @@ class CarsController {
 				if (type === TYPE_PRICE_DISPLAY.PRICE) {
 					if (!price) {
 						return res.status(200).json({
-							error_code: 101,
+							status_code: 101,
 							message: req.__('Vui lòng nhập giá tiền')
 						});
 					}
@@ -333,7 +336,7 @@ class CarsController {
 				status_code: 200
 			});
 		} catch (error) {
-			res.status(500).json({ message: error.message, error_code: 500 });
+			res.status(500).json({ message: error.message, status_code: 500 });
 		}
 	}
 
@@ -374,7 +377,7 @@ class CarsController {
 			if (!car_name) {
 				return res.status(200).json({
 					message: req.__('Vui lòng nhập tên xe'),
-					error_code: 101,
+					status_code: 101,
 					status: false
 				});
 			}
@@ -382,7 +385,7 @@ class CarsController {
 			if (!car_type) {
 				return res.status(200).json({
 					message: req.__('Vui lòng chọn loại xe'),
-					error_code: 101,
+					status_code: 101,
 					status: false
 				});
 			}
@@ -390,7 +393,7 @@ class CarsController {
 			if (!price) {
 				return res.status(200).json({
 					message: req.__('Vui lòng nhập giá xe'),
-					error_code: 101,
+					status_code: 101,
 					status: false
 				});
 			}
@@ -402,7 +405,7 @@ class CarsController {
 			if (!license_plate) {
 				return res.status(200).json({
 					message: req.__('Vui lòng nhập biển số xe'),
-					error_code: 101,
+					status_code: 101,
 					status: false
 				});
 			}
@@ -410,7 +413,7 @@ class CarsController {
 			if (!year_manufacture) {
 				return res.status(200).json({
 					message: req.__('Vui lòng nhập năm sản xuất'),
-					error_code: 101,
+					status_code: 101,
 					status: false
 				});
 			}
@@ -418,7 +421,7 @@ class CarsController {
 			if (!distance_driven) {
 				return res.status(200).json({
 					message: req.__('Vui lòng nhập số km đã đi'),
-					error_code: 101,
+					status_code: 101,
 					status: false
 				});
 			}
@@ -426,7 +429,7 @@ class CarsController {
 			if (!fuel_type) {
 				return res.status(200).json({
 					message: req.__('Vui lòng nhập loại nhiên liệu'),
-					error_code: 101,
+					status_code: 101,
 					status: false
 				});
 			}
@@ -434,7 +437,7 @@ class CarsController {
 			if (!gearbox) {
 				return res.status(200).json({
 					message: req.__('Vui lòng nhập hộp số'),
-					error_code: 101,
+					status_code: 101,
 					status: false
 				});
 			}
@@ -442,7 +445,7 @@ class CarsController {
 			if (!cylinder_capacity) {
 				return res.status(200).json({
 					message: req.__('Vui lòng nhập dung tích xi lanh'),
-					error_code: 101,
+					status_code: 101,
 					status: false
 				});
 			}
@@ -450,7 +453,7 @@ class CarsController {
 			if (!color) {
 				return res.status(200).json({
 					message: req.__('Vui lòng nhập màu xe'),
-					error_code: 101,
+					status_code: 101,
 					status: false
 				});
 			}
@@ -458,7 +461,7 @@ class CarsController {
 			if (!category) {
 				return res.status(200).json({
 					message: req.__('Vui lòng nhập danh mục xe'),
-					error_code: 101,
+					status_code: 101,
 					status: false
 				});
 			}
@@ -466,7 +469,7 @@ class CarsController {
 			if (!performance_check) {
 				return res.status(200).json({
 					message: req.__('Vui lòng nhập thông số kỹ thuật'),
-					error_code: 101,
+					status_code: 101,
 					status: false
 				});
 			}
@@ -474,7 +477,7 @@ class CarsController {
 			if (!phone_contact) {
 				return res.status(200).json({
 					message: req.__('Vui lòng nhập số điện thoại liên hệ'),
-					error_code: 101,
+					status_code: 101,
 					status: false
 				});
 			}
@@ -482,7 +485,7 @@ class CarsController {
 			if (!isArray(images)) {
 				return res.status(200).json({
 					message: req.__('Loại dữ liệu ảnh nhập vào không đúng'),
-					error_code: 104,
+					status_code: 104,
 					status: false
 				});
 			}
@@ -490,7 +493,7 @@ class CarsController {
 			if (guts && !isArray(guts)) {
 				return res.status(200).json({
 					message: req.__('Loại dữ liệu nội thất nhập vào không đúng'),
-					error_code: 104,
+					status_code: 104,
 					status: false
 				});
 			}
@@ -498,7 +501,7 @@ class CarsController {
 			if (exterior && !isArray(exterior)) {
 				return res.status(200).json({
 					message: req.__('Loại dữ liệu ngoại thất nhập vào không đúng'),
-					error_code: 104,
+					status_code: 104,
 					status: false
 				});
 			}
@@ -506,7 +509,7 @@ class CarsController {
 			if (safety && !isArray(safety)) {
 				return res.status(200).json({
 					message: req.__('Loại dữ liệu an toàn nhập vào không đúng'),
-					error_code: 104,
+					status_code: 104,
 					status: false
 				});
 			}
@@ -514,7 +517,7 @@ class CarsController {
 			if (convenience && !isArray(convenience)) {
 				return res.status(200).json({
 					message: req.__('Loại dữ liệu tiện nghi nhập vào không đúng'),
-					error_code: 104,
+					status_code: 104,
 					status: false
 				});
 			}
@@ -522,7 +525,7 @@ class CarsController {
 			if (price && typeof price !== 'number') {
 				return res.status(200).json({
 					message: req.__('Loại dữ liệu giá nhập vào không đúng'),
-					error_code: 104,
+					status_code: 104,
 					status: false
 				});
 			}
@@ -530,7 +533,7 @@ class CarsController {
 			if (year_manufacture && typeof year_manufacture !== 'number') {
 				return res.status(200).json({
 					message: req.__('Loại dữ liệu năm sản xuất nhập vào không đúng'),
-					error_code: 104,
+					status_code: 104,
 					status: false
 				});
 			}
@@ -538,7 +541,7 @@ class CarsController {
 			if (distance_driven && typeof distance_driven !== 'number') {
 				return res.status(200).json({
 					message: req.__('Loại dữ liệu số km đã đi nhập vào không đúng'),
-					error_code: 104,
+					status_code: 104,
 					status: false
 				});
 			}
@@ -550,7 +553,7 @@ class CarsController {
 			if (hasCar) {
 				return res.status(200).json({
 					message: req.__('Mã xe đã tồn tại'),
-					error_code: 101,
+					status_code: 101,
 					status: false
 				});
 			}
@@ -599,7 +602,7 @@ class CarsController {
 			res.status(500).json({
 				message: 'Server error',
 				error: error.message,
-				error_code: 500
+				status_code: 500
 			});
 		}
 	}
@@ -610,7 +613,7 @@ class CarsController {
 			res.status(500).json({
 				message: 'Server error',
 				error: error.message,
-				error_code: 500
+				status_code: 500
 			});
 		}
 	}

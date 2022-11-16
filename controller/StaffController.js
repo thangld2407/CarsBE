@@ -16,21 +16,21 @@ class StaffController {
 		try {
 			if (!staff_name) {
 				return res.status(200).json({
-					error_code: 101,
+					status_code: 101,
 					error_message: req.__('Staff name must be required')
 				});
 			}
 
 			if (!staff_email) {
 				return res.status(200).json({
-					error_code: 101,
+					status_code: 101,
 					error_message: req.__('Staff email must be required')
 				});
 			}
 
 			if (!staff_description) {
 				return res.status(200).json({
-					error_code: 101,
+					status_code: 101,
 					error_message: req.__('Staff description must be required')
 				});
 			}
@@ -38,7 +38,7 @@ class StaffController {
 			const is_exist = await StaffModel.findOne({ staff_email });
 			if (is_exist) {
 				return res.status(200).json({
-					error_code: 102,
+					status_code: 102,
 					error_message: req.__('Staff already exists')
 				});
 			}
@@ -70,7 +70,7 @@ class StaffController {
 			const { id } = req.params;
 			if (!id) {
 				return res.status(200).json({
-					error_code: 101,
+					status_code: 101,
 					error_message: req.__('Staff id must be required')
 				});
 			}
@@ -78,7 +78,7 @@ class StaffController {
 
 			if (!staff) {
 				return res.status(200).json({
-					error_code: 105,
+					status_code: 105,
 					error_message: req.__('Staff not found')
 				});
 			}
@@ -110,7 +110,7 @@ class StaffController {
 
 			if (!id) {
 				return res.status(200).json({
-					error_code: 101,
+					status_code: 101,
 					error_message: req.__('Staff id must be required')
 				});
 			}
@@ -119,7 +119,7 @@ class StaffController {
 
 			if (!staff) {
 				return res.status(200).json({
-					error_code: 105,
+					status_code: 105,
 					error_message: req.__('Staff not found')
 				});
 			}
@@ -130,7 +130,7 @@ class StaffController {
 
 			if (is_exist_email && is_exist_email._id != id) {
 				return res.status(200).json({
-					error_code: 102,
+					status_code: 102,
 					error_message: req.__('Staff email already exists')
 				});
 			}
@@ -165,7 +165,7 @@ class StaffController {
 			const { ids } = req.body;
 			if (!ids && ids.length === 0) {
 				return res.status(200).json({
-					error_code: 101,
+					status_code: 101,
 					error_message: req.__('Staff id must be required')
 				});
 			}
@@ -174,7 +174,7 @@ class StaffController {
 				const staff = await StaffModel.findOne({ _id: ids[i] });
 				if (!staff) {
 					return res.status(200).json({
-						error_code: 105,
+						status_code: 105,
 						error_message: req.__('Staff not found')
 					});
 				}
@@ -259,7 +259,7 @@ class StaffController {
 			res.status(500).json({
 				message: 'Server error',
 				error: error.message,
-				error_code: 500
+				status_code: 500
 			});
 		}
 	}

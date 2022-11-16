@@ -24,7 +24,7 @@ class FilterListController {
 		} catch (error) {
 			res.status(500).json({
 				error: error.message,
-				error_code: 500,
+				status_code: 500,
 				message: req.__('Server error')
 			});
 		}
@@ -51,7 +51,7 @@ class FilterListController {
 		} catch (error) {
 			res.status(500).json({
 				error: error.message,
-				error_code: 500,
+				status_code: 500,
 				message: req.__('Server error')
 			});
 		}
@@ -78,7 +78,7 @@ class FilterListController {
 		} catch (error) {
 			res.status(500).json({
 				error: error.message,
-				error_code: 500,
+				status_code: 500,
 				message: req.__('Server error')
 			});
 		}
@@ -107,7 +107,7 @@ class FilterListController {
 		} catch (error) {
 			res.status(500).json({
 				error: error.message,
-				error_code: 500,
+				status_code: 500,
 				message: req.__('Server error')
 			});
 		}

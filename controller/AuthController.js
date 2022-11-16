@@ -13,14 +13,14 @@ class AuthController {
 			if (!user) {
 				return res.status(200).json({
 					message: req.__('User not found'),
-					error_code: 105
+					status_code: 105
 				});
 			}
 			const isMatch = comparePassword(password, user.password);
 			if (!isMatch) {
 				return res.status(200).json({
 					message: req.__('Password is incorrect'),
-					error_code: 106
+					status_code: 106
 				});
 			}
 			const token = generateAccessToken({ user });
@@ -39,7 +39,7 @@ class AuthController {
 				refresh_token
 			});
 		} catch (error) {
-			res.status(500).json({ message: error.message, error_code: 500 });
+			res.status(500).json({ message: error.message, status_code: 500 });
 		}
 	}
 
@@ -49,7 +49,7 @@ class AuthController {
 			if (!refresh_token) {
 				return res.status(200).json({
 					message: req.__('Refresh token is required'),
-					error_code: 101,
+					status_code: 101,
 					status: false
 				});
 			}
@@ -57,7 +57,7 @@ class AuthController {
 			if (!token) {
 				return res.status(200).json({
 					message: req.__('Refresh token is invalid'),
-					error_code: 106,
+					status_code: 106,
 					status: false
 				});
 			}
@@ -65,7 +65,7 @@ class AuthController {
 			if (!isVerifyToken) {
 				return res.status(200).json({
 					message: req.__('Refresh token is invalid'),
-					error_code: 106,
+					status_code: 106,
 					status: false
 				});
 			}
@@ -91,7 +91,7 @@ class AuthController {
 			res.status(500).json({
 				message: req.__('Server error'),
 				error_message: error.message,
-				error_code: 500
+				status_code: 500
 			});
 		}
 	}

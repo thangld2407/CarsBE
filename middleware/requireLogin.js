@@ -12,7 +12,7 @@ module.exports = async (req, res, next) => {
 		if (!token) {
 			return res.status(404).json({
 				message: req.__('Unauthorization'),
-				error_code: 404
+				status_code: 404
 			});
 		}
 
@@ -22,15 +22,15 @@ module.exports = async (req, res, next) => {
 		} catch (err) {
 			return res.status(500).json({
 				message: err.message,
-				error_code: 500
+				status_code: 500
 			});
 		}
 		const user = await UserModel.findById(decoded.user._id);
 		if (!user) {
-			return res.status(404).json({ message: 'Unauthorization', error_code: 404 });
+			return res.status(404).json({ message: 'Unauthorization', status_code: 404 });
 		}
 		next();
 	} catch (err) {
-		res.status(500).json({ error: err.message, error_code: 500 });
+		res.status(500).json({ error: err.message, status_code: 500 });
 	}
 };

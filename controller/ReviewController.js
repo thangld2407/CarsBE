@@ -7,13 +7,13 @@ class ReviewController {
 			const { title, content, writer, images, primary_image } = req.body;
 			if (!title) {
 				return res.status(200).json({
-					error_code: 101,
+					status_code: 101,
 					error_message: req.__('Title must be required')
 				});
 			}
 			if (!content) {
 				return res.status(200).json({
-					error_code: 101,
+					status_code: 101,
 					error_message: req.__('Content must be required')
 				});
 			}
@@ -37,7 +37,7 @@ class ReviewController {
 			res.status(500).json({
 				message: 'Server error',
 				error: error.message,
-				error_code: 500
+				status_code: 500
 			});
 		}
 	}
@@ -89,7 +89,7 @@ class ReviewController {
 			res.status(500).json({
 				message: 'Server error',
 				error: error.message,
-				error_code: 500
+				status_code: 500
 			});
 		}
 	}
@@ -99,21 +99,21 @@ class ReviewController {
 			const { review_id, content, images, primary_image, writer } = req.body;
 			if (!review_id) {
 				return res.status(200).json({
-					error_code: 101,
+					status_code: 101,
 					error_message: req.__('Review id must be required')
 				});
 			}
 			const is_exist = await ReviewModel.findOne({ _id: review_id });
 			if (!is_exist) {
 				return res.status(200).json({
-					error_code: 105,
+					status_code: 105,
 					error_message: req.__('Review not found')
 				});
 			}
 
 			if (content && content === '') {
 				return res.status(200).json({
-					error_code: 101,
+					status_code: 101,
 					error_message: req.__('Content must be required')
 				});
 			}
@@ -138,7 +138,7 @@ class ReviewController {
 			res.status(500).json({
 				message: 'Server error',
 				error: error.message,
-				error_code: 500
+				status_code: 500
 			});
 		}
 	}
@@ -148,14 +148,14 @@ class ReviewController {
 			const { review_id } = req.body;
 			if (!review_id) {
 				return res.status(200).json({
-					error_code: 101,
+					status_code: 101,
 					error_message: req.__('Review id must be required')
 				});
 			}
 			const result = await ReviewModel.findOne({ _id: review_id });
 			if (!result) {
 				return res.status(200).json({
-					error_code: 105,
+					status_code: 105,
 					error_message: req.__('Review not found')
 				});
 			}
@@ -169,7 +169,7 @@ class ReviewController {
 			res.status(500).json({
 				message: 'Server error',
 				error: error.message,
-				error_code: 500
+				status_code: 500
 			});
 		}
 	}
@@ -179,7 +179,7 @@ class ReviewController {
 			const { ids } = req.body;
 			if (!ids) {
 				return res.status(200).json({
-					error_code: 101,
+					status_code: 101,
 					error_message: req.__('Review id must be required')
 				});
 			}
@@ -188,7 +188,7 @@ class ReviewController {
 				const is_exist = await ReviewModel.findOne({ _id: ids[0] });
 				if (!is_exist) {
 					return res.status(200).json({
-						error_code: 105,
+						status_code: 105,
 						error_message: req.__('Review not found')
 					});
 				}
@@ -204,7 +204,7 @@ class ReviewController {
 			res.status(500).json({
 				message: 'Server error',
 				error: error.message,
-				error_code: 500
+				status_code: 500
 			});
 		}
 	}

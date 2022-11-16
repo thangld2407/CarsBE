@@ -7,7 +7,7 @@ class CarTypeController {
 			const is_exist = await CategoryModel.findOne({ category_name: category_name.trim() });
 			if (is_exist) {
 				return res.status(200).json({
-					error_code: 102,
+					status_code: 102,
 					error_message: req.__('Car type already exists')
 				});
 			}
@@ -43,7 +43,7 @@ class CarTypeController {
 				data: list_category
 			});
 		} catch (error) {
-			res.status(500).json({ message: error.message, error_code: 500 });
+			res.status(500).json({ message: error.message, status_code: 500 });
 		}
 	}
 }

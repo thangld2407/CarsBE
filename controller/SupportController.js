@@ -10,7 +10,7 @@ class SupportController {
 		const { name, phone, content } = req.body;
 		if (!name) {
 			return res.status(200).json({
-				error_code: 101,
+				status_code: 101,
 				error_message: req.__('Name must be required'),
 				status: false
 			});
@@ -18,7 +18,7 @@ class SupportController {
 
 		if (!phone) {
 			return res.status(200).json({
-				error_code: 101,
+				status_code: 101,
 				error_message: req.__('Phone must be required'),
 				status: false
 			});
@@ -26,7 +26,7 @@ class SupportController {
 
 		if (!content) {
 			return res.status(200).json({
-				error_code: 101,
+				status_code: 101,
 				error_message: req.__('Content must be required'),
 				status: false
 			});
@@ -56,7 +56,7 @@ class SupportController {
 		} catch (error) {
 			res.status(500).json({
 				message: req.__('Server error'),
-				error_code: 500,
+				status_code: 500,
 				error_message: error.message
 			});
 		}
@@ -101,7 +101,7 @@ class SupportController {
 		} catch (error) {
 			res.status(500).json({
 				message: req.__('Server error'),
-				error_code: 500,
+				status_code: 500,
 				error_message: error.message
 			});
 		}
@@ -112,7 +112,7 @@ class SupportController {
 			const { support_id } = req.body;
 			if (!support_id) {
 				return res.status(200).json({
-					error_code: 101,
+					status_code: 101,
 					error_message: req.__('Support id must be required'),
 					status: false
 				});
@@ -120,7 +120,7 @@ class SupportController {
 			const has_support = await SupportModel.findById(support_id);
 			if (!has_support) {
 				return res.status(200).json({
-					error_code: 105,
+					status_code: 105,
 					error_message: req.__('Support not found'),
 					status: false
 				});
@@ -135,7 +135,7 @@ class SupportController {
 		} catch (error) {
 			res.status(500).json({
 				message: req.__('Server error'),
-				error_code: 500,
+				status_code: 500,
 				error_message: error.message
 			});
 		}
@@ -146,7 +146,7 @@ class SupportController {
 			const { support_id, is_process } = req.body;
 			if (!support_id) {
 				return res.status(200).json({
-					error_code: 101,
+					status_code: 101,
 					error_message: req.__('Support id must be required'),
 					status: false
 				});
@@ -155,7 +155,7 @@ class SupportController {
 			const has_support = await SupportModel.findById(support_id);
 			if (!has_support) {
 				return res.status(200).json({
-					error_code: 105,
+					status_code: 105,
 					error_message: req.__('Support not found'),
 					status: false
 				});
@@ -163,7 +163,7 @@ class SupportController {
 
 			if (!is_process || !STATUS_PROCESS.includes(is_process)) {
 				return res.status(200).json({
-					error_code: 100,
+					status_code: 100,
 					error_message: req.__('Invalid status process'),
 					status: false
 				});
@@ -179,7 +179,7 @@ class SupportController {
 		} catch (error) {
 			res.status(500).json({
 				message: req.__('Server error'),
-				error_code: 500,
+				status_code: 500,
 				error_message: error.message
 			});
 		}

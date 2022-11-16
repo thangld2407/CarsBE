@@ -13,5 +13,6 @@ routerApi.use('/review', require('./module/review'));
 routerApi.use('/auth', require('./module/auth'));
 routerApi.use('/support', require('./module/support'));
 routerApi.use('/filter', require('./module/filter_list'));
+routerApi.use('/home', require('./module/home'));
 
 module.exports = routerApi;

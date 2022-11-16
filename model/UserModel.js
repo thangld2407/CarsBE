@@ -33,6 +33,12 @@ const UserSchema = new mongoose.Schema({
 		type: Boolean,
 		default: false
 	},
+	gender: {
+		type: String,
+		trim: true,
+		enum: ['male', 'female'],
+		default: 'male'
+	},
 	email_notification: {
 		type: String,
 		default: process.env.ADMIN_EMAIL || 'thangld2407@gmail.com'

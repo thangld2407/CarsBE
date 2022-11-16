@@ -296,12 +296,10 @@ class CarsController {
 				}
 
 				if (!Object.values(TYPE_PRICE_DISPLAY).includes(type)) {
-					return res
-						.status(200)
-						.json({
-							message: req.__('Loại dữ liệu không chính xác'),
-							status_code: 100
-						});
+					return res.status(200).json({
+						message: req.__('Loại dữ liệu không chính xác'),
+						status_code: 100
+					});
 				}
 
 				if (type === TYPE_PRICE_DISPLAY.PERCENTAGE) {
@@ -600,7 +598,7 @@ class CarsController {
 			});
 		} catch (error) {
 			res.status(500).json({
-				message: 'Server error',
+				message: req.__('Server error'),
 				error: error.message,
 				status_code: 500
 			});
@@ -611,7 +609,7 @@ class CarsController {
 		try {
 		} catch (error) {
 			res.status(500).json({
-				message: 'Server error',
+				message: req.__('Server error'),
 				error: error.message,
 				status_code: 500
 			});

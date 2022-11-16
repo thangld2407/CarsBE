@@ -45,5 +45,15 @@
 	"Root user not found": "Root user not found",
 	"Vui lòng chọn loại xe": "Vui lòng chọn loại xe",
 	"Thêm mới thành công": "Thêm mới thành công",
-	"Password is incorrect": "Password is incorrect"
+	"Password is incorrect": "Password is incorrect",
+	"Old password is incorrect": "Old password is incorrect",
+	"Change password successfully": "Change password successfully",
+	"Password must be at least 6 characters": "Password must be at least 6 characters",
+	"Get user infor successfully": "Get user infor successfully",
+	"Update user infor successfully": "Update user infor successfully",
+	"Get list category success": "Get list category success",
+	"Get list car type success": "Get list car type success",
+	"Create home banner success": "Create home banner success",
+	"Home banner already exists. Please update it": "Home banner already exists. Please update it",
+	"Update home banner success": "Update home banner success"
 }

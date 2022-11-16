@@ -112,6 +112,64 @@ class FilterListController {
 			});
 		}
 	}
+
+	async get_category(req, res) {
+		try {
+			const list = await CarModel.find().select('category').sort({ category: 1 });
+			let list_category = [];
+			list.forEach(item => {
+				if (item.category && item.category !== '') {
+					list_category.push(item.category);
+				}
+			});
+
+			list_category = list_category.filter((item, index) => {
+				return list_category.indexOf(item) === index;
+			});
+
+			res.status(200).json({
+				message: req.__('Get list category success'),
+				data: list_category,
+				status_code: 200,
+				status: true
+			});
+		} catch (error) {
+			res.status(500).json({
+				error: error.message,
+				status_code: 500,
+				message: req.__('Server error')
+			});
+		}
+	}
+
+	async get_car_type(req, res) {
+		try {
+			const list = await CarModel.find().select('car_type').sort({ car_type: 1 });
+			let list_car_type = [];
+			list.forEach(item => {
+				if (item.car_type && item.car_type !== '') {
+					list_car_type.push(item.car_type);
+				}
+			});
+
+			list_car_type = list_car_type.filter((item, index) => {
+				return list_car_type.indexOf(item) === index;
+			});
+
+			res.status(200).json({
+				message: req.__('Get list car type success'),
+				data: list_car_type,
+				status_code: 200,
+				status: true
+			});
+		} catch (error) {
+			res.status(500).json({
+				error: error.message,
+				status_code: 500,
+				message: req.__('Server error')
+			});
+		}
+	}
 }
 
 // Path: routes\api\module\filter_list\index.js

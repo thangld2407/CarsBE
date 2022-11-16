@@ -23,11 +23,13 @@ const UserSchema = new mongoose.Schema({
 	},
 	address: {
 		type: String,
-		trim: true
+		trim: true,
+		default: ''
 	},
 	phone_number: {
 		type: String,
-		trim: true
+		trim: true,
+		default: ''
 	},
 	root_user: {
 		type: Boolean,
@@ -41,6 +43,7 @@ const UserSchema = new mongoose.Schema({
 	},
 	email_notification: {
 		type: String,
+		trim: true,
 		default: process.env.ADMIN_EMAIL || 'thangld2407@gmail.com'
 	}
 });

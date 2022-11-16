@@ -89,7 +89,9 @@ class FilterListController {
 			const list = await CarModel.find().select('color').sort({ color: 1 });
 			let list_color = [];
 			list.forEach(item => {
-				list_color.push(item.color);
+				if (item.color && item.color !== '') {
+					list_color.push(item.color);
+				}
 			});
 
 			list_color = list_color.filter((item, index) => {

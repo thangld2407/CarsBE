@@ -6,17 +6,15 @@ class FilterListController {
 				.select('distance_driven')
 				.sort({ distance_driven: 1 });
 			let list_distance_driven = [];
-			list.forEach(item => {
-				list_distance_driven.push(item.distance_driven.replace(/,/g, '').replace('km', ''));
-			});
 
-			list_distance_driven = list_distance_driven.filter((item, index) => {
-				return list_distance_driven.indexOf(item) === index;
-			});
+			list_distance_driven = list && list.map(item => item.distance_driven);
 
-			list_distance_driven.sort((a, b) => {
-				return a - b;
-			});
+			list_distance_driven =
+				list_distance_driven &&
+				list_distance_driven.filter((item, index) => {
+					return list_distance_driven.indexOf(item) === index;
+				});
+
 			res.status(200).json({
 				message: 'Get list distance driven success',
 				data: list_distance_driven,

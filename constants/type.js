@@ -1,0 +1,8 @@
+const TYPE_PRICE_DISPLAY = {
+	PERCENTAGE: 'PERCENTAGE',
+	PRICE: 'PRICE'
+};
+
+module.exports = {
+	TYPE_PRICE_DISPLAY
+};

@@ -8,7 +8,7 @@ const CarSchema = new mongoose.Schema(
 			trim: true
 		},
 		price: {
-			type: String,
+			type: Number,
 			trim: true
 		},
 		car_code: {
@@ -24,7 +24,7 @@ const CarSchema = new mongoose.Schema(
 			trim: true
 		},
 		distance_driven: {
-			type: String,
+			type: Number,
 			trim: true
 		},
 		fuel_type: {
@@ -66,7 +66,7 @@ const CarSchema = new mongoose.Schema(
 		primary_image: {
 			type: String,
 			trim: true,
-			default: `${process.env.APP_URL}/assets/images/noimage.png`
+			default: `/assets/images/noimage.png`
 		},
 		is_hotsale: {
 			type: Boolean,
@@ -77,8 +77,8 @@ const CarSchema = new mongoose.Schema(
 			default: []
 		},
 		category: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Category'
+			type: String,
+			trim: true
 		},
 		// Detail Vehicle
 
@@ -134,6 +134,23 @@ const CarSchema = new mongoose.Schema(
 		is_deleted: {
 			type: Boolean,
 			default: false
+		},
+
+		price_display: {
+			type: Number,
+			trim: true
+		},
+
+		percentage: {
+			type: Number,
+			trim: true,
+			default: 0
+		},
+
+		difference_price: {
+			type: Number,
+			trim: true,
+			default: 0
 		}
 	},
 	{

@@ -20,7 +20,7 @@ module.exports = async (req, res, next) => {
 		try {
 			decoded = verifyToken(token, jwt_conf.secret);
 		} catch (err) {
-			res.status(500).json({
+			return res.status(500).json({
 				message: err.message,
 				error_code: 500
 			});

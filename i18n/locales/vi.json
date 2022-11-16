@@ -55,5 +55,6 @@
 	"Get list car type success": "Get list car type success",
 	"Create home banner success": "Create home banner success",
 	"Home banner already exists. Please update it": "Home banner already exists. Please update it",
-	"Update home banner success": "Update home banner success"
+	"Update home banner success": "Update home banner success",
+	"Get home banner success": "Get home banner success"
 }

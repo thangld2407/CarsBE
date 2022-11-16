@@ -65,6 +65,32 @@ class HomeController {
 			});
 		}
 	}
+
+	async get(req, res) {
+		try {
+			const hasUnsetBanner = await HomeModel.findOne({ is_banner: true }).lean();
+			if (!hasUnsetBanner) {
+				return res.status(200).json({
+					message: req.__('Get home banner success'),
+					status_code: 200,
+					status: true,
+					data: '/assets/images/banner.jpg'
+				});
+			}
+			res.status(200).json({
+				message: req.__('Get home banner success'),
+				status_code: 200,
+				status: true,
+				data: hasUnsetBanner.image
+			});
+		} catch (error) {
+			res.status(500).json({
+				error: error.message,
+				status_code: 500,
+				message: req.__('Server error')
+			});
+		}
+	}
 }
 
 module.exports = new HomeController();

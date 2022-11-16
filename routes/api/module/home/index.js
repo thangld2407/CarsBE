@@ -4,7 +4,7 @@ const requireLogin = require('../../../../middleware/requireLogin');
 const router = require('express').Router();
 
 router.get('/banner/get', HomeController.get);
-router.post('/banner/create', requireLogin, HomeController.create);
-router.post('/banner/update', requireLogin, HomeController.update);
+// router.post('/banner/create', requireLogin, HomeController.create);
+router.post('/banner/update', requireLogin, HomeController.create); //thay create bằng update
 
 module.exports = router;

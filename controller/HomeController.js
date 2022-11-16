@@ -10,10 +10,11 @@ class HomeController {
 
 			const hasUnsetBanner = await HomeModel.findOne({ is_banner: true });
 			if (hasUnsetBanner) {
-				return res.status(200).json({
-					message: req.__('Home banner already exists. Please update it'),
-					status_code: 102,
-					status: false
+				await HomeModel.findOneAndUpdate({ is_banner: true }, { image });
+				res.status(200).json({
+					message: req.__('Update home banner success'),
+					status_code: 200,
+					status: true
 				});
 			}
 

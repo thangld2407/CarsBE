@@ -5,7 +5,13 @@ function htmlToPdf(url) {
 		try {
 			const browser = await puppeteer.launch();
 			const page = await browser.newPage();
-			await page.goto(url, { waitUntil: 'networkidle2' });
+
+			page.on('dialog', dialog => {
+				dialog.accept();
+			});
+
+			await page.goto(url);
+
 			const pathName = `/uploads/performance-check-${Date.now()}-${Math.floor(
 				Math.random() * 1000
 			)}.pdf`;
@@ -16,6 +22,7 @@ function htmlToPdf(url) {
 			await browser.close();
 			resolve(pathName);
 		} catch (error) {
+			htmlToPdf(url);
 			reject(error);
 		}
 	});

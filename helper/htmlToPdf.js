@@ -10,17 +10,23 @@ function htmlToPdf(url) {
 				dialog.accept();
 			});
 
-			await page.goto(url);
+			await page.goto(url, { waitUntil: 'networkidle2' });
 
-			const pathName = `/uploads/performance-check-${Date.now()}-${Math.floor(
-				Math.random() * 1000
-			)}.pdf`;
-			await page.pdf({
-				format: 'A4',
-				path: `./public${pathName}`
-			});
-			await browser.close();
-			resolve(pathName);
+			let hasIdPrint = await page.$('#idPrint');
+
+			if (hasIdPrint) {
+				const pathName = `/uploads/performance-check-${Date.now()}-${Math.floor(
+					Math.random() * 1000
+				)}.pdf`;
+				await page.pdf({
+					format: 'A4',
+					path: `./public${pathName}`
+				});
+				await browser.close();
+				resolve(pathName);
+			} else {
+				resolve(null);
+			}
 		} catch (error) {
 			htmlToPdf(url);
 			reject(error);

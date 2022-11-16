@@ -9,7 +9,7 @@ class AuthController {
 	async login(req, res) {
 		try {
 			const { email, password } = req.body;
-			const user = await UserModel.findOne({ email });
+			const user = await UserModel.findOne({ email }).lean();
 			if (!user) {
 				return res.status(200).json({
 					message: req.__('User not found'),
@@ -32,12 +32,15 @@ class AuthController {
 
 			await newToken.save();
 
+			const userFind = await UserModel.findOne({ _id: user._id }, '-password').lean();
+
 			res.status(200).json({
 				message: req.__('Logged in successfully'),
 				access_token: token,
 				access_token_expires_in: `${config.jwt_conf.tokenLife / 60}m`,
 				refresh_token,
-				status_code: 200
+				status_code: 200,
+				user: userFind
 			});
 		} catch (error) {
 			res.status(500).json({ message: error.message, status_code: 500 });
@@ -110,7 +113,7 @@ class AuthController {
 			}
 			const user = await UserModel.findOne(
 				{ email: isVerifyToken.user.email },
-				'--password'
+				'-password'
 			).lean();
 			if (!user) {
 				return res.status(200).json({

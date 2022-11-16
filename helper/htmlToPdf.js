@@ -3,7 +3,11 @@ const path = require('path');
 function htmlToPdf(url) {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const browser = await puppeteer.launch();
+			const browser = await puppeteer.launch({
+				headless: true,
+				args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+				ignoreHTTPSErrors: true
+			});
 			const page = await browser.newPage();
 
 			page.on('dialog', dialog => {

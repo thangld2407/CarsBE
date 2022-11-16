@@ -69,20 +69,21 @@ class AuthController {
 					status: false
 				});
 			}
+
 			const newToken = generateAccessToken({ user: isVerifyToken.user });
 			const newRefreshToken = generateRefreshToken({ user: isVerifyToken.user });
 
 			const newRefreshTokenSave = new TokenModel({
 				token: newRefreshToken
 			});
-
+			await TokenModel.findOneAndRemove({ token: token.token });
 			await newRefreshTokenSave.save();
 
 			res.status(200).json({
 				message: req.__('Relogin in successfully'),
 				access_token: newToken,
 				access_token_expires_in: `${config.jwt_conf.tokenLife / 60}m`,
-				refesh_token: newRefreshToken,
+				refresh_token: newRefreshToken,
 				status: true,
 				status_code: 200
 			});

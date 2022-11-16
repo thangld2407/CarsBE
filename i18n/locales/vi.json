@@ -31,5 +31,18 @@
 	"User not found": "User not found",
 	"Refresh token is invalid": "Refresh token is invalid",
 	"Relogin in successfully": "Relogin in successfully",
-	"Remove staff successfully": "Remove staff successfully"
+	"Remove staff successfully": "Remove staff successfully",
+	"Server error": "Server error",
+	"Get supports successfully": "Get supports successfully",
+	"Get support successfully": "Get support successfully",
+	"Edit support successfully": "Edit support successfully",
+	"Vui lòng lựa chọn xe khác với giá tiền là số": "Vui lòng lựa chọn xe khác với giá tiền là số",
+	"Cập nhật thành công": "Cập nhật thành công",
+	"Loại dữ liệu không chính xác": "Loại dữ liệu không chính xác",
+	"Vui lòng nhập giá tiền": "Vui lòng nhập giá tiền",
+	"Yêu cầu trạng thái hotsale": "Yêu cầu trạng thái hotsale",
+	"Cập nhật danh sách hotsale thành công": "Cập nhật danh sách hotsale thành công",
+	"Root user not found": "Root user not found",
+	"Vui lòng chọn loại xe": "Vui lòng chọn loại xe",
+	"Thêm mới thành công": "Thêm mới thành công"
 }

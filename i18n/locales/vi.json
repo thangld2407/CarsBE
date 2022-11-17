@@ -58,7 +58,7 @@
 	"Update home banner success": "Cập nhật banner trang chủ thành công",
 	"Get home banner success": "Lấy banner trang chủ thành công",
 	"Get list price success": "Lấy danh sách giá thành công",
-	"File name is required": "File name is required",
-	"Delete file success": "Delete file success",
-	"File not found": "File not found"
+	"File name is required": "Tên tệp không được để trống",
+	"Delete file success": "Xóa tệp thành công",
+	"File not found": "Không tìm thấy tệp"
 }

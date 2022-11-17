@@ -1,3 +1,5 @@
+const requireLogin = require('../../middleware/requireLogin');
+
 const routerApi = require('express').Router();
 
 routerApi.get('/', (req, res) => {
@@ -14,5 +16,6 @@ routerApi.use('/auth', require('./module/auth'));
 routerApi.use('/support', require('./module/support'));
 routerApi.use('/filter', require('./module/filter_list'));
 routerApi.use('/home', require('./module/home'));
+routerApi.use('/file', requireLogin, require('./module/file'));
 
 module.exports = routerApi;

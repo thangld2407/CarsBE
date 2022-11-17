@@ -57,5 +57,8 @@
 	"Home banner already exists. Please update it": "Home banner already exists. Please update it",
 	"Update home banner success": "Update home banner success",
 	"Get home banner success": "Get home banner success",
-	"Get list price success": "Get list price success"
+	"Get list price success": "Get list price success",
+	"File name is required": "File name is required",
+	"Delete file success": "Delete file success",
+	"File not found": "File not found"
 }

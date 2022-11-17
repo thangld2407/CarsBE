@@ -170,6 +170,35 @@ class FilterListController {
 			});
 		}
 	}
+
+	async get_price(req, res) {
+		try {
+			const list = await CarModel.find().select('price').sort({ price: 1 });
+			let list_price = [];
+			list.forEach(item => {
+				if (item.price && item.price !== '') {
+					list_price.push(item.price);
+				}
+			});
+
+			list_price = list_price.filter((item, index) => {
+				return list_price.indexOf(item) === index;
+			});
+
+			res.status(200).json({
+				message: req.__('Get list price success'),
+				data: list_price,
+				status_code: 200,
+				status: true
+			});
+		} catch (error) {
+			res.status(500).json({
+				error: error.message,
+				status_code: 500,
+				message: req.__('Server error')
+			});
+		}
+	}
 }
 
 // Path: routes\api\module\filter_list\index.js

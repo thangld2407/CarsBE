@@ -1,4 +1,4 @@
-function template(name, content) {
+function template(obj, content) {
 	return `
   <!DOCTYPE html>
   <html lang="en">
@@ -43,13 +43,19 @@ function template(name, content) {
         <div>
           <span> Hi there, </span>
         </div>
-        <div>
-          <span> You have a new message from <b>${name}</b> </span>
-        </div>
         <div class="content">
-          <span>
-            ${content}
-          </span>
+          <div class="content-name">
+            <b>Họ và tên: </b>
+            <span> ${obj.name} </span>
+          </div>
+          <div class="content-phone">
+            <b> Số điện thoại: </b>
+            <span> ${obj.phone} </span>
+          </div>
+          <div class="content-text">
+            <b>Nội dung</b>
+            <div>${obj.content}</div>
+          </div>
         </div>
       </div>
     </body>

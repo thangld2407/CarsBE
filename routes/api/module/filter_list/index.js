@@ -8,5 +8,6 @@ router.get('/gearbox', FilterListController.get_gear_box);
 router.get('/color', FilterListController.get_color);
 router.get('/category', FilterListController.get_category);
 router.get('/cartype', FilterListController.get_car_type);
+router.get('/price', FilterListController.get_price);
 
 module.exports = router;

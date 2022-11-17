@@ -78,7 +78,9 @@ class CarsController {
 					safety: data.vehicle_detail.safety,
 					convenience: data.vehicle_detail.convenience,
 
-					performance_check: htmlPdf
+					performance_check: htmlPdf,
+
+					is_data_crawl: true
 				});
 				await car.save();
 				res.status(200).json({

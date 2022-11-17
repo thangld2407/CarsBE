@@ -33,6 +33,11 @@ class SupportController {
 		}
 
 		try {
+			let obj = {
+				name,
+				phone,
+				content
+			};
 			const new_opinion = new SupportModel({
 				name,
 				phone,
@@ -46,7 +51,7 @@ class SupportController {
 					process.env.ADMIN_EMAIL ||
 					'thangld2407@gmail.com',
 				subject: 'Bạn có một yêu cầu hỗ trợ mới',
-				html: template(name, content)
+				html: template(obj, content)
 			});
 			res.status(200).json({
 				status: true,

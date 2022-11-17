@@ -5,7 +5,8 @@ const CarSchema = new mongoose.Schema(
 		// Thông tin cơ bản
 		car_name: {
 			type: String,
-			trim: true
+			trim: true,
+			default: ''
 		},
 		price: {
 			type: Number,
@@ -13,55 +14,68 @@ const CarSchema = new mongoose.Schema(
 		},
 		car_code: {
 			type: String,
-			trim: true
+			trim: true,
+			default: ''
 		},
 		license_plate: {
 			type: String,
-			trim: true
+			trim: true,
+			default: ''
 		},
 		year_manufacture: {
 			type: String,
-			trim: true
+			trim: true,
+			default: ''
 		},
 		distance_driven: {
 			type: Number,
-			trim: true
+			trim: true,
+			default: 0
 		},
 		fuel_type: {
 			type: String,
-			trim: true
+			trim: true,
+			default: ''
 		},
 		gearbox: {
 			type: String,
-			trim: true
+			trim: true,
+			default: ''
 		},
 		cylinder_capacity: {
 			type: String,
-			trim: true
+			trim: true,
+			default: ''
 		},
 		color: {
 			type: String,
-			trim: true
+			trim: true,
+			default: ''
 		},
 		car_type: {
 			type: String,
-			trim: true
+			trim: true,
+			default: ''
 		},
 		seizure: {
 			type: String,
-			trim: true
+			trim: true,
+			default: ''
 		},
 		mortgage: {
 			type: String,
-			trim: true
+			trim: true,
+			default: ''
 		},
 		presentation_number: {
 			type: String,
-			trim: true
+			trim: true,
+			default: ''
 		},
 		storage_location: {
 			type: String,
-			trim: true
+			trim: true,
+			default: ''
 		},
 		primary_image: {
 			type: String,
@@ -78,7 +92,8 @@ const CarSchema = new mongoose.Schema(
 		},
 		category: {
 			type: String,
-			trim: true
+			trim: true,
+			default: ''
 		},
 		// Detail Vehicle
 
@@ -103,32 +118,39 @@ const CarSchema = new mongoose.Schema(
 
 		phone_contact: {
 			type: String,
-			trim: true
+			trim: true,
+			default: ''
 		},
 		seller_name: {
 			type: String,
-			trim: true
+			trim: true,
+			default: ''
 		},
 		employee_number: {
 			type: String,
-			trim: true
+			trim: true,
+			default: ''
 		},
 		affiliated_company: {
 			type: String,
-			trim: true
+			trim: true,
+			default: ''
 		},
 		business_address: {
 			type: String,
-			trim: true
+			trim: true,
+			default: ''
 		},
 		parking_location: {
 			type: String,
-			trim: true
+			trim: true,
+			default: ''
 		},
 
 		performance_check: {
 			type: String,
-			trim: true
+			trim: true,
+			default: ''
 		},
 
 		is_deleted: {
@@ -138,7 +160,8 @@ const CarSchema = new mongoose.Schema(
 
 		price_display: {
 			type: Number,
-			trim: true
+			trim: true,
+			default: 0
 		},
 
 		percentage: {
@@ -151,6 +174,11 @@ const CarSchema = new mongoose.Schema(
 			type: Number,
 			trim: true,
 			default: 0
+		},
+
+		is_data_crawl: {
+			type: Boolean,
+			default: false
 		}
 	},
 	{

@@ -6,7 +6,7 @@ const https = require('https');
 function convertImageToLinkServer(url) {
 	let ext = path.extname(url);
 
-	if (ext === '.jpg' || ext === '.jpeg' || ext === '.png' || ext === '.gif') {
+	if (ext === '.jpg' || ext === '.jpeg' || ext === '.png' || ext === '.gif' || ext === '.JPG') {
 		ext = '.webp';
 	}
 	const protocol = new URL(url).protocol;

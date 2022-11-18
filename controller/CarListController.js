@@ -167,7 +167,7 @@ class CarsController {
 				.sort(sort)
 				.collation({ locale: 'en_US', numericOrdering: true })
 				.select(
-					'car_name price car_code _id primary_image year_manufacture is_hotsale  price_display percentage created_at updated_at'
+					'car_name price car_code _id primary_image year_manufacture is_hotsale  price_display percentage created_at updated_at color car_type category fuel_type cylinder_capacity'
 				)
 				.populate('category')
 				.limit(paginate.per_page)
@@ -188,7 +188,7 @@ class CarsController {
 		try {
 			const cars = await CarModel.find({ is_hotsale: true })
 				.select(
-					'car_name price car_code _id primary_image year_manufacture is_hotsale created_at updated_at'
+					'car_name price car_code _id primary_image year_manufacture is_hotsale  price_display percentage created_at updated_at color car_type category fuel_type cylinder_capacity'
 				)
 				.populate('category');
 			res.status(200).json({

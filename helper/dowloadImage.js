@@ -4,7 +4,11 @@ const http = require('http');
 const https = require('https');
 
 function convertImageToLinkServer(url) {
-	const ext = path.extname(url);
+	let ext = path.extname(url);
+
+	if (ext === '.jpg' || ext === '.jpeg' || ext === '.png' || ext === '.gif') {
+		ext = '.webp';
+	}
 	const protocol = new URL(url).protocol;
 	let client = protocol.includes('https') ? https : http;
 	const file = fs.createWriteStream(

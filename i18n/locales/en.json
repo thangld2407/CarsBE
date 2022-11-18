@@ -60,5 +60,14 @@
 	"Get list price success": "Get list price success",
 	"File name is required": "File name is required",
 	"Delete file success": "Delete file success",
-	"File not found": "File not found"
+	"File not found": "File not found",
+	"Title is required": "Title is required",
+	"Create policy successfully": "Create policy successfully",
+	"Policy already exists": "Policy already exists",
+	"Get list policy successfully": "Get list policy successfully",
+	"Update policy successfully": "Update policy successfully",
+	"Delete policy successfully": "Delete policy successfully",
+	"Policy not found": "Policy not found",
+	"Get detail policy successfully": "Get detail policy successfully",
+	"Policy id is required": "Policy id is required"
 }

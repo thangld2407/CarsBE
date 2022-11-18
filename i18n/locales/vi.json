@@ -60,5 +60,14 @@
 	"Get list price success": "Lấy danh sách giá thành công",
 	"File name is required": "Tên tệp không được để trống",
 	"Delete file success": "Xóa tệp thành công",
-	"File not found": "Không tìm thấy tệp"
+	"File not found": "Không tìm thấy tệp",
+	"Title is required": "Tiêu đề không được để trống",
+	"Create policy successfully": "Tạo chính sách thành công",
+	"Policy already exists": "Chính sách đã tồn tại",
+	"Get list policy successfully": "Lấy danh sách chính sách thành công",
+	"Update policy successfully": "Cập nhật chính sách thành công",
+	"Delete policy successfully": "Xóa chính sách thành công",
+	"Policy not found": "Không tìm thấy chính sách",
+	"Get detail policy successfully": "Lấy chi tiết chính sách thành công",
+	"Policy id is required": "Id chính sách không được để trống"
 }

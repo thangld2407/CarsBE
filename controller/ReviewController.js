@@ -77,7 +77,11 @@ class ReviewController {
 			let perPage = parseInt(limit) || 10;
 			let paginate = pagination(currentPage, perPage, count);
 
-			const result = await ReviewModel.find(query).sort(sort).lean();
+			const result = await ReviewModel.find(query)
+				.sort(sort)
+				.limit(paginate.per_page)
+				.skip((paginate.current_page - 1) * paginate.per_page)
+				.lean();
 			res.status(200).json({
 				status: true,
 				status_code: 200,

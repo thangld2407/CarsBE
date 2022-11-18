@@ -553,7 +553,7 @@ class CarsController {
 			if (hasCar) {
 				return res.status(200).json({
 					message: req.__('Mã xe đã tồn tại'),
-					status_code: 101,
+					status_code: 102,
 					status: false
 				});
 			}

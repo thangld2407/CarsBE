@@ -69,5 +69,6 @@
 	"Delete policy successfully": "Xóa chính sách thành công",
 	"Policy not found": "Không tìm thấy chính sách",
 	"Get detail policy successfully": "Lấy chi tiết chính sách thành công",
-	"Policy id is required": "Id chính sách không được để trống"
+	"Policy id is required": "Id chính sách không được để trống",
+	"Get policy successfully": "Get policy successfully"
 }

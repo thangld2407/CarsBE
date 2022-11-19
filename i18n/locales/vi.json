@@ -70,5 +70,8 @@
 	"Policy not found": "Không tìm thấy chính sách",
 	"Get detail policy successfully": "Lấy chi tiết chính sách thành công",
 	"Policy id is required": "Id chính sách không được để trống",
-	"Get policy successfully": "Get policy successfully"
+	"Get policy successfully": " Lấy chính sách thành công",
+	"GET_INSURANCE_SUCCESS": "Lấy chi tiết bảo hiểm thành công",
+	"ID is required": "Yêu cầu ID bảo hiểm",
+	"UPDATE_INSURANCE_SUCCESS": "Cập nhập bảo hiểm thành công"
 }

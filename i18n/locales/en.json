@@ -69,5 +69,9 @@
 	"Delete policy successfully": "Delete policy successfully",
 	"Policy not found": "Policy not found",
 	"Get detail policy successfully": "Get detail policy successfully",
-	"Policy id is required": "Policy id is required"
+	"Policy id is required": "Policy id is required",
+	"Get policy successfully": "Get policy successfully",
+	"GET_INSURANCE_SUCCESS": "Get insurance successfully",
+	"ID is required": "ID is required",
+	"UPDATE_INSURANCE_SUCCESS": "Update insurance successfully"
 }

@@ -243,6 +243,32 @@ class AuthController {
 			});
 		}
 	}
+
+	async infoPublic(req, res) {
+		try {
+			const user = await UserModel.findOne({ root_user: true }, '-password').lean();
+			if (!user) {
+				return res.status(200).json({
+					message: req.__('User not found'),
+					status_code: 105,
+					status: false
+				});
+			}
+
+			res.status(200).json({
+				message: req.__('Get user infor successfully'),
+				data: user,
+				status: true,
+				status_code: 200
+			});
+		} catch (error) {
+			res.status(500).json({
+				message: req.__('Server error'),
+				error_message: error.message,
+				status_code: 500
+			});
+		}
+	}
 }
 
 module.exports = new AuthController();

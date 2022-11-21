@@ -1,5 +1,7 @@
 const puppeteer = require('puppeteer');
 const path = require('path');
+const { v4: uuidv4 } = require('uuid');
+
 function htmlToPdf(url) {
 	return new Promise(async (resolve, reject) => {
 		try {
@@ -19,9 +21,7 @@ function htmlToPdf(url) {
 			let hasIdPrint = await page.$('#idPrint');
 
 			if (hasIdPrint) {
-				const pathName = `/uploads/performance-check-${Date.now()}-${Math.floor(
-					Math.random() * 1000
-				)}.pdf`;
+				const pathName = `/uploads/performance-check-${uuidv4()}.pdf`;
 				await page.pdf({
 					format: 'A4',
 					path: `./public${pathName}`

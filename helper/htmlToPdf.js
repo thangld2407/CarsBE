@@ -1,6 +1,8 @@
 const puppeteer = require('puppeteer');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
+var html_to_pdf = require('html-pdf-node');
+const fs = require('fs');
 
 function htmlToPdf(url) {
 	return new Promise(async (resolve, reject) => {
@@ -20,19 +22,29 @@ function htmlToPdf(url) {
 
 			let hasIdPrint = await page.$('#idPrint');
 
+			let pathName = `/uploads/performance-check-${uuidv4()}.pdf`;
+
 			if (hasIdPrint) {
-				const pathName = `/uploads/performance-check-${uuidv4()}.pdf`;
-				await page.pdf({
-					format: 'A4',
-					path: `./public${pathName}`
-				});
-				await browser.close();
-				resolve(pathName);
+				html_to_pdf
+					.generatePdf(
+						{
+							url: url
+						},
+						{
+							format: 'A4'
+						}
+					)
+					.then(pdfBuffer => {
+						fs.writeFileSync(path.join(__dirname, `../public${pathName}`), pdfBuffer);
+						resolve(pathName);
+					})
+					.catch(err => {
+						reject(err);
+					});
 			} else {
 				resolve(null);
 			}
 		} catch (error) {
-			htmlToPdf(url);
 			reject(error);
 		}
 	});

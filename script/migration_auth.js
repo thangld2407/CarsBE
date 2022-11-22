@@ -25,7 +25,10 @@ async function MigrationAuth() {
 				email: auth.email,
 				password: hashPassword(auth.password),
 				root_user: true,
-				email_notification: process.env.ADMIN_EMAIL || 'thangld2407@gmail.com'
+				email_notification: process.env.ADMIN_EMAIL || 'thangld2407@gmail.com',
+				company_address: '161 Sajik-ro, Sejongno, Jongno-gu, Seoul, Hàn Quốc',
+				company_name: 'Công ty TNHH Thương mại và Dịch vụ Thăng Long',
+				company_map: 'https://goo.gl/maps/zcSQjTcCUSj25PSq8'
 			});
 			console.log('Đang lưu thông tin người dùng');
 			await newData.save();

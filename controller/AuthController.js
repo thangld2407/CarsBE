@@ -140,7 +140,22 @@ class AuthController {
 
 	async update(req, res) {
 		try {
-			const { phone, address, fullname, dob, gender, email_noti, email } = req.body;
+			const {
+				phone,
+				address,
+				fullname,
+				dob,
+				gender,
+				email_noti,
+				link_zalo,
+				link_twitter,
+				link_facebook,
+				link_linkedin,
+				company_adress,
+				company_name,
+				company_map,
+				link_messenger
+			} = req.body;
 
 			let token = req.headers.authorization.split(' ')[1];
 			const isVerifyToken = verifyToken(token, jwt_conf.secret);
@@ -167,7 +182,15 @@ class AuthController {
 				name: fullname,
 				dob,
 				email_notification: email_noti,
-				gender
+				gender,
+				link_zalo,
+				link_twitter,
+				link_facebook,
+				link_linkedin,
+				company_adress,
+				company_name,
+				company_map,
+				link_messenger
 			});
 
 			res.status(200).json({

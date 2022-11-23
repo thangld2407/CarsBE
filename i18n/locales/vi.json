@@ -73,5 +73,6 @@
 	"Get policy successfully": " Lấy chính sách thành công",
 	"GET_INSURANCE_SUCCESS": "Lấy chi tiết bảo hiểm thành công",
 	"ID is required": "Yêu cầu ID bảo hiểm",
-	"UPDATE_INSURANCE_SUCCESS": "Cập nhập bảo hiểm thành công"
+	"UPDATE_INSURANCE_SUCCESS": "Cập nhập bảo hiểm thành công",
+	"Cập nhật thông tin xe thành công": "Cập nhật thông tin xe thành công"
 }

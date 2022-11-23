@@ -147,6 +147,16 @@ class CarsController {
 			if (gearbox) {
 				query.gearbox = gearbox;
 			}
+
+			const { is_data_crawl } = filter;
+			if (is_data_crawl) {
+				query.is_data_crawl = is_data_crawl;
+			}
+
+			const { color } = filter;
+			if (color) {
+				query.color = color;
+			}
 		}
 
 		if (search) {
@@ -167,7 +177,7 @@ class CarsController {
 				.sort(sort)
 				.collation({ locale: 'en_US', numericOrdering: true })
 				.select(
-					'car_name price car_code _id primary_image year_manufacture is_hotsale  price_display percentage created_at updated_at color car_type category fuel_type cylinder_capacity'
+					'car_name price car_code _id primary_image year_manufacture is_hotsale  price_display percentage created_at updated_at color car_type category fuel_type cylinder_capacity is_data_crawl'
 				)
 				.populate('category')
 				.limit(paginate.per_page)
@@ -609,6 +619,253 @@ class CarsController {
 
 	async edit(req, res) {
 		try {
+			let {
+				car_id,
+				car_name,
+				price,
+				license_plate,
+				year_manufacture,
+				distance_driven,
+				fuel_type,
+				cylinder_capacity,
+				color,
+				gearbox,
+				category,
+				performance_check,
+				phone_contact,
+				images,
+				car_type,
+				seizure,
+				mortgage,
+				presentation_number,
+				storage_location,
+				exterior,
+				guts,
+				safety,
+				convenience,
+				seller_name,
+				employee_number,
+				affiliated_company,
+				business_address,
+				parking_location,
+				primary_image
+			} = req.body;
+
+			const hasCar = await CarModel.findOne({ _id: car_id, is_data_crawl: false }).lean();
+
+			if (!hasCar) {
+				return res.status(200).json({
+					message: req.__('Car not found'),
+					status_code: 102,
+					status: false
+				});
+			}
+
+			if (!car_name) {
+				return res.status(200).json({
+					message: req.__('Vui lòng nhập tên xe'),
+					status_code: 101,
+					status: false
+				});
+			}
+
+			if (!car_type) {
+				return res.status(200).json({
+					message: req.__('Vui lòng chọn loại xe'),
+					status_code: 101,
+					status: false
+				});
+			}
+
+			if (!price) {
+				return res.status(200).json({
+					message: req.__('Vui lòng nhập giá xe'),
+					status_code: 101,
+					status: false
+				});
+			}
+
+			if (!license_plate) {
+				return res.status(200).json({
+					message: req.__('Vui lòng nhập biển số xe'),
+					status_code: 101,
+					status: false
+				});
+			}
+
+			if (!year_manufacture) {
+				return res.status(200).json({
+					message: req.__('Vui lòng nhập năm sản xuất'),
+					status_code: 101,
+					status: false
+				});
+			}
+
+			if (!distance_driven) {
+				return res.status(200).json({
+					message: req.__('Vui lòng nhập số km đã đi'),
+					status_code: 101,
+					status: false
+				});
+			}
+
+			if (!fuel_type) {
+				return res.status(200).json({
+					message: req.__('Vui lòng nhập loại nhiên liệu'),
+					status_code: 101,
+					status: false
+				});
+			}
+
+			if (!gearbox) {
+				return res.status(200).json({
+					message: req.__('Vui lòng nhập hộp số'),
+					status_code: 101,
+					status: false
+				});
+			}
+
+			if (!cylinder_capacity) {
+				return res.status(200).json({
+					message: req.__('Vui lòng nhập dung tích xi lanh'),
+					status_code: 101,
+					status: false
+				});
+			}
+
+			if (!color) {
+				return res.status(200).json({
+					message: req.__('Vui lòng nhập màu xe'),
+					status_code: 101,
+					status: false
+				});
+			}
+
+			if (!category) {
+				return res.status(200).json({
+					message: req.__('Vui lòng nhập danh mục xe'),
+					status_code: 101,
+					status: false
+				});
+			}
+
+			if (!performance_check) {
+				return res.status(200).json({
+					message: req.__('Vui lòng nhập thông số kỹ thuật'),
+					status_code: 101,
+					status: false
+				});
+			}
+
+			if (!phone_contact) {
+				return res.status(200).json({
+					message: req.__('Vui lòng nhập số điện thoại liên hệ'),
+					status_code: 101,
+					status: false
+				});
+			}
+
+			if (!isArray(images)) {
+				return res.status(200).json({
+					message: req.__('Loại dữ liệu ảnh nhập vào không đúng'),
+					status_code: 104,
+					status: false
+				});
+			}
+
+			if (guts && !isArray(guts)) {
+				return res.status(200).json({
+					message: req.__('Loại dữ liệu nội thất nhập vào không đúng'),
+					status_code: 104,
+					status: false
+				});
+			}
+
+			if (exterior && !isArray(exterior)) {
+				return res.status(200).json({
+					message: req.__('Loại dữ liệu ngoại thất nhập vào không đúng'),
+					status_code: 104,
+					status: false
+				});
+			}
+
+			if (safety && !isArray(safety)) {
+				return res.status(200).json({
+					message: req.__('Loại dữ liệu an toàn nhập vào không đúng'),
+					status_code: 104,
+					status: false
+				});
+			}
+
+			if (convenience && !isArray(convenience)) {
+				return res.status(200).json({
+					message: req.__('Loại dữ liệu tiện nghi nhập vào không đúng'),
+					status_code: 104,
+					status: false
+				});
+			}
+
+			if (price && typeof price !== 'number') {
+				return res.status(200).json({
+					message: req.__('Loại dữ liệu giá nhập vào không đúng'),
+					status_code: 104,
+					status: false
+				});
+			}
+
+			if (year_manufacture && typeof year_manufacture !== 'number') {
+				return res.status(200).json({
+					message: req.__('Loại dữ liệu năm sản xuất nhập vào không đúng'),
+					status_code: 104,
+					status: false
+				});
+			}
+
+			if (distance_driven && typeof distance_driven !== 'number') {
+				return res.status(200).json({
+					message: req.__('Loại dữ liệu số km đã đi nhập vào không đúng'),
+					status_code: 104,
+					status: false
+				});
+			}
+
+			await CarModel.findByIdAndUpdate(hasCar._id, {
+				car_name,
+				price,
+				license_plate,
+				year_manufacture,
+				distance_driven,
+				fuel_type,
+				cylinder_capacity,
+				color,
+				gearbox,
+				category,
+				performance_check,
+				phone_contact,
+				images,
+				car_type,
+				seizure,
+				mortgage,
+				presentation_number,
+				storage_location,
+				exterior,
+				guts,
+				safety,
+				convenience,
+				seller_name,
+				employee_number,
+				affiliated_company,
+				business_address,
+				parking_location,
+				primary_image,
+				price_display: price
+			}).lean();
+
+			return res.status(200).json({
+				message: req.__('Cập nhật thông tin xe thành công'),
+				status_code: 200,
+				status: true
+			});
 		} catch (error) {
 			res.status(500).json({
 				message: req.__('Server error'),

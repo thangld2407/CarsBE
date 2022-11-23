@@ -73,5 +73,6 @@
 	"Get policy successfully": "Get policy successfully",
 	"GET_INSURANCE_SUCCESS": "Get insurance successfully",
 	"ID is required": "ID is required",
-	"UPDATE_INSURANCE_SUCCESS": "Update insurance successfully"
+	"UPDATE_INSURANCE_SUCCESS": "Update insurance successfully",
+	"Cập nhật thông tin xe thành công": "Update car information successfully"
 }

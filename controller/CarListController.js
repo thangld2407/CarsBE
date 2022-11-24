@@ -120,7 +120,13 @@ class CarsController {
 
 			const { from_price, to_price } = filter;
 
-			if (from_price && to_price) {
+			if (typeof from_price === 'number' && typeof to_price === 'number') {
+				if (from_price > to_price) {
+					return res.status(200).json({
+						message: req.__('From price must be less than to price'),
+						error_code: 104
+					});
+				}
 				query.price = {
 					$gte: from_price,
 					$lte: to_price
@@ -129,7 +135,13 @@ class CarsController {
 
 			const { from_distance, to_distance } = filter;
 
-			if (from_distance && to_distance) {
+			if (typeof from_distance === 'number' && typeof to_distance === 'number') {
+				if (from_distance > to_distance) {
+					return res.status(200).json({
+						message: req.__('From distance must be less than to distance'),
+						error_code: 104
+					});
+				}
 				query.distance_driven = {
 					$gte: from_distance,
 					$lte: to_distance
@@ -153,6 +165,11 @@ class CarsController {
 				query.is_data_crawl = is_data_crawl;
 			}
 
+			const { category } = filter;
+			if (category) {
+				query.category = category;
+			}
+
 			const { color } = filter;
 			if (color) {
 				query.color = color;
@@ -165,6 +182,8 @@ class CarsController {
 				$options: 'i'
 			};
 		}
+
+		console.log(query);
 
 		try {
 			const count = await CarModel.countDocuments(query);

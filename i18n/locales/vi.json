@@ -74,5 +74,7 @@
 	"GET_INSURANCE_SUCCESS": "Lấy chi tiết bảo hiểm thành công",
 	"ID is required": "Yêu cầu ID bảo hiểm",
 	"UPDATE_INSURANCE_SUCCESS": "Cập nhập bảo hiểm thành công",
-	"Cập nhật thông tin xe thành công": "Cập nhật thông tin xe thành công"
+	"Cập nhật thông tin xe thành công": "Cập nhật thông tin xe thành công",
+	"From distance must be less than to distance": "Khoảng cách từ phải nhỏ hơn khoảng cách đến",
+	"From price must be less than to price": "Giá từ phải nhỏ hơn giá đến"
 }

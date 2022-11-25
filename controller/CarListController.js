@@ -176,7 +176,9 @@ class CarsController {
 			}
 
 			const { is_hotsale } = filter;
-			query.is_hotsale = is_hotsale;
+			if (typeof is_hotsale === 'boolean') {
+				query.is_hotsale = is_hotsale;
+			}
 		}
 
 		if (search) {

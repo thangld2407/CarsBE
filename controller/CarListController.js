@@ -174,6 +174,9 @@ class CarsController {
 			if (color) {
 				query.color = color;
 			}
+
+			const { is_hotsale } = filter;
+			if (is_hotsale) query.is_hotsale = is_hotsale;
 		}
 
 		if (search) {

@@ -22,7 +22,8 @@ module.exports = async (req, res, next) => {
 		} catch (err) {
 			return res.status(500).json({
 				message: err.message,
-				status_code: 500
+				status_code: 500,
+				error_message: req.__('SERVER_ERROR')
 			});
 		}
 		const user = await UserModel.findById(decoded.user._id);

@@ -76,5 +76,10 @@
 	"UPDATE_INSURANCE_SUCCESS": "Cập nhập bảo hiểm thành công",
 	"Cập nhật thông tin xe thành công": "Cập nhật thông tin xe thành công",
 	"From distance must be less than to distance": "Khoảng cách từ phải nhỏ hơn khoảng cách đến",
-	"From price must be less than to price": "Giá từ phải nhỏ hơn giá đến"
+	"From price must be less than to price": "Giá từ phải nhỏ hơn giá đến",
+	"Name must be required": "Tên không được để trống",
+	"Vui lòng nhập tên xe": "Vui lòng nhập tên xe",
+	"Loại dữ liệu giá nhập vào không đúng": "Loại dữ liệu giá nhập vào không đúng",
+	"Loại dữ liệu năm sản xuất nhập vào không đúng": "Loại dữ liệu năm sản xuất nhập vào không đúng",
+	"Vui lòng nhập màu xe": "Vui lòng nhập màu xe"
 }

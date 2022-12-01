@@ -161,7 +161,7 @@ class CarsController {
 			}
 
 			const { is_data_crawl } = filter;
-			if (is_data_crawl) {
+			if (typeof is_data_crawl === 'boolean') {
 				query.is_data_crawl = is_data_crawl;
 			}
 

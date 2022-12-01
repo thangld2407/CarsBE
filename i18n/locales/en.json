@@ -74,5 +74,10 @@
 	"GET_INSURANCE_SUCCESS": "Get insurance successfully",
 	"ID is required": "ID is required",
 	"UPDATE_INSURANCE_SUCCESS": "Update insurance successfully",
-	"Cập nhật thông tin xe thành công": "Update car information successfully"
+	"Cập nhật thông tin xe thành công": "Update car information successfully",
+	"Name must be required": "Name must be required",
+	"Vui lòng nhập tên xe": "Please enter car name",
+	"Loại dữ liệu giá nhập vào không đúng": "Data type is incorrect",
+	"Loại dữ liệu năm sản xuất nhập vào không đúng": "Data type is incorrect",
+	"Vui lòng nhập màu xe": "Please enter car color"
 }

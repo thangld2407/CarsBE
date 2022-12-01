@@ -81,5 +81,9 @@
 	"UPDATE_INSURANCE_SUCCESS": "Insurance update successful",
 	"Cập nhật thông tin xe thành công": "Vehicle information update successful",
 	"From distance must be less than to distance": "Distance from must be less than distance to",
-	"From price must be less than to price": "Price from must be less than price to"
+	"From price must be less than to price": "Price from must be less than price to",
+	"Vui lòng nhập id xe": "Please enter car id",
+	"Loại dữ liệu id xe nhập vào không đúng": "Data type is incorrect",
+	"Delete cars successfully": "Delete successful vehicles",
+	"Cars not found": "No vehicles found"
 }

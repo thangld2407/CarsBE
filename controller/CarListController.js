@@ -898,6 +898,52 @@ class CarsController {
 			});
 		}
 	}
+
+	async delete(req, res) {
+		try {
+			const { ids } = req.body;
+
+			if (!ids) {
+				return res.status(200).json({
+					message: req.__('Vui lòng nhập id xe'),
+					status_code: 101,
+					status: false
+				});
+			}
+			if (!isArray(ids)) {
+				return res.status(200).json({
+					message: req.__('Loại dữ liệu id xe nhập vào không đúng'),
+					status_code: 104,
+					status: false
+				});
+			}
+
+			for (let i = 0; i < ids.length; i++) {
+				const has_cars = await CarModel.findById(ids[i]).lean();
+				if (!has_cars) {
+					return res.status(200).json({
+						message: req.__('Cars not found'),
+						status_code: 105,
+						status: false
+					});
+				}
+			}
+
+			await CarModel.deleteMany({ _id: { $in: ids } });
+
+			return res.status(200).json({
+				message: req.__('Delete cars successfully'),
+				status_code: 200,
+				status: true
+			});
+		} catch (error) {
+			res.status(500).json({
+				message: error.message,
+				error_message: req.__('Server error'),
+				status_code: 500
+			});
+		}
+	}
 }
 
 module.exports = new CarsController();

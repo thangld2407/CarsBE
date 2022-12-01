@@ -81,5 +81,9 @@
 	"Vui lòng nhập tên xe": "Vui lòng nhập tên xe",
 	"Loại dữ liệu giá nhập vào không đúng": "Loại dữ liệu giá nhập vào không đúng",
 	"Loại dữ liệu năm sản xuất nhập vào không đúng": "Loại dữ liệu năm sản xuất nhập vào không đúng",
-	"Vui lòng nhập màu xe": "Vui lòng nhập màu xe"
+	"Vui lòng nhập màu xe": "Vui lòng nhập màu xe",
+	"Vui lòng nhập id xe": "Vui lòng nhập id xe",
+	"Loại dữ liệu id xe nhập vào không đúng": "Loại dữ liệu id xe nhập vào không đúng",
+	"Delete cars successfully": "Xoá xe thành công",
+	"Cars not found": "Không tìm thấy xe"
 }

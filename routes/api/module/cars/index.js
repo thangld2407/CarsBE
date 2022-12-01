@@ -11,5 +11,6 @@ routerCars.post('/update-price', requireLogin, CarListController.updatePrice);
 routerCars.post('/update-hotsale', requireLogin, CarListController.updateHotsale);
 routerCars.post('/create', requireLogin, CarListController.create);
 routerCars.post('/edit', requireLogin, CarListController.edit);
+routerCars.post('/remove', requireLogin, CarListController.delete);
 
 module.exports = routerCars;

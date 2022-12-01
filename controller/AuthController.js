@@ -93,8 +93,8 @@ class AuthController {
 			});
 		} catch (error) {
 			res.status(500).json({
-				message: req.__('Server error'),
-				error_message: error.message,
+				error_message: req.__('Server error'),
+				message: error.message,
 				status_code: 500
 			});
 		}

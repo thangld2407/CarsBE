@@ -174,6 +174,11 @@ class CarsController {
 			if (color) {
 				query.color = color;
 			}
+
+			const { is_hotsale } = filter;
+			if (typeof is_hotsale === 'boolean') {
+				query.is_hotsale = is_hotsale;
+			}
 		}
 
 		if (search) {

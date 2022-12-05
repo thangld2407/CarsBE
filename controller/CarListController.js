@@ -347,7 +347,7 @@ class CarsController {
 					}
 					await CarModel.findByIdAndUpdate(ids[i], {
 						percentage: percentage,
-						price_display: (car.price * (1 + percentage / 100)).toFixed(2)
+						price_display: (car.price_display * (1 + percentage / 100)).toFixed(2)
 					});
 				}
 
@@ -359,7 +359,7 @@ class CarsController {
 						});
 					}
 					await CarModel.findByIdAndUpdate(ids[i], {
-						price_display: Number(car.price) + price,
+						price_display: Number(car.price_display) + price,
 						difference_price: price
 					});
 				}

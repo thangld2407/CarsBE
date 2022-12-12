@@ -17,20 +17,21 @@ function htmlToPdf(url) {
 			});
 
 			await page.goto(url, { waitUntil: 'networkidle2' });
+			await page.waitForSelector('#idPrint');
+			await page.waitForSelector('.pageAfter');
+			let pathname = `/uploads/performance-check-${uuidv4()}.webp`;
 
-			let hasIdPrint = await page.$('#idPrint');
+			const sc = await page.screenshot({
+				path: path.join(__dirname, `../public/${pathname}`),
+				fullPage: true
+			});
 
-			if (hasIdPrint) {
-				const pathName = `/uploads/performance-check-${uuidv4()}.pdf`;
-				await page.pdf({
-					format: 'A4',
-					path: `./public${pathName}`
-				});
-				await browser.close();
-				resolve(pathName);
+			if (sc) {
+				resolve(pathname);
 			} else {
 				resolve(null);
 			}
+			await browser.close();
 		} catch (error) {
 			htmlToPdf(url);
 			reject(error);

@@ -88,12 +88,52 @@ class CarsController {
 					status_code: 200
 				});
 			} else {
+				let price_convert = isNumberWithValue(data.basic_infor.price.replace(/,/g, ''));
+
+				await CarModel.findOneAndUpdate(
+					{ car_code: data.basic_infor.car_code },
+					{
+						car_name: data.basic_infor.car_name,
+						price: price_convert,
+						car_code: data.basic_infor.car_code,
+						license_plate: data.basic_infor.license_plate,
+						year_manufacture: data.basic_infor.year_manufacture,
+						distance_driven: isNumberWithValue(
+							data.basic_infor.distance_driven.replace(/,/g, '').replace('km', '')
+						),
+						fuel_type: data.basic_infor.fuel_type,
+						gearbox: data.basic_infor.gearbox,
+						cylinder_capacity: data.basic_infor.cylinder_capacity,
+						color: data.basic_infor.color,
+						car_type: data.basic_infor.car_type,
+						seizure: data.basic_infor.seizure,
+						mortgage: data.basic_infor.mortgage,
+						presentation_number: data.basic_infor.presentation_number,
+						storage_location: data.basic_infor.storage_location,
+						category: data.basic_infor.category,
+						price_display: price_convert,
+
+						seller_name: data.seller.seller_name,
+						phone_contact: data.seller.phone_contact,
+						employee_number: data.seller.employee_number,
+						parking_location: data.seller.parking_location,
+						business_address: data.seller.business_address,
+						affiliated_company: data.seller.affiliated_company,
+
+						exterior: data.vehicle_detail.exterior,
+						guts: data.vehicle_detail.guts,
+						safety: data.vehicle_detail.safety,
+						convenience: data.vehicle_detail.convenience,
+						is_data_crawl: true
+					}
+				);
 				res.status(200).json({
-					message: 'Car is exists',
+					message: 'Car is exists and update field',
 					status: 201
 				});
 			}
 		} catch (error) {
+			console.log(error.message);
 			res.status(500).json({
 				message: error.message,
 				status_code: 500,
@@ -347,7 +387,7 @@ class CarsController {
 					}
 					await CarModel.findByIdAndUpdate(ids[i], {
 						percentage: percentage,
-						price_display: (car.price_display * (1 + percentage / 100)).toFixed(2)
+						price_display: (car.price * (1 + percentage / 100)).toFixed(2)
 					});
 				}
 
@@ -359,7 +399,7 @@ class CarsController {
 						});
 					}
 					await CarModel.findByIdAndUpdate(ids[i], {
-						price_display: Number(car.price_display) + price,
+						price_display: Number(car.price) + price,
 						difference_price: price
 					});
 				}

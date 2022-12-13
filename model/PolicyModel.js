@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 const PolicyModel = new mongoose.Schema(
 	{
 		file: {
-			type: String,
+			type: Array,
 			trim: true,
-			default: ''
+			default: []
 		}
 	},
 	{

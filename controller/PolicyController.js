@@ -107,7 +107,7 @@ class PolicyController {
 				});
 			}
 
-			if (!file && file === '') {
+			if (!file && file.length === 0) {
 				return res.status(200).json({
 					status: false,
 					status_code: 101,
@@ -197,7 +197,7 @@ class PolicyController {
 				});
 			} else {
 				const new_policy = new PolicyModel({
-					file: ''
+					file: []
 				});
 
 				await new_policy.save();

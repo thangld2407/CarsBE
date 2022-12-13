@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const InsuranceSchema = new mongoose.Schema(
 	{
 		file: {
-			type: String,
-			default: ''
+			type: Array,
+			default: []
 		}
 	},
 	{

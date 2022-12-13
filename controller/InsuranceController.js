@@ -6,7 +6,7 @@ class InsuranceController {
 			const insurance = await InsuranceModel.find().lean();
 			if (insurance && insurance.length === 0) {
 				const new_insurance = new InsuranceModel({
-					file: ''
+					file: []
 				});
 				await new_insurance.save();
 				return res.status(200).json({
@@ -34,7 +34,7 @@ class InsuranceController {
 	async update(req, res) {
 		try {
 			const { file, insurance_id } = req.body;
-			if (!file) {
+			if (!file || file.length === 0) {
 				return res.status(200).json({
 					message: req.__('File is required'),
 					status: false,

@@ -85,5 +85,6 @@
 	"Vui lòng nhập id xe": "Please enter car id",
 	"Loại dữ liệu id xe nhập vào không đúng": "Data type is incorrect",
 	"Delete cars successfully": "Delete successful vehicles",
-	"Cars not found": "No vehicles found"
+	"Cars not found": "No vehicles found",
+	"Vui lòng nhập thông số kỹ thuật": "Please enter technical specifications"
 }

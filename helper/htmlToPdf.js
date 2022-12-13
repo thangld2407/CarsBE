@@ -17,23 +17,25 @@ function htmlToPdf(url) {
 			});
 
 			await page.goto(url, { waitUntil: 'networkidle2' });
-			await page.waitForSelector('#idPrint');
-			await page.waitForSelector('.pageAfter');
+			try {
+				await page.waitForSelector('#idPrint');
+			} catch (error) {
+				return resolve(null);
+			}
+			try {
+				await page.waitForSelector('.pageAfter');
+			} catch (error) {
+				return resolve(null);
+			}
 			let pathname = `/uploads/performance-check-${uuidv4()}.webp`;
 
-			const sc = await page.screenshot({
+			await page.screenshot({
 				path: path.join(__dirname, `../public/${pathname}`),
 				fullPage: true
 			});
-
-			if (sc) {
-				resolve(pathname);
-			} else {
-				resolve(null);
-			}
+			resolve(pathname);
 			await browser.close();
 		} catch (error) {
-			htmlToPdf(url);
 			reject(error);
 		}
 	});

@@ -19,5 +19,6 @@ routerApi.use('/home', require('./module/home'));
 routerApi.use('/file', requireLogin, require('./module/file'));
 routerApi.use('/policy', require('./module/policy'));
 routerApi.use('/insurance', require('./module/insurance'));
+routerApi.use('/sale', require('./module/sale'));
 
 module.exports = routerApi;

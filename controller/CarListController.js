@@ -1,5 +1,6 @@
 const { TYPE_PRICE_DISPLAY } = require('../constants/type');
 const convertImageToLinkServer = require('../helper/dowloadImage');
+const take_decimal_number = require('../helper/floatNumberTwoCharacter');
 const generateUUID = require('../helper/generateUUID');
 const htmlToPdf = require('../helper/htmlToPdf');
 const isNumberWithValue = require('../helper/isNumber');
@@ -7,12 +8,25 @@ const { pagination } = require('../helper/pagination');
 const { isArray } = require('../helper/validation');
 const CarModel = require('../model/CarModel');
 const CarTypeModel = require('../model/Category');
+const SaleModel = require('../model/SaleModel');
 
 CarModel.createIndexes({ _id: 1 });
 class CarsController {
 	async saveCarCrawl(req, res) {
 		try {
 			const { data } = req.body;
+			let isSaleOn = await SaleModel.find();
+			let priceSale = 0;
+			if (isSaleOn.length === 0) {
+				priceSale = 0;
+			} else {
+				if (isSaleOn[0].is_sale) {
+					priceSale = isSaleOn[0].sale_price / 100;
+				} else {
+					priceSale = 0;
+				}
+			}
+
 			if (!data) {
 				return res.status(400).json({
 					message: 'Data is required'
@@ -64,7 +78,7 @@ class CarsController {
 					storage_location: data.basic_infor.storage_location,
 					category: data.basic_infor.category,
 					primary_image: primary_image_convert,
-					price_display: price_convert,
+					price_display: take_decimal_number(price_convert + priceSale * price_convert),
 
 					seller_name: data.seller.seller_name,
 					phone_contact: data.seller.phone_contact,
@@ -111,7 +125,9 @@ class CarsController {
 						presentation_number: data.basic_infor.presentation_number,
 						storage_location: data.basic_infor.storage_location,
 						category: data.basic_infor.category,
-						price_display: price_convert,
+						price_display: take_decimal_number(
+							price_convert + priceSale * price_convert
+						),
 
 						seller_name: data.seller.seller_name,
 						phone_contact: data.seller.phone_contact,
@@ -133,7 +149,6 @@ class CarsController {
 				});
 			}
 		} catch (error) {
-			console.log(error.message);
 			res.status(500).json({
 				message: error.message,
 				status_code: 500,
@@ -347,63 +362,194 @@ class CarsController {
 
 	async updatePrice(req, res) {
 		try {
-			const { type, percentage, price, ids } = req.body;
+			let isSaleOn = await SaleModel.find();
+			let priceSale = 0;
+			if (isSaleOn.length === 0) {
+				priceSale = 0;
+			} else {
+				if (isSaleOn[0].is_sale) {
+					priceSale = isSaleOn[0].sale_price / 100;
+				} else {
+					priceSale = 0;
+				}
+			}
+			const { type, percentage, price, ids, data_update } = req.body;
 
-			if (!ids || ids.length === 0) {
+			if (!Object.values(TYPE_PRICE_DISPLAY).includes(type)) {
 				return res.status(200).json({
-					message: 'car_id is required',
-					status_code: 101
+					message: req.__('Loại dữ liệu không chính xác'),
+					status_code: 100
 				});
 			}
-			for (let i = 0; i < ids.length; i++) {
-				const car = await CarModel.findOne({ _id: ids[i] }).lean();
-				if (!car) {
+
+			if (type === TYPE_PRICE_DISPLAY.PERCENTAGE) {
+				if (!percentage) {
 					return res.status(200).json({
+						status_code: 101,
+						message: req.__('Vui lòng nhập phần % giá tiền')
+					});
+				}
+			}
+
+			if (data_update && typeof data_update === 'object') {
+				const { filter, search } = data_update;
+
+				let query = {};
+
+				if (filter) {
+					const { from_year, to_year } = filter;
+
+					if (from_year && to_year) {
+						query.year_manufacture = {
+							$gte: from_year,
+							$lte: to_year
+						};
+					}
+
+					const { from_price, to_price } = filter;
+
+					if (typeof from_price === 'number' && typeof to_price === 'number') {
+						if (from_price > to_price) {
+							return res.status(200).json({
+								message: req.__('From price must be less than to price'),
+								error_code: 104
+							});
+						}
+						query.price = {
+							$gte: from_price,
+							$lte: to_price
+						};
+					}
+
+					const { from_distance, to_distance } = filter;
+
+					if (typeof from_distance === 'number' && typeof to_distance === 'number') {
+						if (from_distance > to_distance) {
+							return res.status(200).json({
+								message: req.__('From distance must be less than to distance'),
+								error_code: 104
+							});
+						}
+						query.distance_driven = {
+							$gte: from_distance,
+							$lte: to_distance
+						};
+					}
+
+					const { fuel_type } = filter;
+
+					if (fuel_type) {
+						query.fuel_type = fuel_type;
+					}
+
+					const { gearbox } = filter;
+
+					if (gearbox) {
+						query.gearbox = gearbox;
+					}
+
+					const { is_data_crawl } = filter;
+					if (typeof is_data_crawl === 'boolean') {
+						query.is_data_crawl = is_data_crawl;
+					}
+
+					const { category } = filter;
+					if (category) {
+						query.category = category;
+					}
+
+					const { color } = filter;
+					if (color) {
+						query.color = color;
+					}
+
+					const { is_hotsale } = filter;
+					if (typeof is_hotsale === 'boolean') {
+						query.is_hotsale = is_hotsale;
+					}
+				}
+
+				if (search) {
+					query.car_name = {
+						$regex: search,
+						$options: 'i'
+					};
+				}
+
+				const cars = await CarModel.find(query).select('_id price price_display');
+
+				if (cars.length > 0) {
+					for (let carIndex = 0; carIndex < cars.length; carIndex++) {
+						if (type === TYPE_PRICE_DISPLAY.PERCENTAGE) {
+							await CarModel.findByIdAndUpdate(cars[carIndex]._id, {
+								percentage: percentage,
+								price_display: take_decimal_number(
+									cars[carIndex].price * (1 + percentage / 100) +
+										priceSale * cars[carIndex].price
+								)
+							});
+						}
+
+						if (type === TYPE_PRICE_DISPLAY.PRICE) {
+							await CarModel.findByIdAndUpdate(cars[carIndex]._id, {
+								price_display: take_decimal_number(
+									Number(cars[carIndex].price) +
+										price +
+										priceSale * Number(cars[carIndex].price)
+								),
+								difference_price: price
+							});
+						}
+					}
+				} else {
+					res.status(200).json({
 						message: 'Car not found',
 						status_code: 105
 					});
 				}
-
-				if (!Number(car.price)) {
+			} else {
+				if (!ids || ids.length === 0) {
 					return res.status(200).json({
-						message: req.__('Vui lòng lựa chọn xe khác với giá tiền là số'),
-						status_code: 100
+						message: 'car_id is required',
+						status_code: 101
 					});
 				}
-
-				if (!Object.values(TYPE_PRICE_DISPLAY).includes(type)) {
-					return res.status(200).json({
-						message: req.__('Loại dữ liệu không chính xác'),
-						status_code: 100
-					});
-				}
-
-				if (type === TYPE_PRICE_DISPLAY.PERCENTAGE) {
-					if (!percentage) {
+				for (let i = 0; i < ids.length; i++) {
+					const car = await CarModel.findOne({ _id: ids[i] }).lean();
+					if (!car) {
 						return res.status(200).json({
-							status_code: 101,
-							message: req.__('Vui lòng nhập phần % giá tiền')
+							message: 'Car not found',
+							status_code: 105
 						});
 					}
-					await CarModel.findByIdAndUpdate(ids[i], {
-						percentage: percentage,
-						price_display: (car.price * (1 + percentage / 100)).toFixed(2)
-					});
-				}
 
-				if (type === TYPE_PRICE_DISPLAY.PRICE) {
-					if (!price) {
+					if (!Number(car.price)) {
 						return res.status(200).json({
-							status_code: 101,
-							message: req.__('Vui lòng nhập giá tiền')
+							message: req.__('Vui lòng lựa chọn xe khác với giá tiền là số'),
+							status_code: 100
 						});
 					}
-					await CarModel.findByIdAndUpdate(ids[i], {
-						price_display: Number(car.price) + price,
-						difference_price: price
-					});
+
+					if (type === TYPE_PRICE_DISPLAY.PERCENTAGE) {
+						await CarModel.findByIdAndUpdate(ids[i], {
+							percentage: percentage,
+							price_display: take_decimal_number(
+								car.price * (1 + percentage / 100) + priceSale * car.price
+							)
+						});
+					}
+
+					if (type === TYPE_PRICE_DISPLAY.PRICE) {
+						await CarModel.findByIdAndUpdate(ids[i], {
+							price_display: take_decimal_number(
+								Number(car.price) + price + priceSale * Number(car.price)
+							),
+							difference_price: price
+						});
+					}
 				}
 			}
+
 			res.status(200).json({
 				message: req.__('Cập nhật thành công'),
 				status: true,
@@ -416,6 +562,18 @@ class CarsController {
 
 	async create(req, res) {
 		try {
+			let isSaleOn = await SaleModel.find();
+			let priceSale = 0;
+			if (isSaleOn.length === 0) {
+				priceSale = 0;
+			} else {
+				if (isSaleOn[0].is_sale) {
+					priceSale = isSaleOn[0].sale_price / 100;
+				} else {
+					priceSale = 0;
+				}
+			}
+
 			let {
 				car_name,
 				price,
@@ -662,7 +820,7 @@ class CarsController {
 				business_address,
 				parking_location,
 				primary_image,
-				price_display: price
+				price_display: take_decimal_number(price + priceSale * price)
 			});
 
 			await newCar.save();
@@ -683,6 +841,17 @@ class CarsController {
 
 	async edit(req, res) {
 		try {
+			let isSaleOn = await SaleModel.find();
+			let priceSale = 0;
+			if (isSaleOn.length === 0) {
+				priceSale = 0;
+			} else {
+				if (isSaleOn[0].is_sale) {
+					priceSale = isSaleOn[0].sale_price / 100;
+				} else {
+					priceSale = 0;
+				}
+			}
 			let {
 				car_id,
 				car_name,
@@ -922,7 +1091,7 @@ class CarsController {
 				business_address,
 				parking_location,
 				primary_image,
-				price_display: price
+				price_display: take_decimal_number(price + price * priceSale)
 			}).lean();
 
 			return res.status(200).json({

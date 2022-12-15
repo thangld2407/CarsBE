@@ -3,6 +3,6 @@ const requireLogin = require('../../../../middleware/requireLogin');
 
 const router = require('express').Router();
 
-router.post('/settings', SaleController.setSale);
+router.post('/settings', requireLogin, SaleController.setSale);
 
 module.exports = router;

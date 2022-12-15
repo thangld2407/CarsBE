@@ -1,26 +1,14 @@
 const CarModel = require('../model/CarModel');
 const SaleModel = require('../model/SaleModel');
 async function updateCar(car, sale_price) {
-	let price_after;
-	if (car.price_display - car.price === 0) {
-		price_after = car.price;
-	} else {
-		price_after = car.price_display;
-	}
-	console.log('================================================');
-	console.log(sale_price);
-	console.log(price_after);
-	console.log('================================================');
+	let priceDisplay = car.price_display;
+	let priceSale = car.price * (sale_price / 100) || 0;
 
-	await CarModel.updateOne(
-		{ _id: car._id },
-		{ price_display: price_after * (1 - sale_price / 100) }
-	);
+	let priceDisplayOnCar = priceDisplay + priceSale;
+
+	await CarModel.updateOne({ _id: car._id }, { price_display: priceDisplayOnCar });
 }
 class SaleController {
-	isSaleOn = [];
-	car_ids = [];
-
 	async setSale(req, res) {
 		const { is_sale, sale_price } = req.body;
 		if (typeof is_sale !== 'boolean') {
@@ -59,30 +47,29 @@ class SaleController {
 			const isSaleOn = await SaleModel.find();
 
 			if (isSaleOn.length === 0) {
-				if (is_sale) {
-					const sale = new SaleModel({
-						is_sale,
-						sale_price
-					});
-					await sale.save();
-					cars.forEach(async car => {
-						await updateCar(car, sale.sale_price);
-					});
+				const saleCreate = new SaleModel({
+					is_sale,
+					sale_price
+				});
+				await saleCreate.save();
+
+				if (saleCreate.is_sale) {
+					cars.forEach(car => updateCar(car, saleCreate.sale_price));
 				}
 			} else {
-				let price_update = is_sale === true ? sale_price : 0;
-
-				await SaleModel.findByIdAndUpdate(isSaleOn[0]._id, {
-					is_sale,
-					sale_price: price_update
-				});
-
-				let priceIncreaseOrDecrease =
-					is_sale === true ? sale_price : -isSaleOn[0].sale_price;
-
-				cars.forEach(async car => {
-					await updateCar(car, priceIncreaseOrDecrease);
-				});
+				if (is_sale) {
+					await SaleModel.findByIdAndUpdate(isSaleOn[0]._id, {
+						sale_price,
+						is_sale: true
+					});
+					cars.forEach(car => updateCar(car, sale_price));
+				} else {
+					await SaleModel.findByIdAndUpdate(isSaleOn[0]._id, {
+						sale_price: 0,
+						is_sale: false
+					});
+					cars.forEach(car => updateCar(car, -sale_price));
+				}
 			}
 			res.status(200).json({
 				status: true,

@@ -2,10 +2,17 @@ const take_decimal_number = require('../helper/floatNumberTwoCharacter');
 const CarModel = require('../model/CarModel');
 const SaleModel = require('../model/SaleModel');
 async function updateCar(car, sale_price) {
-	let priceDisplay = car.price_display;
+	let priceDif = car.price;
+	if (car.difference_price > 0) {
+		priceDif = car.price + car.difference_price;
+	}
+
+	if (car.percentage > 0) {
+		priceDif = car.price + car.price * (car.percentage / 100);
+	}
 	let priceSale = car.price * (sale_price / 100) || 0;
 
-	let priceDisplayOnCar = take_decimal_number(priceDisplay + priceSale);
+	let priceDisplayOnCar = take_decimal_number(priceDif + priceSale);
 
 	await CarModel.updateOne({ _id: car._id }, { price_display: priceDisplayOnCar });
 }

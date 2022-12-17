@@ -27,20 +27,22 @@ class SaleController {
 			});
 		}
 
-		if (!sale_price) {
-			return res.status(200).json({
-				status: false,
-				error_code: 101,
-				error_message: req.__('sale_price must be required')
-			});
-		}
+		if (is_sale === true) {
+			if (!sale_price) {
+				return res.status(200).json({
+					status: false,
+					error_code: 101,
+					error_message: req.__('sale_price must be required')
+				});
+			}
 
-		if (typeof sale_price !== 'number') {
-			return res.status(200).json({
-				status: false,
-				error_code: 101,
-				error_message: req.__('sale_price must be number')
-			});
+			if (typeof sale_price !== 'number') {
+				return res.status(200).json({
+					status: false,
+					error_code: 101,
+					error_message: req.__('sale_price must be number')
+				});
+			}
 		}
 
 		try {

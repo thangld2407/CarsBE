@@ -486,7 +486,8 @@ class CarsController {
 								price_display: take_decimal_number(
 									cars[carIndex].price * (1 + percentage / 100) +
 										priceSale * cars[carIndex].price
-								)
+								),
+								difference_price: 0
 							});
 						}
 
@@ -497,7 +498,8 @@ class CarsController {
 										price +
 										priceSale * Number(cars[carIndex].price)
 								),
-								difference_price: price
+								difference_price: price,
+								percentage: 0
 							});
 						}
 					}
@@ -535,7 +537,8 @@ class CarsController {
 							percentage: percentage,
 							price_display: take_decimal_number(
 								car.price * (1 + percentage / 100) + priceSale * car.price
-							)
+							),
+							difference_price: 0
 						});
 					}
 
@@ -544,7 +547,8 @@ class CarsController {
 							price_display: take_decimal_number(
 								Number(car.price) + price + priceSale * Number(car.price)
 							),
-							difference_price: price
+							difference_price: price,
+							percentage: 0
 						});
 					}
 				}

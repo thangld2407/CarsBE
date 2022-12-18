@@ -94,6 +94,36 @@ class SaleController {
 			});
 		}
 	}
+
+	async getSale(req, res) {
+		try {
+			const sale = await SaleModel.find().lean();
+			if (sale.length > 0) {
+				res.status(200).json({
+					status: true,
+					status_code: 200,
+					data: sale[0],
+					message: req.__('Set sale successfully')
+				});
+			} else {
+				res.status(200).json({
+					status: true,
+					status_code: 200,
+					data: {
+						is_sale: false,
+						sale_price: 0
+					},
+					message: req.__('Set sale successfully')
+				});
+			}
+		} catch (error) {
+			res.status(500).json({
+				message: 'Server error',
+				error: error.message,
+				status_code: 500
+			});
+		}
+	}
 }
 
 module.exports = new SaleController();

@@ -319,14 +319,31 @@ class CarsController {
 
 	async updateHotsale(req, res) {
 		try {
-			const { ids, is_hotsale } = req.body;
+			const { ids, is_hotsale, data_update } = req.body;
+			let dataIdUpdate = [];
+			let query = {};
+			if (data_update) {
+				const { search, filter } = data_update;
+				if (search) query.car_name = { $regex: search, $options: 'i' };
+				if (filter) {
+					query = {
+						...query,
+						...filter
+					};
+				}
 
-			if (!ids || ids.length === 0) {
-				return res.status(200).json({
-					message: 'List cars id is required',
-					status_code: 101,
-					status: false
-				});
+				const cars = await CarModel.find(query).select('_id').lean();
+				dataIdUpdate = cars.map(car => car._id);
+			} else {
+				if (!ids || ids.length === 0) {
+					return res.status(200).json({
+						message: 'List cars id is required',
+						status_code: 101,
+						status: false
+					});
+				}
+
+				dataIdUpdate = ids;
 			}
 
 			if (typeof is_hotsale !== 'boolean' || typeof is_hotsale === 'undefined') {
@@ -337,8 +354,8 @@ class CarsController {
 				});
 			}
 
-			for (let i = 0; i < ids.length; i++) {
-				const has_cars = await CarModel.findById(ids[i]).lean();
+			for (let i = 0; i < dataIdUpdate.length; i++) {
+				const has_cars = await CarModel.findById(dataIdUpdate[i]).lean();
 				if (!has_cars) {
 					return res.status(200).json({
 						message: req.__('Cars not found'),
@@ -348,7 +365,7 @@ class CarsController {
 				}
 			}
 
-			await CarModel.updateMany({ _id: { $in: ids } }, { is_hotsale: is_hotsale });
+			await CarModel.updateMany({ _id: { $in: dataIdUpdate } }, { is_hotsale: is_hotsale });
 
 			res.status(200).json({
 				message: req.__('Cập nhật danh sách hotsale thành công'),
@@ -1114,25 +1131,42 @@ class CarsController {
 
 	async delete(req, res) {
 		try {
-			const { ids } = req.body;
+			const { ids, data_update } = req.body;
+			let dataIdsUpdate = [];
+			let query = {};
+			if (data_update) {
+				const { search, filter } = data_update;
+				if (search) query.car_name = { $regex: search, $options: 'i' };
+				if (filter) {
+					query = {
+						...query,
+						...filter
+					};
+				}
 
-			if (!ids) {
-				return res.status(200).json({
-					message: req.__('Vui lòng nhập id xe'),
-					status_code: 101,
-					status: false
-				});
-			}
-			if (!isArray(ids)) {
-				return res.status(200).json({
-					message: req.__('Loại dữ liệu id xe nhập vào không đúng'),
-					status_code: 104,
-					status: false
-				});
+				const cars = await CarModel.find(query).select('_id').lean();
+				dataIdsUpdate = cars.map(car => car._id);
+			} else {
+				if (!ids) {
+					return res.status(200).json({
+						message: req.__('Vui lòng nhập id xe'),
+						status_code: 101,
+						status: false
+					});
+				}
+				if (!isArray(ids)) {
+					return res.status(200).json({
+						message: req.__('Loại dữ liệu id xe nhập vào không đúng'),
+						status_code: 104,
+						status: false
+					});
+				}
+
+				dataIdsUpdate = ids;
 			}
 
-			for (let i = 0; i < ids.length; i++) {
-				const has_cars = await CarModel.findById(ids[i]).lean();
+			for (let i = 0; i < dataIdsUpdate.length; i++) {
+				const has_cars = await CarModel.findById(dataIdsUpdate[i]).lean();
 				if (!has_cars) {
 					return res.status(200).json({
 						message: req.__('Cars not found'),

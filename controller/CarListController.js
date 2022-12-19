@@ -1,4 +1,5 @@
 const { TYPE_PRICE_DISPLAY } = require('../constants/type');
+const { calPercentageSpecific, calculatePriceSpecific } = require('../helper/calculatePrice');
 const convertImageToLinkServer = require('../helper/dowloadImage');
 const take_decimal_number = require('../helper/floatNumberTwoCharacter');
 const generateUUID = require('../helper/generateUUID');
@@ -497,12 +498,16 @@ class CarsController {
 
 				if (cars.length > 0) {
 					for (let carIndex = 0; carIndex < cars.length; carIndex++) {
+						let priceWillBeDisplay = isSaleOn[0].is_sale
+							? cars[carIndex].price_display
+							: cars[carIndex].price;
 						if (type === TYPE_PRICE_DISPLAY.PERCENTAGE) {
 							await CarModel.findByIdAndUpdate(cars[carIndex]._id, {
 								percentage: percentage,
-								price_display: take_decimal_number(
-									cars[carIndex].price * (1 + percentage / 100) +
-										priceSale * cars[carIndex].price
+								price_display: calPercentageSpecific(
+									priceSale,
+									priceWillBeDisplay,
+									percentage
 								),
 								difference_price: 0
 							});
@@ -510,10 +515,10 @@ class CarsController {
 
 						if (type === TYPE_PRICE_DISPLAY.PRICE) {
 							await CarModel.findByIdAndUpdate(cars[carIndex]._id, {
-								price_display: take_decimal_number(
-									Number(cars[carIndex].price) +
-										price +
-										priceSale * Number(cars[carIndex].price)
+								price_display: calculatePriceSpecific(
+									priceSale,
+									priceWillBeDisplay,
+									price
 								),
 								difference_price: price,
 								percentage: 0

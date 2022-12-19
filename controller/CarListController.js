@@ -183,6 +183,11 @@ class CarsController {
 						error_code: 104
 					});
 				}
+				if (from_price || to_price) {
+					query.price = {
+						$gte: from_price || to_price
+					};
+				}
 				query.price = {
 					$gte: from_price,
 					$lte: to_price
@@ -197,6 +202,11 @@ class CarsController {
 						message: req.__('From distance must be less than to distance'),
 						error_code: 104
 					});
+				}
+				if (from_distance || to_distance) {
+					query.distance_driven = {
+						$gte: from_distance || to_distance
+					};
 				}
 				query.distance_driven = {
 					$gte: from_distance,

@@ -1,4 +1,5 @@
 const { TYPE_PRICE_DISPLAY } = require('../constants/type');
+const { calPercentageSpecific, calculatePriceSpecific } = require('../helper/calculatePrice');
 const convertImageToLinkServer = require('../helper/dowloadImage');
 const take_decimal_number = require('../helper/floatNumberTwoCharacter');
 const generateUUID = require('../helper/generateUUID');
@@ -182,6 +183,11 @@ class CarsController {
 						error_code: 104
 					});
 				}
+				if (from_price || to_price) {
+					query.price = {
+						$gte: from_price || to_price
+					};
+				}
 				query.price = {
 					$gte: from_price,
 					$lte: to_price
@@ -196,6 +202,11 @@ class CarsController {
 						message: req.__('From distance must be less than to distance'),
 						error_code: 104
 					});
+				}
+				if (from_distance || to_distance) {
+					query.distance_driven = {
+						$gte: from_distance || to_distance
+					};
 				}
 				query.distance_driven = {
 					$gte: from_distance,
@@ -319,14 +330,31 @@ class CarsController {
 
 	async updateHotsale(req, res) {
 		try {
-			const { ids, is_hotsale } = req.body;
+			const { ids, is_hotsale, data_update } = req.body;
+			let dataIdUpdate = [];
+			let query = {};
+			if (data_update) {
+				const { search, filter } = data_update;
+				if (search) query.car_name = { $regex: search, $options: 'i' };
+				if (filter) {
+					query = {
+						...query,
+						...filter
+					};
+				}
 
-			if (!ids || ids.length === 0) {
-				return res.status(200).json({
-					message: 'List cars id is required',
-					status_code: 101,
-					status: false
-				});
+				const cars = await CarModel.find(query).select('_id').lean();
+				dataIdUpdate = cars.map(car => car._id);
+			} else {
+				if (!ids || ids.length === 0) {
+					return res.status(200).json({
+						message: 'List cars id is required',
+						status_code: 101,
+						status: false
+					});
+				}
+
+				dataIdUpdate = ids;
 			}
 
 			if (typeof is_hotsale !== 'boolean' || typeof is_hotsale === 'undefined') {
@@ -337,8 +365,8 @@ class CarsController {
 				});
 			}
 
-			for (let i = 0; i < ids.length; i++) {
-				const has_cars = await CarModel.findById(ids[i]).lean();
+			for (let i = 0; i < dataIdUpdate.length; i++) {
+				const has_cars = await CarModel.findById(dataIdUpdate[i]).lean();
 				if (!has_cars) {
 					return res.status(200).json({
 						message: req.__('Cars not found'),
@@ -348,7 +376,7 @@ class CarsController {
 				}
 			}
 
-			await CarModel.updateMany({ _id: { $in: ids } }, { is_hotsale: is_hotsale });
+			await CarModel.updateMany({ _id: { $in: dataIdUpdate } }, { is_hotsale: is_hotsale });
 
 			res.status(200).json({
 				message: req.__('Cập nhật danh sách hotsale thành công'),
@@ -480,12 +508,16 @@ class CarsController {
 
 				if (cars.length > 0) {
 					for (let carIndex = 0; carIndex < cars.length; carIndex++) {
+						let priceWillBeDisplay = isSaleOn[0].is_sale
+							? cars[carIndex].price_display
+							: cars[carIndex].price;
 						if (type === TYPE_PRICE_DISPLAY.PERCENTAGE) {
 							await CarModel.findByIdAndUpdate(cars[carIndex]._id, {
 								percentage: percentage,
-								price_display: take_decimal_number(
-									cars[carIndex].price * (1 + percentage / 100) +
-										priceSale * cars[carIndex].price
+								price_display: calPercentageSpecific(
+									priceSale,
+									priceWillBeDisplay,
+									percentage
 								),
 								difference_price: 0
 							});
@@ -493,10 +525,10 @@ class CarsController {
 
 						if (type === TYPE_PRICE_DISPLAY.PRICE) {
 							await CarModel.findByIdAndUpdate(cars[carIndex]._id, {
-								price_display: take_decimal_number(
-									Number(cars[carIndex].price) +
-										price +
-										priceSale * Number(cars[carIndex].price)
+								price_display: calculatePriceSpecific(
+									priceSale,
+									priceWillBeDisplay,
+									price
 								),
 								difference_price: price,
 								percentage: 0
@@ -1114,25 +1146,42 @@ class CarsController {
 
 	async delete(req, res) {
 		try {
-			const { ids } = req.body;
+			const { ids, data_update } = req.body;
+			let dataIdsUpdate = [];
+			let query = {};
+			if (data_update) {
+				const { search, filter } = data_update;
+				if (search) query.car_name = { $regex: search, $options: 'i' };
+				if (filter) {
+					query = {
+						...query,
+						...filter
+					};
+				}
 
-			if (!ids) {
-				return res.status(200).json({
-					message: req.__('Vui lòng nhập id xe'),
-					status_code: 101,
-					status: false
-				});
-			}
-			if (!isArray(ids)) {
-				return res.status(200).json({
-					message: req.__('Loại dữ liệu id xe nhập vào không đúng'),
-					status_code: 104,
-					status: false
-				});
+				const cars = await CarModel.find(query).select('_id').lean();
+				dataIdsUpdate = cars.map(car => car._id);
+			} else {
+				if (!ids) {
+					return res.status(200).json({
+						message: req.__('Vui lòng nhập id xe'),
+						status_code: 101,
+						status: false
+					});
+				}
+				if (!isArray(ids)) {
+					return res.status(200).json({
+						message: req.__('Loại dữ liệu id xe nhập vào không đúng'),
+						status_code: 104,
+						status: false
+					});
+				}
+
+				dataIdsUpdate = ids;
 			}
 
-			for (let i = 0; i < ids.length; i++) {
-				const has_cars = await CarModel.findById(ids[i]).lean();
+			for (let i = 0; i < dataIdsUpdate.length; i++) {
+				const has_cars = await CarModel.findById(dataIdsUpdate[i]).lean();
 				if (!has_cars) {
 					return res.status(200).json({
 						message: req.__('Cars not found'),

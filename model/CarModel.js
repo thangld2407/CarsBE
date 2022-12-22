@@ -17,6 +17,11 @@ const CarSchema = new mongoose.Schema(
 			trim: true,
 			default: ''
 		},
+		car_model: {
+			type: String,
+			trim: true,
+			default: ''
+		},
 		license_plate: {
 			type: String,
 			trim: true,

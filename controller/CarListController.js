@@ -61,6 +61,7 @@ class CarsController {
 				const car = new CarModel({
 					images: list_image_converted,
 					car_name: data.basic_infor.car_name,
+					car_model: data.basic_infor.model,
 					price: price_convert,
 					car_code: data.basic_infor.car_code,
 					license_plate: data.basic_infor.license_plate,
@@ -97,7 +98,7 @@ class CarsController {
 
 					is_data_crawl: true,
 					// Add soruce crawl data
-					source_crawl: 'https://www.djauto.co.kr'
+					source_crawl: data.source_crawl
 				});
 				await car.save();
 				res.status(200).json({
@@ -111,6 +112,7 @@ class CarsController {
 					{ car_code: data.basic_infor.car_code },
 					{
 						car_name: data.basic_infor.car_name,
+						car_model: data.basic_infor.model,
 						price: price_convert,
 						car_code: data.basic_infor.car_code,
 						license_plate: data.basic_infor.license_plate,
@@ -262,6 +264,14 @@ class CarsController {
 				query = {
 					...query,
 					category
+				};
+			}
+
+			const { model } = filter;
+			if (model) {
+				query = {
+					...query,
+					model
 				};
 			}
 

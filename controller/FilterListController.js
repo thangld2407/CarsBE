@@ -199,6 +199,57 @@ class FilterListController {
 			});
 		}
 	}
+
+	async get_model(req, res) {
+		try {
+			const list = await CarModel.find().select('category');
+			let list_category = [];
+			list.forEach(item => {
+				if (item.category && item.category !== '') {
+					list_category.push(item.category);
+				}
+			});
+
+			list_category = list_category.filter((item, index) => {
+				return list_category.indexOf(item) === index;
+			});
+
+			let listModelData = {};
+
+			for (let i = 0; i < list_category.length; i++) {
+				const list_model = await CarModel.find({ category: list_category[i] }).select(
+					'car_model'
+				);
+				let list_model_data = [];
+				list_model.forEach(item => {
+					if (item.car_model && item.car_model !== '') {
+						list_model_data.push(item.car_model);
+					}
+				});
+
+				list_model_data = list_model_data.filter((item, index) => {
+					return list_model_data.indexOf(item) === index;
+				});
+
+				listModelData = {
+					...listModelData,
+					[list_category[i]]: list_model_data.sort()
+				};
+			}
+
+			res.status(200).json({
+				message: req.__('Get list model success'),
+				data: listModelData,
+				status_code: 200
+			});
+		} catch (error) {
+			res.status(500).json({
+				error: error.message,
+				status_code: 500,
+				message: req.__('Server error')
+			});
+		}
+	}
 }
 
 // Path: routes\api\module\filter_list\index.js

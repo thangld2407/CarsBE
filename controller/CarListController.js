@@ -93,7 +93,7 @@ class CarsController {
 					safety: data.vehicle_detail.safety,
 					convenience: data.vehicle_detail.convenience,
 
-					performance_check: htmlPdf,
+					performance_check: [htmlPdf],
 
 					is_data_crawl: true
 				});
@@ -823,13 +823,13 @@ class CarsController {
 				});
 			}
 
-			// if (!performance_check) {
-			// 	return res.status(200).json({
-			// 		message: req.__('Vui lòng nhập thông số kỹ thuật'),
-			// 		status_code: 101,
-			// 		status: false
-			// 	});
-			// }
+			if (isArray(performance_check)) {
+				return res.status(200).json({
+					message: req.__('Loại dữ liệu kiểm tra hiệu suất nhập vào không đúng'),
+					status_code: 104,
+					status: false
+				});
+			}
 
 			if (!phone_contact) {
 				return res.status(200).json({
@@ -1119,13 +1119,13 @@ class CarsController {
 				});
 			}
 
-			// if (!performance_check) {
-			// 	return res.status(200).json({
-			// 		message: req.__('Vui lòng nhập thông số kỹ thuật'),
-			// 		status_code: 101,
-			// 		status: false
-			// 	});
-			// }
+			if (isArray(performance_check)) {
+				return res.status(200).json({
+					message: req.__('Loại dữ liệu kiểm tra hiệu suất nhập vào không đúng'),
+					status_code: 104,
+					status: false
+				});
+			}
 
 			if (!phone_contact) {
 				return res.status(200).json({

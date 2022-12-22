@@ -148,9 +148,8 @@ const CarSchema = new mongoose.Schema(
 		},
 
 		performance_check: {
-			type: String,
-			trim: true,
-			default: ''
+			type: Array,
+			default: []
 		},
 
 		is_deleted: {
@@ -179,6 +178,13 @@ const CarSchema = new mongoose.Schema(
 		is_data_crawl: {
 			type: Boolean,
 			default: false
+		},
+
+		source_crawl: {
+			type: String,
+			trim: true,
+			default: '',
+			enum: ['https://dautomall.com', 'https://www.djauto.co.kr']
 		}
 	},
 	{

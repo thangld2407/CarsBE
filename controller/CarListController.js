@@ -267,11 +267,11 @@ class CarsController {
 				};
 			}
 
-			const { model } = filter;
-			if (model) {
+			const { car_model } = filter;
+			if (car_model) {
 				query = {
 					...query,
-					model
+					car_model
 				};
 			}
 

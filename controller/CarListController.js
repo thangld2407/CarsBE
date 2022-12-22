@@ -95,7 +95,9 @@ class CarsController {
 
 					performance_check: [htmlPdf],
 
-					is_data_crawl: true
+					is_data_crawl: true,
+					// Add soruce crawl data
+					source_crawl: 'https://www.djauto.co.kr'
 				});
 				await car.save();
 				res.status(200).json({

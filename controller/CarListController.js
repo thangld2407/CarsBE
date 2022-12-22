@@ -163,14 +163,16 @@ class CarsController {
 
 		let query = {};
 		let query_sort = {};
-
 		if (filter) {
 			const { from_year, to_year } = filter;
 
 			if (from_year && to_year) {
-				query.year_manufacture = {
-					$gte: from_year,
-					$lte: to_year
+				query = {
+					...query,
+					year_manufacture: {
+						$gte: from_year,
+						$lte: to_year
+					}
 				};
 			}
 
@@ -184,13 +186,19 @@ class CarsController {
 					});
 				}
 				if (from_price || to_price) {
-					query.price = {
-						$gte: from_price || to_price
+					query = {
+						...query,
+						price: {
+							$gte: from_price || to_price
+						}
 					};
 				}
-				query.price = {
-					$gte: from_price,
-					$lte: to_price
+				query = {
+					...query,
+					price: {
+						$gte: from_price,
+						$lte: to_price
+					}
 				};
 			}
 
@@ -204,53 +212,80 @@ class CarsController {
 					});
 				}
 				if (from_distance || to_distance) {
-					query.distance_driven = {
-						$gte: from_distance || to_distance
+					query = {
+						...query,
+						distance_driven: {
+							$gte: from_distance || to_distance
+						}
 					};
 				}
-				query.distance_driven = {
-					$gte: from_distance,
-					$lte: to_distance
+
+				query = {
+					...query,
+					distance_driven: {
+						$gte: from_distance,
+						$lte: to_distance
+					}
 				};
 			}
 
 			const { fuel_type } = filter;
 
 			if (fuel_type) {
-				query.fuel_type = fuel_type;
+				query = {
+					...query,
+					fuel_type
+				};
 			}
 
 			const { gearbox } = filter;
 
 			if (gearbox) {
-				query.gearbox = gearbox;
+				query = {
+					...query,
+					gearbox
+				};
 			}
 
 			const { is_data_crawl } = filter;
 			if (typeof is_data_crawl === 'boolean') {
-				query.is_data_crawl = is_data_crawl;
+				query = {
+					...query,
+					is_data_crawl
+				};
 			}
 
 			const { category } = filter;
 			if (category) {
-				query.category = category;
+				query = {
+					...query,
+					category
+				};
 			}
 
 			const { color } = filter;
 			if (color) {
-				query.color = color;
+				query = {
+					...query,
+					color
+				};
 			}
 
 			const { is_hotsale } = filter;
 			if (typeof is_hotsale === 'boolean') {
-				query.is_hotsale = is_hotsale;
+				query = {
+					...query,
+					is_hotsale
+				};
 			}
 		}
-
 		if (search) {
-			query.car_name = {
-				$regex: search,
-				$options: 'i'
+			query = {
+				...query,
+				$or: [
+					{ car_name: { $regex: search, $options: 'i' } },
+					{ license_plate: { $regex: search, $options: 'i' } }
+				]
 			};
 		}
 
@@ -267,7 +302,7 @@ class CarsController {
 				.sort(sort)
 				.collation({ locale: 'en_US', numericOrdering: true })
 				.select(
-					'car_name price car_code _id primary_image year_manufacture is_hotsale  price_display percentage created_at updated_at color car_type category fuel_type cylinder_capacity is_data_crawl'
+					'car_name price license_plate car_code _id primary_image year_manufacture is_hotsale  price_display percentage created_at updated_at color car_type category fuel_type cylinder_capacity is_data_crawl'
 				)
 				.populate('category')
 				.limit(paginate.per_page)
@@ -335,7 +370,15 @@ class CarsController {
 			let query = {};
 			if (data_update) {
 				const { search, filter } = data_update;
-				if (search) query.car_name = { $regex: search, $options: 'i' };
+				if (search) {
+					query = {
+						...query,
+						$or: [
+							{ car_name: { $regex: search, $options: 'i' } },
+							{ license_plate: { $regex: search, $options: 'i' } }
+						]
+					};
+				}
 				if (filter) {
 					query = {
 						...query,
@@ -428,9 +471,12 @@ class CarsController {
 					const { from_year, to_year } = filter;
 
 					if (from_year && to_year) {
-						query.year_manufacture = {
-							$gte: from_year,
-							$lte: to_year
+						query = {
+							...query,
+							year_manufacture: {
+								$gte: from_year,
+								$lte: to_year
+							}
 						};
 					}
 
@@ -443,9 +489,20 @@ class CarsController {
 								error_code: 104
 							});
 						}
-						query.price = {
-							$gte: from_price,
-							$lte: to_price
+						if (from_price || to_price) {
+							query = {
+								...query,
+								price: {
+									$gte: from_price || to_price
+								}
+							};
+						}
+						query = {
+							...query,
+							price: {
+								$gte: from_price,
+								$lte: to_price
+							}
 						};
 					}
 
@@ -458,49 +515,81 @@ class CarsController {
 								error_code: 104
 							});
 						}
-						query.distance_driven = {
-							$gte: from_distance,
-							$lte: to_distance
+						if (from_distance || to_distance) {
+							query = {
+								...query,
+								distance_driven: {
+									$gte: from_distance || to_distance
+								}
+							};
+						}
+
+						query = {
+							...query,
+							distance_driven: {
+								$gte: from_distance,
+								$lte: to_distance
+							}
 						};
 					}
 
 					const { fuel_type } = filter;
 
 					if (fuel_type) {
-						query.fuel_type = fuel_type;
+						query = {
+							...query,
+							fuel_type
+						};
 					}
 
 					const { gearbox } = filter;
 
 					if (gearbox) {
-						query.gearbox = gearbox;
+						query = {
+							...query,
+							gearbox
+						};
 					}
 
 					const { is_data_crawl } = filter;
 					if (typeof is_data_crawl === 'boolean') {
-						query.is_data_crawl = is_data_crawl;
+						query = {
+							...query,
+							is_data_crawl
+						};
 					}
 
 					const { category } = filter;
 					if (category) {
-						query.category = category;
+						query = {
+							...query,
+							category
+						};
 					}
 
 					const { color } = filter;
 					if (color) {
-						query.color = color;
+						query = {
+							...query,
+							color
+						};
 					}
 
 					const { is_hotsale } = filter;
 					if (typeof is_hotsale === 'boolean') {
-						query.is_hotsale = is_hotsale;
+						query = {
+							...query,
+							is_hotsale
+						};
 					}
 				}
-
 				if (search) {
-					query.car_name = {
-						$regex: search,
-						$options: 'i'
+					query = {
+						...query,
+						$or: [
+							{ car_name: { $regex: search, $options: 'i' } },
+							{ license_plate: { $regex: search, $options: 'i' } }
+						]
 					};
 				}
 
@@ -734,13 +823,13 @@ class CarsController {
 				});
 			}
 
-			if (!performance_check) {
-				return res.status(200).json({
-					message: req.__('Vui lòng nhập thông số kỹ thuật'),
-					status_code: 101,
-					status: false
-				});
-			}
+			// if (!performance_check) {
+			// 	return res.status(200).json({
+			// 		message: req.__('Vui lòng nhập thông số kỹ thuật'),
+			// 		status_code: 101,
+			// 		status: false
+			// 	});
+			// }
 
 			if (!phone_contact) {
 				return res.status(200).json({
@@ -814,11 +903,23 @@ class CarsController {
 				});
 			}
 
-			const hasCar = await CarModel.findOne({
+			const hasCarByCarCode = await CarModel.findOne({
 				car_code: car_code
 			});
 
-			if (hasCar) {
+			if (hasCarByCarCode) {
+				return res.status(200).json({
+					message: req.__('Mã xe đã tồn tại'),
+					status_code: 102,
+					status: false
+				});
+			}
+
+			const hasCarByLicensePlate = await CarModel.findOne({
+				license_plate
+			});
+
+			if (hasCarByLicensePlate) {
 				return res.status(200).json({
 					message: req.__('Mã xe đã tồn tại'),
 					status_code: 102,
@@ -1018,13 +1119,13 @@ class CarsController {
 				});
 			}
 
-			if (!performance_check) {
-				return res.status(200).json({
-					message: req.__('Vui lòng nhập thông số kỹ thuật'),
-					status_code: 101,
-					status: false
-				});
-			}
+			// if (!performance_check) {
+			// 	return res.status(200).json({
+			// 		message: req.__('Vui lòng nhập thông số kỹ thuật'),
+			// 		status_code: 101,
+			// 		status: false
+			// 	});
+			// }
 
 			if (!phone_contact) {
 				return res.status(200).json({
@@ -1151,7 +1252,15 @@ class CarsController {
 			let query = {};
 			if (data_update) {
 				const { search, filter } = data_update;
-				if (search) query.car_name = { $regex: search, $options: 'i' };
+				if (search) {
+					query = {
+						...query,
+						$or: [
+							{ car_name: { $regex: search, $options: 'i' } },
+							{ license_plate: { $regex: search, $options: 'i' } }
+						]
+					};
+				}
 				if (filter) {
 					query = {
 						...query,

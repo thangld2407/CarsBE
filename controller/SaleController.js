@@ -28,7 +28,7 @@ class SaleController {
 		}
 
 		if (is_sale === true) {
-			if (!sale_price) {
+			if (sale_price === undefined || sale_price === null || sale_price === NaN) {
 				return res.status(200).json({
 					status: false,
 					error_code: 101,

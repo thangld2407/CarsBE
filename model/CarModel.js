@@ -189,7 +189,7 @@ const CarSchema = new mongoose.Schema(
 			type: String,
 			trim: true,
 			default: 'manual',
-			enum: ['https://dautomall.com', 'https://www.djauto.co.kr', ân]
+			enum: ['https://dautomall.com', 'https://www.djauto.co.kr', 'manual']
 		}
 	},
 	{

@@ -843,14 +843,6 @@ class CarsController {
 				});
 			}
 
-			if (!phone_contact) {
-				return res.status(200).json({
-					message: req.__('Vui lòng nhập số điện thoại liên hệ'),
-					status_code: 101,
-					status: false
-				});
-			}
-
 			if (!isArray(images)) {
 				return res.status(200).json({
 					message: req.__('Loại dữ liệu ảnh nhập vào không đúng'),
@@ -1135,14 +1127,6 @@ class CarsController {
 				return res.status(200).json({
 					message: req.__('Loại dữ liệu kiểm tra hiệu suất nhập vào không đúng'),
 					status_code: 104,
-					status: false
-				});
-			}
-
-			if (!phone_contact) {
-				return res.status(200).json({
-					message: req.__('Vui lòng nhập số điện thoại liên hệ'),
-					status_code: 101,
 					status: false
 				});
 			}

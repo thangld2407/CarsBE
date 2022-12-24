@@ -3,6 +3,7 @@ const { calPercentageSpecific, calculatePriceSpecific } = require('../helper/cal
 const convertImageToLinkServer = require('../helper/dowloadImage');
 const take_decimal_number = require('../helper/floatNumberTwoCharacter');
 const generateUUID = require('../helper/generateUUID');
+const convertNameToModel = require('../helper/getNameModel');
 const htmlToPdf = require('../helper/htmlToPdf');
 const isNumberWithValue = require('../helper/isNumber');
 const { pagination } = require('../helper/pagination');
@@ -61,7 +62,7 @@ class CarsController {
 				const car = new CarModel({
 					images: list_image_converted,
 					car_name: data.basic_infor.car_name,
-					car_model: data.basic_infor.model,
+					car_model: convertNameToModel(data.basic_infor.car_name),
 					price: price_convert,
 					car_code: data.basic_infor.car_code,
 					license_plate: data.basic_infor.license_plate,
@@ -112,7 +113,7 @@ class CarsController {
 					{ car_code: data.basic_infor.car_code },
 					{
 						car_name: data.basic_infor.car_name,
-						car_model: data.basic_infor.model,
+						car_model: convertNameToModel(data.basic_infor.car_name),
 						price: price_convert,
 						car_code: data.basic_infor.car_code,
 						license_plate: data.basic_infor.license_plate,
@@ -713,6 +714,7 @@ class CarsController {
 
 			let {
 				car_name,
+				car_model,
 				price,
 				car_code,
 				license_plate,
@@ -746,6 +748,14 @@ class CarsController {
 			if (!car_name) {
 				return res.status(200).json({
 					message: req.__('Vui lòng nhập tên xe'),
+					status_code: 101,
+					status: false
+				});
+			}
+
+			if (!car_model) {
+				return res.status(200).json({
+					message: req.__('Vui lòng chọn loại xe'),
 					status_code: 101,
 					status: false
 				});
@@ -835,7 +845,7 @@ class CarsController {
 				});
 			}
 
-			if (isArray(performance_check)) {
+			if (!isArray(performance_check)) {
 				return res.status(200).json({
 					message: req.__('Loại dữ liệu kiểm tra hiệu suất nhập vào không đúng'),
 					status_code: 104,
@@ -996,6 +1006,7 @@ class CarsController {
 			let {
 				car_id,
 				car_name,
+				car_model,
 				price,
 				license_plate,
 				year_manufacture,
@@ -1038,6 +1049,14 @@ class CarsController {
 			if (!car_name) {
 				return res.status(200).json({
 					message: req.__('Vui lòng nhập tên xe'),
+					status_code: 101,
+					status: false
+				});
+			}
+
+			if (!car_model) {
+				return res.status(200).json({
+					message: req.__('Vui lòng chọn loại xe'),
 					status_code: 101,
 					status: false
 				});

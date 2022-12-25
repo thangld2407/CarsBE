@@ -34,7 +34,7 @@ class CarsController {
 					message: 'Data is required'
 				});
 			}
-			const hasCarDb = await CarModel.find({
+			const hasCarDb = await CarModel.findOne({
 				car_code: data.basic_infor.car_code
 			});
 

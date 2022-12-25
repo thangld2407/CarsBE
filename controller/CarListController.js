@@ -38,7 +38,7 @@ class CarsController {
 				car_code: data.basic_infor.car_code
 			});
 
-			if (hasCarDb.length === 0) {
+			if (hasCarDb) {
 				let list_image_converted = [];
 				if (data.basic_infor.list_image.length > 0) {
 					for (let i = 0; i < data.basic_infor.list_image.length; i++) {

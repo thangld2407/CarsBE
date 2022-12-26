@@ -62,10 +62,10 @@ class CarsController {
 
 				const car = new CarModel({
 					images: list_image_converted,
-					car_name: data.basic_infor.car_name,
-					car_model: convertNameToModel(data.basic_infor.car_name),
+					car_name: data.basic_infor.car_name.trim(),
+					car_model: convertNameToModel(data.basic_infor.car_name.trim()),
 					price: price_convert,
-					car_code: data.basic_infor.car_code,
+					car_code: data.basic_infor.car_code.trim(),
 					license_plate: data.basic_infor.license_plate,
 					year_manufacture: data.basic_infor.year_manufacture,
 					distance_driven: isNumberWithValue(
@@ -113,10 +113,10 @@ class CarsController {
 				await CarModel.findOneAndUpdate(
 					{ car_code: data.basic_infor.car_code },
 					{
-						car_name: data.basic_infor.car_name,
-						car_model: convertNameToModel(data.basic_infor.car_name),
+						car_name: data.basic_infor.car_name.trim(),
+						car_model: convertNameToModel(data.basic_infor.car_name.trim()),
 						price: price_convert,
-						car_code: data.basic_infor.car_code,
+						car_code: data.basic_infor.car_code.trim(),
 						license_plate: data.basic_infor.license_plate,
 						year_manufacture: data.basic_infor.year_manufacture,
 						distance_driven: isNumberWithValue(

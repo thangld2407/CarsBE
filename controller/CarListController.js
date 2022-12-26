@@ -35,7 +35,8 @@ class CarsController {
 				});
 			}
 			const hasCarDb = await CarModel.findOne({
-				car_code: data.basic_infor.car_code
+				car_code: data.basic_infor.car_code.trim(),
+				car_name: data.basic_infor.car_name.trim()
 			});
 
 			if (!hasCarDb) {

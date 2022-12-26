@@ -1,3 +1,4 @@
+const { SOURCE_CRAWL } = require('../constants/enum');
 const { TYPE_PRICE_DISPLAY } = require('../constants/type');
 const { calPercentageSpecific, calculatePriceSpecific } = require('../helper/calculatePrice');
 const convertImageToLinkServer = require('../helper/dowloadImage');
@@ -156,6 +157,7 @@ class CarsController {
 				});
 			}
 		} catch (error) {
+			console.log(error);
 			res.status(500).json({
 				message: error.message,
 				status_code: 500,
@@ -270,10 +272,12 @@ class CarsController {
 			}
 
 			const { car_model } = filter;
-			if (car_model) {
+			if (car_model && isArray(car_model)) {
 				query = {
 					...query,
-					car_model
+					car_model: {
+						$in: [...car_model]
+					}
 				};
 			}
 
@@ -290,6 +294,14 @@ class CarsController {
 				query = {
 					...query,
 					is_hotsale
+				};
+			}
+
+			const { source_crawl } = filter;
+			if (source_crawl && SOURCE_CRAWL.includes(source_crawl)) {
+				query = {
+					...query,
+					source_crawl
 				};
 			}
 		}
@@ -316,9 +328,8 @@ class CarsController {
 				.sort(sort)
 				.collation({ locale: 'en_US', numericOrdering: true })
 				.select(
-					'car_name price license_plate car_code _id primary_image year_manufacture is_hotsale  price_display percentage created_at updated_at color car_type category fuel_type cylinder_capacity is_data_crawl'
+					'car_name car_model price license_plate car_code _id primary_image year_manufacture is_hotsale  price_display percentage created_at updated_at color car_type category fuel_type cylinder_capacity is_data_crawl'
 				)
-				.populate('category')
 				.limit(paginate.per_page)
 				.skip((paginate.current_page - 1) * paginate.per_page);
 

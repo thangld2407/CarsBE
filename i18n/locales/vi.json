@@ -89,5 +89,6 @@
 	"Vui lòng nhập thông số kỹ thuật": "Vui lòng nhập thông số kỹ thuật",
 	"Set sale successfully": "Set sale successfully",
 	"sale_price must be number": "sale_price must be number",
-	"sale_price must be required": "sale_price must be required"
+	"sale_price must be required": "sale_price must be required",
+	"Get list model success": "Get list model success"
 }

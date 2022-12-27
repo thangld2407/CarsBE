@@ -123,13 +123,40 @@ class FilterListController {
 				}
 			});
 
-			list_category = list_category.filter((item, index) => {
-				return list_category.indexOf(item) === index;
-			});
+			list_category =
+				list_category &&
+				list_category.filter((item, index) => {
+					return list_category.indexOf(item) === index;
+				});
+
+			let list_sort = await CarModel.aggregate([
+				{
+					$match: {
+						category: { $in: list_category }
+					}
+				},
+				{
+					$addFields: {
+						placement: {
+							$indexOfArray: [list_category, '$category']
+						}
+					}
+				},
+				{
+					$sort: {
+						placement: -1
+					}
+				}
+			]);
+
+			list_sort = list_sort && list_sort.map(item => item.category);
+			list_sort =
+				list_sort &&
+				list_sort.filter((item, index) => item !== '' && list_sort.indexOf(item) === index);
 
 			res.status(200).json({
 				message: req.__('Get list category success'),
-				data: list_category,
+				data: list_sort,
 				status_code: 200,
 				status: true
 			});

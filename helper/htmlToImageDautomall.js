@@ -10,7 +10,20 @@ function htmlToImageDautomall(url) {
 				args: ['--no-sandbox', '--disabled-setupid-sandbox'],
 				ignoreHTTPSErrors: true
 			});
+			if (!url) {
+				return resolve(null);
+			}
 			const page = await browser.newPage();
+			await page.goto(url, { waitUntil: 'load', timeout: 0 });
+			await page.waitForSelector('#form1');
+			await page.addStyleTag({
+				content: `
+					#wrap {
+						height: 100% !important;
+						padding: 0 40px;
+					}
+				`
+			});
 
 			let pathname = `/uploads/performance-check-${uuidv4()}.webp`;
 

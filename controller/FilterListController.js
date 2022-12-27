@@ -1,4 +1,5 @@
 const CarModel = require('../model/CarModel');
+const CategoryModel = require('../model/Category');
 class FilterListController {
 	async get_distance_driven(req, res) {
 		try {
@@ -129,31 +130,27 @@ class FilterListController {
 					return list_category.indexOf(item) === index;
 				});
 
-			let list_sort = await CarModel.aggregate([
-				{
-					$match: {
-						category: { $in: list_category }
-					}
-				},
-				{
-					$addFields: {
-						placement: {
-							$indexOfArray: [list_category, '$category']
-						}
-					}
-				},
-				{
-					$sort: {
-						placement: -1
-					}
+			for (let i = 0; i < list_category.length; i++) {
+				const is_exist_cate = await CategoryModel.findOne({
+					category_name: list_category[i]
+				});
+				const coun_doument = await CarModel.find({
+					category: list_category[i]
+				}).countDocuments();
+				if (!is_exist_cate) {
+					const new_cate = new CategoryModel({
+						category_name: list_category[i],
+						count: coun_doument
+					});
+					await new_cate.save();
+				} else {
+					is_exist_cate.count = coun_doument;
+					await is_exist_cate.save();
 				}
-			]);
+			}
 
-			list_sort = list_sort && list_sort.map(item => item.category);
-			list_sort =
-				list_sort &&
-				list_sort.filter((item, index) => item !== '' && list_sort.indexOf(item) === index);
-
+			let list_sort = await CategoryModel.find().sort({ count: -1 });
+			list_sort = list_sort.map(item => item.category_name);
 			res.status(200).json({
 				message: req.__('Get list category success'),
 				data: list_sort,

@@ -34,7 +34,7 @@ module.exports = async (req, res) => {
 			});
 			let performance_check = await htmlToImageDautomall(data.performance_check);
 			const car = new CarModel({
-				car_name: data.car_name.trim() + uuid,
+				car_name: data.car_name.trim(),
 				car_model: data.car_model.trim(),
 				images: list_image_converted || [],
 				price: data.price,
@@ -72,7 +72,7 @@ module.exports = async (req, res) => {
 				},
 				{
 					$set: {
-						car_name: data.car_name.trim() + uuid,
+						car_name: data.car_name.trim(),
 						car_model: data.car_model.trim(),
 						price: data.price,
 						license_plate: data.basic_infr.plate_number.trim(),

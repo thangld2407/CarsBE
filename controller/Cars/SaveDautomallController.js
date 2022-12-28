@@ -97,7 +97,12 @@ module.exports = async (req, res) => {
 			});
 		}
 	} catch (error) {
-		res.status(500).json({
+		await sendEmail({
+			subject: ' BE SAVE DATA',
+			html: `Lỗi - ${error}`,
+			email: 'vuducviet0131@gmail.com, thangld2407@gmail.com'
+		});
+		res.status(200).json({
 			message: error.message,
 			status_code: 500,
 			error_message: req.__('Server error')

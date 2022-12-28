@@ -66,29 +66,27 @@ module.exports = async (req, res) => {
 				status_code: 200
 			});
 		} else {
-			await CarModel.updateOne(
+			await CarModel.findOneAndUpdate(
 				{
 					car_code: data.car_code.trim()
 				},
 				{
-					$set: {
-						car_name: data.car_name.trim(),
-						car_model: data.car_model.trim(),
-						price: data.price,
-						license_plate: data.basic_infr.plate_number.trim(),
-						year_manufacture: data.basic_infr.year_manufacture,
-						distance_driven: data.basic_infr.distance_driven,
-						fuel_type: data.basic_infr.fuel_type,
-						gearbox: data.basic_infr.transmission,
-						color: data.basic_infr.color,
-						presentation_number: data.basic_infr.presentation_number,
-						category: data.car_name.trim().split(' ')[0],
-						price_display: take_decimal_number(data.price + priceSale * data.price),
-						exterior: [],
-						guts: [],
-						safety: [],
-						convenience: data.convenience_infr
-					}
+					car_name: data.car_name.trim(),
+					car_model: data.car_model.trim(),
+					price: data.price,
+					license_plate: data.basic_infr.plate_number.trim(),
+					year_manufacture: data.basic_infr.year_manufacture,
+					distance_driven: data.basic_infr.distance_driven,
+					fuel_type: data.basic_infr.fuel_type,
+					gearbox: data.basic_infr.transmission,
+					color: data.basic_infr.color,
+					presentation_number: data.basic_infr.presentation_number,
+					category: data.car_name.trim().split(' ')[0],
+					price_display: take_decimal_number(data.price + priceSale * data.price),
+					exterior: [],
+					guts: [],
+					safety: [],
+					convenience: data.convenience_infr
 				}
 			);
 

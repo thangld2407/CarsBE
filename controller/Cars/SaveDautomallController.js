@@ -4,7 +4,7 @@ const generateUUID = require('../../helper/generateUUID');
 const htmlToImageDautomall = require('../../helper/htmlToImageDautomall');
 const CarModel = require('../../model/CarModel');
 const SaleModel = require('../../model/SaleModel');
-
+const sendEmail = require('../../utils/mailer');
 module.exports = async (req, res) => {
 	let uuid = generateUUID();
 	try {

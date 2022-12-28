@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
 		let list_image_converted = [];
 
 		const hasCarInDb = await CarModel.findOne({
-			car_code: data.car_code.trim()
+			car_code: data?.car_code?.trim() || ''
 		});
 
 		let isSaleOn = await SaleModel.find();

@@ -32,27 +32,27 @@ module.exports = async (req, res) => {
 				let img = convertImageToLinkServer(item);
 				list_image_converted.push(img);
 			});
-			let performance_check = await htmlToImageDautomall(data.performance_check);
+			let performance_check = (await htmlToImageDautomall(data?.performance_check)) || '';
 			const car = new CarModel({
-				car_name: data.car_name.trim(),
-				car_model: data.car_model.trim(),
+				car_name: data?.car_name.trim(),
+				car_model: data?.car_model.trim(),
 				images: list_image_converted || [],
-				price: data.price,
-				car_code: data.car_code.trim(),
-				license_plate: data.basic_infr.plate_number.trim(),
-				year_manufacture: data.basic_infr.year_manufacture,
-				distance_driven: data.basic_infr.distance_driven,
-				fuel_type: data.basic_infr.fuel_type,
-				gearbox: data.basic_infr.transmission,
-				color: data.basic_infr.color,
-				presentation_number: data.basic_infr.presentation_number,
-				category: data.car_name.trim().split(' ')[0],
+				price: data?.price,
+				car_code: data?.car_code.trim(),
+				license_plate: data?.basic_infr?.plate_number.trim(),
+				year_manufacture: data?.basic_infr?.year_manufacture,
+				distance_driven: data?.basic_infr?.distance_driven,
+				fuel_type: data?.basic_infr?.fuel_type,
+				gearbox: data?.basic_infr?.transmission,
+				color: data?.basic_infr?.color,
+				presentation_number: data?.basic_infr?.presentation_number,
+				category: data?.car_name.trim().split(' ')[0],
 				primary_image: list_image_converted.length > 0 ? list_image_converted[0] : '',
-				price_display: take_decimal_number(data.price + priceSale * data.price),
+				price_display: take_decimal_number(data?.price + priceSale * data?.price),
 				exterior: [],
 				guts: [],
 				safety: [],
-				convenience: data.convenience_infr,
+				convenience: data?.convenience_infr,
 
 				performance_check: [performance_check],
 
@@ -68,20 +68,20 @@ module.exports = async (req, res) => {
 		} else {
 			await CarModel.findOneAndUpdate(
 				{
-					car_code: data.car_code.trim()
+					car_code: data?.car_code.trim()
 				},
 				{
-					car_name: data.car_name.trim(),
-					car_model: data.car_model.trim(),
-					price: data.price,
-					license_plate: data.basic_infr.plate_number.trim(),
-					year_manufacture: data.basic_infr.year_manufacture,
-					distance_driven: data.basic_infr.distance_driven,
-					fuel_type: data.basic_infr.fuel_type,
-					gearbox: data.basic_infr.transmission,
-					color: data.basic_infr.color,
-					presentation_number: data.basic_infr.presentation_number,
-					category: data.car_name.trim().split(' ')[0],
+					car_name: data?.car_name.trim(),
+					car_model: data?.car_model.trim(),
+					price: data?.price,
+					license_plate: data?.basic_infr?.plate_number.trim(),
+					year_manufacture: data?.basic_infr?.year_manufacture,
+					distance_driven: data?.basic_infr?.distance_driven,
+					fuel_type: data?.basic_infr?.fuel_type,
+					gearbox: data?.basic_infr?.transmission,
+					color: data?.basic_infr?.color,
+					presentation_number: data?.basic_infr?.presentation_number,
+					category: data?.car_name.trim().split(' ')[0],
 					price_display: take_decimal_number(data.price + priceSale * data.price),
 					exterior: [],
 					guts: [],

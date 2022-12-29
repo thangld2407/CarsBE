@@ -3,7 +3,6 @@ const UserModel = require('../model/UserModel');
 const { verifyToken } = require('../utils/jwt');
 
 module.exports = async (req, res, next) => {
-	return next();
 	try {
 		let token;
 		if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {

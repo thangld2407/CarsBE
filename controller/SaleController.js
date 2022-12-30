@@ -1,3 +1,4 @@
+const { SOURCE_CRAWL } = require('../constants/enum');
 const take_decimal_number = require('../helper/floatNumberTwoCharacter');
 const CarModel = require('../model/CarModel');
 const SaleModel = require('../model/SaleModel');
@@ -18,11 +19,19 @@ async function updateCar(car, sale_price) {
 }
 class SaleController {
 	async setSale(req, res) {
-		const { is_sale, sale_price } = req.body;
+		const { is_sale, sale_price, source } = req.body;
 		if (typeof is_sale !== 'boolean') {
 			return res.status(200).json({
 				error_code: 101,
 				error_message: req.__('is_sale must be boolean'),
+				status: false
+			});
+		}
+
+		if (!SOURCE_CRAWL.includes(source)) {
+			return res.status(200).json({
+				error_code: 101,
+				error_message: req.__('source is invalid'),
 				status: false
 			});
 		}
@@ -46,7 +55,9 @@ class SaleController {
 		}
 
 		try {
-			const cars = await CarModel.find();
+			const cars = await CarModel.find({
+				source_crawl: source
+			});
 			if (cars.length === 0) {
 				return res.status(200).json({
 					status: false,
@@ -54,12 +65,15 @@ class SaleController {
 					error_message: req.__('Cars not found')
 				});
 			}
-			const isSaleOn = await SaleModel.find();
+			const isSaleOn = await SaleModel.findOne({
+				source_crawl: source
+			});
 
-			if (isSaleOn.length === 0) {
+			if (!isSaleOn) {
 				const saleCreate = new SaleModel({
 					is_sale,
-					sale_price
+					sale_price,
+					source_crawl: source
 				});
 				await saleCreate.save();
 
@@ -67,7 +81,7 @@ class SaleController {
 					cars.forEach(car => updateCar(car, saleCreate.sale_price));
 				}
 			} else {
-				if (is_sale) {
+				if (is_sale === true) {
 					await SaleModel.findByIdAndUpdate(isSaleOn[0]._id, {
 						sale_price,
 						is_sale: true

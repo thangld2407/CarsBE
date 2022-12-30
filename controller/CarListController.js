@@ -18,9 +18,11 @@ class CarsController {
 	async saveCarCrawl(req, res) {
 		try {
 			const { data } = req.body;
-			let isSaleOn = await SaleModel.find();
+			let isSaleOn = await SaleModel.findOne({
+				source_crawl: 'https://www.djauto.co.kr'
+			});
 			let priceSale = 0;
-			if (isSaleOn.length === 0) {
+			if (!isSaleOn) {
 				priceSale = 0;
 			} else {
 				if (isSaleOn[0].is_sale) {

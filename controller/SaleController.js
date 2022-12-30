@@ -111,13 +111,16 @@ class SaleController {
 
 	async getSale(req, res) {
 		try {
-			const sale = await SaleModel.find().lean();
-			if (sale.length > 0) {
+			const { source } = req.body;
+			const sale = await SaleModel.findOne({
+				source_crawl: source
+			});
+			if (sale) {
 				res.status(200).json({
 					status: true,
 					status_code: 200,
-					data: sale[0],
-					message: req.__('Set sale successfully')
+					data: sale,
+					message: req.__('Get sale successfully')
 				});
 			} else {
 				res.status(200).json({
@@ -127,7 +130,7 @@ class SaleController {
 						is_sale: false,
 						sale_price: 0
 					},
-					message: req.__('Set sale successfully')
+					message: req.__('Get sale successfully')
 				});
 			}
 		} catch (error) {

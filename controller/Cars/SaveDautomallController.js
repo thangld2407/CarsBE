@@ -57,7 +57,7 @@ module.exports = async (req, res) => {
 				performance_check: [performance_check],
 
 				is_data_crawl: true,
-				source_crawl: data.source_crawl || 'https://dautomall.com'
+				source_crawl: data?.source_crawl || 'https://dautomall.com'
 			});
 
 			await car.save();

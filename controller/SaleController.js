@@ -82,13 +82,13 @@ class SaleController {
 				}
 			} else {
 				if (is_sale === true) {
-					await SaleModel.findByIdAndUpdate(isSaleOn[0]._id, {
+					await SaleModel.findByIdAndUpdate(isSaleOn._id, {
 						sale_price,
 						is_sale: true
 					});
 					cars.forEach(car => updateCar(car, sale_price));
 				} else {
-					await SaleModel.findByIdAndUpdate(isSaleOn[0]._id, {
+					await SaleModel.findByIdAndUpdate(isSaleOn._id, {
 						sale_price: 0,
 						is_sale: false
 					});
@@ -131,6 +131,44 @@ class SaleController {
 						sale_price: 0
 					},
 					message: req.__('Get sale successfully')
+				});
+			}
+		} catch (error) {
+			res.status(500).json({
+				message: 'Server error',
+				error: error.message,
+				status_code: 500
+			});
+		}
+	}
+
+	async getListSale(req, res) {
+		try {
+			const sales = await SaleModel.find();
+			if (sales.length > 0) {
+				res.status(200).json({
+					status: true,
+					status_code: 200,
+					data: sales,
+					message: req.__('Get list sale successfully')
+				});
+			} else {
+				res.status(200).json({
+					status: true,
+					status_code: 200,
+					data: [
+						{
+							is_sale: false,
+							sale_price: 0,
+							source_crawl: 'https://dautomall.com'
+						},
+						{
+							is_sale: false,
+							sale_price: 0,
+							source_crawl: 'https://www.djauto.co.kr'
+						}
+					],
+					message: req.__('Get list sale successfully')
 				});
 			}
 		} catch (error) {

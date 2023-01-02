@@ -146,10 +146,46 @@ class SaleController {
 		try {
 			const sales = await SaleModel.find();
 			if (sales.length > 0) {
+				let sale = [];
+				if (sales.length === 1) {
+					const _sale = sales[0];
+					if (_sale.source_crawl === 'https://dautomall.com') {
+						sale = [
+							{
+								is_sale: _sale.is_sale,
+								sale_price: _sale.sale_price,
+								source_crawl: _sale.source_crawl
+							},
+							{
+								is_sale: false,
+								sale_price: 0,
+								source_crawl: 'https://www.djauto.co.kr'
+							}
+						];
+					}
+
+					if (_sale.source_crawl === 'https://www.djauto.co.kr') {
+						sale = [
+							{
+								is_sale: false,
+								sale_price: 0,
+								source_crawl: 'https://dautomall.com'
+							},
+							{
+								is_sale: _sale.is_sale,
+								sale_price: _sale.sale_price,
+								source_crawl: _sale.source_crawl
+							}
+						];
+					}
+				} else {
+					sale = sales;
+				}
+
 				res.status(200).json({
 					status: true,
 					status_code: 200,
-					data: sales,
+					data: sale,
 					message: req.__('Get list sale successfully')
 				});
 			} else {

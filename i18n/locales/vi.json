@@ -90,5 +90,8 @@
 	"Set sale successfully": "Set sale successfully",
 	"sale_price must be number": "sale_price must be number",
 	"sale_price must be required": "sale_price must be required",
-	"Get list model success": "Get list model success"
+	"Get list model success": "Get list model success",
+	"Get list sale successfully": "Get list sale successfully",
+	"Get sale successfully": "Get sale successfully",
+	"Vui lòng nhập phần % giá tiền": "Vui lòng nhập phần % giá tiền"
 }

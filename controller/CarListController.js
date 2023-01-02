@@ -1,6 +1,10 @@
 const { SOURCE_CRAWL } = require('../constants/enum');
 const { TYPE_PRICE_DISPLAY } = require('../constants/type');
-const { calPercentageSpecific, calculatePriceSpecific } = require('../helper/calculatePrice');
+const {
+	calPercentageSpecific,
+	calculatePriceSpecific,
+	calPriceBySaleProgram
+} = require('../helper/calculatePrice');
 const convertImageToLinkServer = require('../helper/dowloadImage');
 const take_decimal_number = require('../helper/floatNumberTwoCharacter');
 const generateUUID = require('../helper/generateUUID');
@@ -460,17 +464,6 @@ class CarsController {
 
 	async updatePrice(req, res) {
 		try {
-			let isSaleOn = await SaleModel.find();
-			let priceSale = 0;
-			if (isSaleOn.length === 0) {
-				priceSale = 0;
-			} else {
-				if (isSaleOn[0].is_sale) {
-					priceSale = isSaleOn[0].sale_price / 100;
-				} else {
-					priceSale = 0;
-				}
-			}
 			const { type, percentage, price, ids, data_update } = req.body;
 
 			if (!Object.values(TYPE_PRICE_DISPLAY).includes(type)) {
@@ -481,7 +474,7 @@ class CarsController {
 			}
 
 			if (type === TYPE_PRICE_DISPLAY.PERCENTAGE) {
-				if (!percentage) {
+				if (percentage === '' || percentage === null || percentage === undefined) {
 					return res.status(200).json({
 						status_code: 101,
 						message: req.__('Vui lòng nhập phần % giá tiền')
@@ -620,13 +613,24 @@ class CarsController {
 					};
 				}
 
-				const cars = await CarModel.find(query).select('_id price price_display');
+				const cars = await CarModel.find(query).select(
+					'_id price price_display source_crawl'
+				);
 
 				if (cars.length > 0) {
 					for (let carIndex = 0; carIndex < cars.length; carIndex++) {
-						let priceWillBeDisplay = isSaleOn[0].is_sale
+						const isSaleOn = await SaleModel.findOne({
+							source_crawl: cars[carIndex].source_crawl
+						});
+
+						let priceWillBeDisplay = isSaleOn?.is_sale
 							? cars[carIndex].price_display
 							: cars[carIndex].price;
+
+						let priceSale = await calPriceBySaleProgram(
+							cars[carIndex].source_crawl,
+							cars[carIndex].price
+						);
 						if (type === TYPE_PRICE_DISPLAY.PERCENTAGE) {
 							await CarModel.findByIdAndUpdate(cars[carIndex]._id, {
 								percentage: percentage,
@@ -679,6 +683,8 @@ class CarsController {
 							status_code: 100
 						});
 					}
+
+					let priceSale = await calPriceBySaleProgram(car.source_crawl, car.price);
 
 					if (type === TYPE_PRICE_DISPLAY.PERCENTAGE) {
 						await CarModel.findByIdAndUpdate(ids[i], {
@@ -1329,7 +1335,7 @@ class CarsController {
 				}
 			}
 
-			await CarModel.deleteMany({ _id: { $in: ids } });
+			await CarModel.deleteMany({ _id: { $in: dataIdsUpdate } });
 
 			return res.status(200).json({
 				message: req.__('Delete cars successfully'),

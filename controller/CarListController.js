@@ -677,13 +677,6 @@ class CarsController {
 						});
 					}
 
-					if (!Number(car.price)) {
-						return res.status(200).json({
-							message: req.__('Vui lòng lựa chọn xe khác với giá tiền là số'),
-							status_code: 100
-						});
-					}
-
 					let priceSale = await calPriceBySaleProgram(car.source_crawl, car.price);
 
 					if (type === TYPE_PRICE_DISPLAY.PERCENTAGE) {

@@ -15,13 +15,15 @@ module.exports = async (req, res) => {
 			car_code: data?.car_code?.trim() || ''
 		});
 
-		let isSaleOn = await SaleModel.find();
+		let isSaleOn = await SaleModel.findOne({
+			source_crawl: data?.source_crawl || 'https://dautomall.com'
+		});
 		let priceSale = 0;
-		if (isSaleOn.length === 0) {
+		if (isSaleOn) {
 			priceSale = 0;
 		} else {
-			if (isSaleOn[0].is_sale) {
-				priceSale = isSaleOn[0].sale_price / 100;
+			if (isSaleOn.is_sale) {
+				priceSale = isSaleOn.sale_price / 100;
 			} else {
 				priceSale = 0;
 			}

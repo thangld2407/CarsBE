@@ -15,7 +15,7 @@ async function updateCar(car, sale_price) {
 
 	let priceDisplayOnCar = take_decimal_number(priceDif + priceSale);
 
-	await CarModel.updateOne({ _id: car._id }, { price_display: priceDisplayOnCar });
+	await CarModel.findOneAndUpdate({ _id: car._id }, { price_display: priceDisplayOnCar });
 }
 class SaleController {
 	async setSale(req, res) {
@@ -55,9 +55,8 @@ class SaleController {
 		}
 
 		try {
-			const cars = await CarModel.find({
-				source_crawl: source
-			});
+			const cars = await CarModel.find({ source_crawl: source });
+
 			if (cars.length === 0) {
 				return res.status(200).json({
 					status: false,
@@ -65,6 +64,7 @@ class SaleController {
 					error_message: req.__('Cars not found')
 				});
 			}
+
 			const isSaleOn = await SaleModel.findOne({
 				source_crawl: source
 			});
@@ -77,8 +77,8 @@ class SaleController {
 				});
 				await saleCreate.save();
 
-				if (saleCreate.is_sale) {
-					cars.forEach(car => updateCar(car, saleCreate.sale_price));
+				if (saleCreate.is_sale === true) {
+					cars.forEach(async car => await updateCar(car, saleCreate.sale_price));
 				}
 			} else {
 				if (is_sale === true) {
@@ -86,13 +86,14 @@ class SaleController {
 						sale_price,
 						is_sale: true
 					});
-					cars.forEach(car => updateCar(car, sale_price));
+					cars.forEach(async car => await updateCar(car, sale_price));
 				} else {
 					await SaleModel.findByIdAndUpdate(isSaleOn._id, {
 						sale_price: 0,
 						is_sale: false
 					});
-					cars.forEach(car => updateCar(car, -sale_price));
+
+					cars.forEach(async car => await updateCar(car, 0));
 				}
 			}
 			res.status(200).json({

@@ -151,7 +151,7 @@ class AuthController {
 				link_twitter,
 				link_facebook,
 				link_linkedin,
-				company_adress,
+				company_address,
 				company_name,
 				company_map,
 				link_messenger
@@ -187,7 +187,7 @@ class AuthController {
 				link_twitter,
 				link_facebook,
 				link_linkedin,
-				company_adress,
+				company_address,
 				company_name,
 				company_map,
 				link_messenger

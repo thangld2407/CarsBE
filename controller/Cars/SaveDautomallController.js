@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
 			source_crawl: data?.source_crawl || 'https://dautomall.com'
 		});
 		let priceSale = 0;
-		if (isSaleOn) {
+		if (!isSaleOn) {
 			priceSale = 0;
 		} else {
 			if (isSaleOn.is_sale) {

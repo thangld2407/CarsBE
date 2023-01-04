@@ -1,4 +1,5 @@
 const { SOURCE_CRAWL } = require('../constants/enum');
+const { isArray } = require('./validation');
 
 module.exports = (filter, search) => {
 	let query = {};

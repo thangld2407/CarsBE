@@ -14,7 +14,9 @@ module.exports = {
 
 	calPercentageSpecific(sale_price = 0, price_origin = 0, percentage_specific = 0) {
 		let total =
-			price_origin + sale_price * price_origin + (price_origin * percentage_specific) / 100;
+			price_origin +
+			(sale_price * price_origin) / 100 +
+			(price_origin * percentage_specific) / 100;
 		return take_decimal_number(total) || 0;
 	},
 

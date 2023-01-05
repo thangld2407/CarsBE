@@ -11,6 +11,7 @@ const generateUUID = require('../helper/generateUUID');
 const convertNameToModel = require('../helper/getNameModel');
 const htmlToPdf = require('../helper/htmlToPdf');
 const isNumberWithValue = require('../helper/isNumber');
+const optionsFilter = require('../helper/optionsFilter');
 const { pagination } = require('../helper/pagination');
 const { isArray } = require('../helper/validation');
 const CarModel = require('../model/CarModel');
@@ -29,8 +30,8 @@ class CarsController {
 			if (!isSaleOn) {
 				priceSale = 0;
 			} else {
-				if (isSaleOn[0].is_sale) {
-					priceSale = isSaleOn[0].sale_price / 100;
+				if (isSaleOn.is_sale) {
+					priceSale = isSaleOn.sale_price / 100;
 				} else {
 					priceSale = 0;
 				}
@@ -175,153 +176,7 @@ class CarsController {
 	async getListCars(req, res) {
 		let { page, limit, filter, sort, search } = req.body;
 
-		let query = {};
-		let query_sort = {};
-		if (filter) {
-			const { from_year, to_year } = filter;
-
-			if (from_year && to_year) {
-				query = {
-					...query,
-					year_manufacture: {
-						$gte: from_year,
-						$lte: to_year
-					}
-				};
-			}
-
-			const { from_price, to_price } = filter;
-
-			if (typeof from_price === 'number' && typeof to_price === 'number') {
-				if (from_price > to_price) {
-					return res.status(200).json({
-						message: req.__('From price must be less than to price'),
-						error_code: 104
-					});
-				}
-				if (from_price || to_price) {
-					query = {
-						...query,
-						price: {
-							$gte: from_price || to_price
-						}
-					};
-				}
-				query = {
-					...query,
-					price: {
-						$gte: from_price,
-						$lte: to_price
-					}
-				};
-			}
-
-			const { from_distance, to_distance } = filter;
-
-			if (typeof from_distance === 'number' && typeof to_distance === 'number') {
-				if (from_distance > to_distance) {
-					return res.status(200).json({
-						message: req.__('From distance must be less than to distance'),
-						error_code: 104
-					});
-				}
-				if (from_distance || to_distance) {
-					query = {
-						...query,
-						distance_driven: {
-							$gte: from_distance || to_distance
-						}
-					};
-				}
-
-				query = {
-					...query,
-					distance_driven: {
-						$gte: from_distance,
-						$lte: to_distance
-					}
-				};
-			}
-
-			const { fuel_type } = filter;
-
-			if (fuel_type) {
-				query = {
-					...query,
-					fuel_type
-				};
-			}
-
-			const { gearbox } = filter;
-
-			if (gearbox) {
-				query = {
-					...query,
-					gearbox
-				};
-			}
-
-			const { is_data_crawl } = filter;
-			if (typeof is_data_crawl === 'boolean') {
-				query = {
-					...query,
-					is_data_crawl
-				};
-			}
-
-			const { category } = filter;
-			if (category) {
-				query = {
-					...query,
-					category
-				};
-			}
-
-			const { car_model } = filter;
-			if (car_model && isArray(car_model)) {
-				query = {
-					...query,
-					car_model: {
-						$in: [...car_model]
-					}
-				};
-			}
-
-			const { color } = filter;
-			if (color) {
-				query = {
-					...query,
-					color
-				};
-			}
-
-			const { is_hotsale } = filter;
-			if (typeof is_hotsale === 'boolean') {
-				query = {
-					...query,
-					is_hotsale
-				};
-			}
-
-			const { source_crawl } = filter;
-			if (source_crawl && SOURCE_CRAWL.includes(source_crawl)) {
-				query = {
-					...query,
-					source_crawl
-				};
-			}
-		}
-		if (search) {
-			query = {
-				...query,
-				$or: [
-					{ car_name: { $regex: search, $options: 'i' } },
-					{ license_plate: { $regex: search, $options: 'i' } }
-				]
-			};
-		}
-
-		console.log(query);
+		let query = optionsFilter(filter, search);
 
 		try {
 			const count = await CarModel.countDocuments(query);
@@ -398,25 +253,10 @@ class CarsController {
 		try {
 			const { ids, is_hotsale, data_update } = req.body;
 			let dataIdUpdate = [];
-			let query = {};
+
 			if (data_update) {
 				const { search, filter } = data_update;
-				if (search) {
-					query = {
-						...query,
-						$or: [
-							{ car_name: { $regex: search, $options: 'i' } },
-							{ license_plate: { $regex: search, $options: 'i' } }
-						]
-					};
-				}
-				if (filter) {
-					query = {
-						...query,
-						...filter
-					};
-				}
-
+				let query = optionsFilter(filter, search);
 				const cars = await CarModel.find(query).select('_id').lean();
 				dataIdUpdate = cars.map(car => car._id);
 			} else {
@@ -485,133 +325,7 @@ class CarsController {
 			if (data_update && typeof data_update === 'object') {
 				const { filter, search } = data_update;
 
-				let query = {};
-
-				if (filter) {
-					const { from_year, to_year } = filter;
-
-					if (from_year && to_year) {
-						query = {
-							...query,
-							year_manufacture: {
-								$gte: from_year,
-								$lte: to_year
-							}
-						};
-					}
-
-					const { from_price, to_price } = filter;
-
-					if (typeof from_price === 'number' && typeof to_price === 'number') {
-						if (from_price > to_price) {
-							return res.status(200).json({
-								message: req.__('From price must be less than to price'),
-								error_code: 104
-							});
-						}
-						if (from_price || to_price) {
-							query = {
-								...query,
-								price: {
-									$gte: from_price || to_price
-								}
-							};
-						}
-						query = {
-							...query,
-							price: {
-								$gte: from_price,
-								$lte: to_price
-							}
-						};
-					}
-
-					const { from_distance, to_distance } = filter;
-
-					if (typeof from_distance === 'number' && typeof to_distance === 'number') {
-						if (from_distance > to_distance) {
-							return res.status(200).json({
-								message: req.__('From distance must be less than to distance'),
-								error_code: 104
-							});
-						}
-						if (from_distance || to_distance) {
-							query = {
-								...query,
-								distance_driven: {
-									$gte: from_distance || to_distance
-								}
-							};
-						}
-
-						query = {
-							...query,
-							distance_driven: {
-								$gte: from_distance,
-								$lte: to_distance
-							}
-						};
-					}
-
-					const { fuel_type } = filter;
-
-					if (fuel_type) {
-						query = {
-							...query,
-							fuel_type
-						};
-					}
-
-					const { gearbox } = filter;
-
-					if (gearbox) {
-						query = {
-							...query,
-							gearbox
-						};
-					}
-
-					const { is_data_crawl } = filter;
-					if (typeof is_data_crawl === 'boolean') {
-						query = {
-							...query,
-							is_data_crawl
-						};
-					}
-
-					const { category } = filter;
-					if (category) {
-						query = {
-							...query,
-							category
-						};
-					}
-
-					const { color } = filter;
-					if (color) {
-						query = {
-							...query,
-							color
-						};
-					}
-
-					const { is_hotsale } = filter;
-					if (typeof is_hotsale === 'boolean') {
-						query = {
-							...query,
-							is_hotsale
-						};
-					}
-				}
-				if (search) {
-					query = {
-						...query,
-						$or: [
-							{ car_name: { $regex: search, $options: 'i' } },
-							{ license_plate: { $regex: search, $options: 'i' } }
-						]
-					};
-				}
+				let query = optionsFilter(filter, search);
 
 				const cars = await CarModel.find(query).select(
 					'_id price price_display source_crawl'
@@ -622,21 +336,19 @@ class CarsController {
 						const isSaleOn = await SaleModel.findOne({
 							source_crawl: cars[carIndex].source_crawl
 						});
+						let priceSale = 0;
+						if (isSaleOn && isSaleOn.is_sale) {
+							priceSale = isSaleOn.sale_price;
+						}
 
-						let priceWillBeDisplay = isSaleOn?.is_sale
-							? cars[carIndex].price_display
-							: cars[carIndex].price;
+						let priceOrigin = cars[carIndex].price;
 
-						let priceSale = await calPriceBySaleProgram(
-							cars[carIndex].source_crawl,
-							cars[carIndex].price
-						);
 						if (type === TYPE_PRICE_DISPLAY.PERCENTAGE) {
 							await CarModel.findByIdAndUpdate(cars[carIndex]._id, {
 								percentage: percentage,
 								price_display: calPercentageSpecific(
 									priceSale,
-									priceWillBeDisplay,
+									priceOrigin,
 									percentage
 								),
 								difference_price: 0
@@ -647,7 +359,7 @@ class CarsController {
 							await CarModel.findByIdAndUpdate(cars[carIndex]._id, {
 								price_display: calculatePriceSpecific(
 									priceSale,
-									priceWillBeDisplay,
+									priceOrigin,
 									price
 								),
 								difference_price: price,
@@ -677,30 +389,31 @@ class CarsController {
 						});
 					}
 
-					if (!Number(car.price)) {
-						return res.status(200).json({
-							message: req.__('Vui lòng lựa chọn xe khác với giá tiền là số'),
-							status_code: 100
-						});
+					const isSaleOn = await SaleModel.findOne({
+						source_crawl: car.source_crawl
+					});
+					let priceSale = 0;
+					if (isSaleOn && isSaleOn.is_sale) {
+						priceSale = isSaleOn.sale_price;
 					}
 
-					let priceSale = await calPriceBySaleProgram(car.source_crawl, car.price);
+					let priceOrigin = car.price;
 
 					if (type === TYPE_PRICE_DISPLAY.PERCENTAGE) {
-						await CarModel.findByIdAndUpdate(ids[i], {
+						await CarModel.findByIdAndUpdate(car._id, {
 							percentage: percentage,
-							price_display: take_decimal_number(
-								car.price * (1 + percentage / 100) + priceSale * car.price
+							price_display: calPercentageSpecific(
+								priceSale,
+								priceOrigin,
+								percentage
 							),
 							difference_price: 0
 						});
 					}
 
 					if (type === TYPE_PRICE_DISPLAY.PRICE) {
-						await CarModel.findByIdAndUpdate(ids[i], {
-							price_display: take_decimal_number(
-								Number(car.price) + price + priceSale * Number(car.price)
-							),
+						await CarModel.findByIdAndUpdate(car._id, {
+							price_display: calculatePriceSpecific(priceSale, priceOrigin, price),
 							difference_price: price,
 							percentage: 0
 						});
@@ -1284,24 +997,9 @@ class CarsController {
 		try {
 			const { ids, data_update } = req.body;
 			let dataIdsUpdate = [];
-			let query = {};
 			if (data_update) {
 				const { search, filter } = data_update;
-				if (search) {
-					query = {
-						...query,
-						$or: [
-							{ car_name: { $regex: search, $options: 'i' } },
-							{ license_plate: { $regex: search, $options: 'i' } }
-						]
-					};
-				}
-				if (filter) {
-					query = {
-						...query,
-						...filter
-					};
-				}
+				let query = optionsFilter(filter, search);
 
 				const cars = await CarModel.find(query).select('_id').lean();
 				dataIdsUpdate = cars.map(car => car._id);

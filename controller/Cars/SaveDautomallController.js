@@ -15,13 +15,15 @@ module.exports = async (req, res) => {
 			car_code: data?.car_code?.trim() || ''
 		});
 
-		let isSaleOn = await SaleModel.find();
+		let isSaleOn = await SaleModel.findOne({
+			source_crawl: data?.source_crawl || 'https://dautomall.com'
+		});
 		let priceSale = 0;
-		if (isSaleOn.length === 0) {
+		if (!isSaleOn) {
 			priceSale = 0;
 		} else {
-			if (isSaleOn[0].is_sale) {
-				priceSale = isSaleOn[0].sale_price / 100;
+			if (isSaleOn.is_sale) {
+				priceSale = isSaleOn.sale_price / 100;
 			} else {
 				priceSale = 0;
 			}
@@ -32,6 +34,8 @@ module.exports = async (req, res) => {
 				let img = convertImageToLinkServer(item);
 				list_image_converted.push(img);
 			});
+
+			let primary_image = convertImageToLinkServer(data?.primary_image) || '';
 			let performance_check = (await htmlToImageDautomall(data?.performance_check)) || '';
 			const car = new CarModel({
 				car_name: data?.car_name.trim(),
@@ -47,7 +51,7 @@ module.exports = async (req, res) => {
 				color: data?.basic_infr?.color,
 				presentation_number: data?.basic_infr?.presentation_number,
 				category: data?.car_name.trim().split(' ')[0],
-				primary_image: list_image_converted.length > 0 ? list_image_converted[0] : '',
+				primary_image: primary_image,
 				price_display: take_decimal_number(data?.price + priceSale * data?.price),
 				exterior: [],
 				guts: [],

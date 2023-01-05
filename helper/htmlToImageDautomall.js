@@ -13,6 +13,7 @@ function htmlToImageDautomall(url) {
 			if (!url) {
 				return resolve(null);
 			}
+
 			const page = await browser.newPage();
 			await page.goto(url, { waitUntil: 'load', timeout: 0 });
 			await page.waitForSelector('#form1');
@@ -34,7 +35,7 @@ function htmlToImageDautomall(url) {
 			resolve(pathname);
 			await browser.close();
 		} catch (error) {
-			reject(error);
+			resolve(null);
 		}
 	});
 }

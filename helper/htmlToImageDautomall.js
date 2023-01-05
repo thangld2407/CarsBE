@@ -13,6 +13,9 @@ function htmlToImageDautomall(url) {
 			if (!url) {
 				return resolve(null);
 			}
+			if (!url.includes('pc.dautomall.com')) {
+				return resolve(null);
+			}
 			const page = await browser.newPage();
 			await page.goto(url, { waitUntil: 'load', timeout: 0 });
 			await page.waitForSelector('#form1');

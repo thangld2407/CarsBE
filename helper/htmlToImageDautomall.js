@@ -11,10 +11,10 @@ function htmlToImageDautomall(url) {
 				ignoreHTTPSErrors: true
 			});
 			if (!url) {
-				return resolve(null);
+				return resolve('/null');
 			}
 			if (!url.includes('pc.dautomall.com')) {
-				return resolve(null);
+				return resolve('/null');
 			}
 
 			const page = await browser.newPage();
@@ -38,7 +38,7 @@ function htmlToImageDautomall(url) {
 			resolve(pathname);
 			await browser.close();
 		} catch (error) {
-			resolve(null);
+			resolve('/null');
 		}
 	});
 }

@@ -5,7 +5,7 @@ const https = require('https');
 const generateUUID = require('./generateUUID');
 
 function convertImageToLinkServer(url) {
-	if (!url) return 'null';
+	if (!url) return '/assets/images/noimage.png';
 	let ext = path.extname(url);
 
 	if (ext === '.jpg' || ext === '.jpeg' || ext === '.png' || ext === '.gif' || ext === '.JPG') {
